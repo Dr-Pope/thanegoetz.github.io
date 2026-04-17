@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Links directory for Starbase 451 — astronomy, physics, software, gaming, and personal sites curated by Science Officer Thane. Link exchange welcome!">
+  <title>STARBASE 451 :: Links</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    .link-category {
+      background: rgba(0,0,30,0.9);
+      border: 1px solid #334466;
+      margin-bottom: 8px;
+    }
+    .link-cat-header {
+      background: #000044;
+      padding: 4px 10px;
+      border-bottom: 1px solid #334466;
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      color: #00ccff;
+      letter-spacing: 1px;
+    }
+    .link-list-full { list-style: none; padding: 6px 10px; }
+    .link-list-full li {
+      border-bottom: 1px dotted #111133;
+      padding: 4px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .link-list-full li:last-child { border-bottom: none; }
+    .link-list-full li::before { content: "✦"; color: #ff6600; font-size: 10px; flex-shrink: 0; }
+    .link-list-full a { color: #66ccff; font-size: 12px; text-decoration: underline; }
+    .link-list-full a:hover { color: #ffffff; }
+    .link-desc { color: #556677; font-size: 11px; }
+    .link-new {
+      background: #440000; border: 1px solid #880000;
+      color: #ff6666; font-size: 9px;
+      padding: 0px 4px; margin-left: 4px;
+      animation: blink 1.2s step-start infinite;
+      flex-shrink: 0;
+    }
+    .reciprocal-note {
+      background: #001122;
+      border: 1px dashed #224466;
+      padding: 6px 10px;
+      color: #6688aa;
+      font-size: 11px;
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ★ LINKS — STARBASE 451 ★ &nbsp;&nbsp;&nbsp;
+      Cool sites from across cyberspace!! &nbsp;&nbsp;&nbsp;
+      ★ Want to be listed here? Email me!! ★ &nbsp;&nbsp;&nbsp;
+      Please sign my guestbook if I link to you!! &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Science Officer Thane's Deep Space Terminal ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="links.html" class="active">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <div class="columns">
+
+    <!-- MAIN -->
+    <div>
+      <div class="panel">
+        <div class="section-title">// CYBERSPACE DIRECTORY //</div>
+        <div class="body-text">
+          Here are all the sites I think are worth visiting!! I've tried to
+          organize them by category. If I link to you, please link back —
+          that's just good web etiquette!! 🌐
+        </div>
+        <div class="reciprocal-note">
+          ⚠ NOTE: All links were working as of March 2026. The web changes fast —
+          if something is broken please sign the guestbook and let me know!!
+        </div>
+      </div>
+
+      <!-- ASTRONOMY / SPACE -->
+      <div class="link-category">
+        <div class="link-cat-header">🔭 ASTRONOMY &amp; SPACE</div>
+        <ul class="link-list-full">
+          <li>
+            <a href="https://www.nasa.gov" target="_blank">NASA Official Homepage</a>
+            <span class="link-desc">The big one. Everything space, from NASA.</span>
+          </li>
+          <li>
+            <a href="https://science.nasa.gov/mission/hubble/multimedia/hubble-images/#science" target="_blank">Hubble Space Telescope Gallery</a>
+            <span class="link-desc">Beautiful deep field images, free to download!!</span>
+          </li>
+          <li>
+            <a href="https://skyandtelescope.org" target="_blank">Sky &amp; Telescope Magazine</a>
+            <span class="link-desc">Best astronomy magazine online. Subscribe!!!</span>
+          </li>
+          <li>
+            <a href="https://ui.adsabs.harvard.edu" target="_blank">ADS Abstract Service</a>
+            <span class="link-desc">Find peer-reviewed astrophysics papers for free.</span>
+          </li>
+          <li>
+            <a href="https://ned.ipac.caltech.edu" target="_blank">NASA/IPAC Extragalactic Database (NED)</a>
+            <span class="link-desc">Amazing database for AGN and galaxy research.</span>
+          </li>
+          <li>
+            <a href="https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/" target="_blank">The Messier Catalog Pages</a>
+            <span class="link-desc">Every Messier object with full screen skymap. Essential!!</span>
+          </li>
+          <li>
+            <a href="http://www.badastronomy.com/index.html" target="_blank">Bad Astronomy (Phil Plait)</a>
+            <span class="link-desc">Debunking space myths and pseudoscience. Funny too!!</span>
+          </li>
+          <li>
+            <a href="https://www.seti.org" target="_blank">SETI Institute</a>
+            <span class="link-desc">Searching for extraterrestrial intelligence since 1984.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- PHYSICS / SCIENCE -->
+      <div class="link-category">
+        <div class="link-cat-header">⚛ PHYSICS &amp; SCIENCE</div>
+        <ul class="link-list-full">
+          <li>
+            <a href="https://openstax.org/" target="_blank">OpenStax</a>
+            <span class="link-desc">Great free resource for free textbooks in various subjects.</span>
+          </li>
+          <li>
+            <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/hph.html" target="_blank">HyperPhysics (Georgia State)</a>
+            <span class="link-desc">Incredible hyperlinked physics reference. I use this constantly.</span>
+          </li>
+          <li>
+            <a href="https://scienceworld.wolfram.com/physics/" target="_blank">Eric Weisstein's World of Physics</a>
+            <span class="link-desc">Like an encyclopedia but for physics. Very thorough.</span>
+          </li>
+          <li>
+            <a href="https://arxiv.org" target="_blank">arXiv.org Preprints</a>
+            <span class="link-desc">Free preprint papers — astro-ph section is great.</span>
+          </li>
+          <li>
+            <a href="https://carlsagan.com" target="_blank">Carl Sagan Portal</a>
+            <span class="link-desc">Official site celebrating one of the greatest science communicators ever.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SOFTWARE / TOOLS -->
+      <div class="link-category">
+        <div class="link-cat-header">💾 SOFTWARE &amp; TOOLS</div>
+        <ul class="link-list-full">
+          <li>
+            <a href="http://ds9.si.edu" target="_blank">SAOImage DS9</a>
+            <span class="link-desc">The FITS viewer I use for all my research. Free!!</span>
+          </li>
+          <li>
+            <a href="http://deepskystacker.free.fr" target="_blank">DeepSkyStacker</a>
+            <span class="link-desc">Free stacking software for astrophotography.</span>
+          </li>
+          <li>
+            <a href="https://www.astropy.org" target="_blank">Astropy Project</a>
+            <span class="link-desc">Python library for astronomy. Essential for research!!</span>
+          </li>
+          <li>
+            <a href="https://www.python.org" target="_blank">Python.org</a>
+            <span class="link-desc">The best scripting language for science and everything else.</span>
+          </li>
+          <li>
+            <a href="https://stellarium.org" target="_blank">Stellarium</a>
+            <span class="link-desc">Free open-source planetarium for planning observations.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- D&D / GAMES -->
+      <div class="link-category">
+        <div class="link-cat-header">🎲 D&amp;D &amp; GAMING</div>
+        <ul class="link-list-full">
+          <li>
+            <a href="https://dnd.wizards.com" target="_blank">Wizards of the Coast — D&amp;D</a>
+            <span class="link-desc">Official D&amp;D site. All the official rules and supplements.</span>
+          </li>
+          <li>
+            <a href="https://www.d20srd.org" target="_blank">The Hypertext d20 SRD</a>
+            <span class="link-desc">All the 3.5e rules online for free. Super useful at the table.</span>
+          </li>
+          <li>
+            <a href="https://forum.rpg.net" target="_blank">RPG.net Forums</a>
+            <span class="link-desc">Best place to discuss tabletop RPG stuff online.</span>
+          </li>
+          <li>
+            <a href="https://spacestation14.com" target="_blank">Space Station 14</a>
+            <span class="link-desc">Open source rebuild of SS13. The chaos game, now with source code!!</span>
+            <span class="link-new">NEW</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- COOL PERSONAL SITES -->
+      <div class="link-category">
+        <div class="link-cat-header">🌐 COOL PERSONAL SITES</div>
+        <ul class="link-list-full">
+          <li>
+            <a href="#">More coming soon...</a>
+            <span class="link-desc">Know a cool site? Email me for a link exchange!!</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">SECTOR MAP</div>
+        <div class="planet-wrap"><div class="planet"></div></div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">LINK STATS</div>
+        <div style="font-size:11px; color:#aaaaff; line-height:1.8;">
+          <span style="color:#ffff00;">Total links:</span> 22<br>
+          <span style="color:#ffff00;">Astronomy:</span> 8<br>
+          <span style="color:#ffff00;">Physics:</span> 5<br>
+          <span style="color:#ffff00;">Software:</span> 5<br>
+          <span style="color:#ffff00;">D&amp;D / Gaming:</span> 4<br>
+          <span style="color:#ffff00;">Personal:</span> coming soon<br>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">LINK TO ME!</div>
+        <div style="background:#000040; border:2px outset #6666cc; padding:6px; text-align:center; font-family:'VT323',monospace; font-size:14px; color:#ffff00;">
+          ✦ Starbase 451 ✦<br>
+          <span style="color:#aaaaff; font-size:10px; font-family:'Share Tech Mono',monospace;">thane-goetz.neocities.org</span>
+        </div>
+        <div style="font-size:10px; color:#446688; margin-top:4px; line-height:1.5;">
+          Right-click the badge<br>above to save it and<br>link to Starbase 451!!
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">WEB RINGS</div>
+        <div style="font-size:11px; color:#aaaaff; line-height:1.8; margin-bottom:6px;">
+          Member of the <span style="color:#ffff00;">Hotline Webring</span> as Station 451!!
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <a href="https://hotlinewebring.club/station451/previous" style="color:#66ccff; font-size:11px;">&lt;&lt; PREV</a>
+          <span style="color:#9999ff; font-size:10px;">HOTLINE</span>
+          <a href="https://hotlinewebring.club/station451/next" style="color:#66ccff; font-size:11px;">NEXT &gt;&gt;</a>
+        </div>
+      </div>
+
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">ADD YOUR LINK</div>
+        <div style="font-size:11px; color:#9999cc; line-height:1.6;">
+          Sign my guestbook or<br>reach me via SpaceHey:<br>
+          <span style="color:#66ccff;">spacehey.com/dr_pope</span><br>
+          with subject:<br>
+          <span style="color:#ffff00;">"LINK EXCHANGE"</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth
+  </div>
+
+</div>
+
+<div class="statusbar">
+  <span class="statusbar-inner">
+    ⚡ Links Directory - 22 links listed &nbsp;&nbsp;&nbsp;
+    🛸 Notice a broken link? Sign the guestbook!! &nbsp;&nbsp;&nbsp;
+    ★ Mutual link exchange? Email me!! &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<script>(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();</script>
+
+</body>
+</html>

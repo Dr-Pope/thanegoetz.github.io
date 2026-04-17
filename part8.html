@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ARCHITECT PROTOCOL — Recovered Data Fragments. Part 8: The Truth Revealed (Partial). A Corporate Hegemony campaign document.">
+  <title>STARBASE 451 :: ARCHITECT PROTOCOL // Part 8</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    /* ── REDACTED TEXT ── */
+    .redact {
+      background: #001100;
+      color: #001100;
+      border: 1px solid #003300;
+      padding: 0 6px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      user-select: none;
+      display: inline-block;
+    }
+    .redact-red {
+      background: #110000;
+      color: #110000;
+      border: 1px solid #330000;
+      padding: 0 6px;
+      font-size: 11px;
+      user-select: none;
+      display: inline-block;
+    }
+
+    /* ── DECRYPT PROGRESS BAR ── */
+    .decrypt-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #6699ff;
+      margin: 6px 0 10px;
+    }
+    .decrypt-track {
+      flex: 1;
+      max-width: 220px;
+      height: 6px;
+      background: #001100;
+      border: 1px solid #003300;
+    }
+    .decrypt-fill {
+      height: 100%;
+      width: 47%;
+      background: #009933;
+      animation: decrypt-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes decrypt-pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    /* ── CLASSIFICATION BANNER ── */
+    .class-banner {
+      background: #110000;
+      border: 2px solid #cc0000;
+      border-left: 4px solid #ff3333;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      font-size: 11px;
+      color: #ff9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .class-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg, transparent, transparent 6px,
+        rgba(200,0,0,0.04) 6px, rgba(200,0,0,0.04) 12px
+      );
+    }
+    .class-badge {
+      background: #cc0000;
+      color: #fff;
+      font-size: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      padding: 2px 8px;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+
+    /* ── FRAGMENT PANEL (extends .panel) ── */
+    .frag-panel {
+      background: rgba(0,10,0,0.85);
+      border: 1px solid #00aa44;
+      border-top: 2px solid #00ff99;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+    .frag-panel:hover { border-color: #00ff99; }
+    .frag-id {
+      font-size: 10px;
+      color: #00aa55;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .frag-status {
+      font-size: 9px;
+      padding: 1px 7px;
+      border: 1px solid;
+      letter-spacing: 1px;
+    }
+    .frag-status.ok   { color: #00ff99; border-color: #00ff99; }
+    .frag-status.part { color: #ffaa00; border-color: #ffaa00; }
+
+    /* ── TERMINAL BLOCK ── */
+    .term-block {
+      background: #000800;
+      border: 1px solid #003300;
+      border-left: 3px solid #006600;
+      padding: 10px 12px;
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      font-size: 12px;
+      color: #88cc88;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.8;
+    }
+    .term-block .t-lbl  { color: #00ccff; }
+    .term-block .t-val  { color: #ccffcc; }
+    .term-block .t-done { color: #00ff99; }
+    .term-block .t-prog { color: #ffaa00; }
+    .term-block .t-pend { color: #555577; }
+    .term-block .t-dead { color: #ff3333; font-family: 'VT323', monospace; font-size: 15px; letter-spacing: 1px; }
+
+    /* ── COMMS ENTRY ── */
+    .comms-entry {
+      border: 1px solid #223344;
+      margin-bottom: 8px;
+      background: rgba(0,5,15,0.7);
+    }
+    .comms-entry:last-child { margin-bottom: 0; }
+    .comms-hdr {
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      gap: 2px 10px;
+      padding: 8px 10px;
+      border-bottom: 1px solid #1a2d40;
+      background: rgba(0,30,60,0.3);
+      font-size: 10px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .c-field  { color: #445566; }
+    .c-val    { color: #aaccff; }
+    .c-val .corp-tag {
+      font-size: 9px;
+      background: rgba(0,80,160,0.2);
+      border: 1px solid #223355;
+      color: #6699ff;
+      padding: 0 5px;
+      margin-left: 5px;
+    }
+    .c-val .c-redact {
+      background: #110000;
+      color: #110000;
+      border: 1px solid #330000;
+      padding: 0 8px;
+      font-size: 10px;
+    }
+    .comms-body {
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #99aacc;
+      line-height: 1.7;
+      font-style: italic;
+      border-left: 3px solid transparent;
+    }
+    .ce-helix  .comms-body { border-left-color: #6699ff; }
+    .ce-nexus  .comms-body { border-left-color: #aa66ff; }
+    .ce-kronos .comms-body { border-left-color: #ff9900; }
+    .ce-aether .comms-body { border-left-color: #00cc99; }
+
+    /* ── OMEGA TABLE ROW ── */
+    .omega-row td { background: rgba(80,0,0,0.2) !important; }
+    .omega-val { color: #ff4444; font-family: 'VT323', monospace; font-size: 24px; line-height: 1; }
+
+    /* ── CIPHER NOTE ── */
+    .cipher-note {
+      background: #000a00;
+      border: 1px dashed #336633;
+      border-left: 3px solid #00ff99;
+      padding: 8px 12px;
+      font-size: 11px;
+      color: #669966;
+      margin-top: 8px;
+      line-height: 1.7;
+    }
+    .cipher-note b { color: #ff3333; }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-block;
+      background: #000040;
+      border: 2px outset #8888ff;
+      color: #ffff00;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      padding: 3px 12px;
+      text-decoration: none;
+      margin-bottom: 8px;
+    }
+    .back-link:hover { background: #0000cc; border-style: inset; color: #fff; }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ⚠ CLASSIFIED DOCUMENT — PANTHEON CLEARANCE REQUIRED ⚠ &nbsp;&nbsp;&nbsp;
+      ARCHITECT PROTOCOL // Fragment Recovery — Part 8 &nbsp;&nbsp;&nbsp;
+      ⚠ Unauthorized access is a Class I corporate offense under Hegemony Code §44.7 ⚠
+    </span>
+  </div>
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Science Officer Thane's Deep Space Terminal ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html" class="active">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <!-- BREADCRUMB / BACK -->
+  <div style="margin-bottom:6px;">
+    <a href="projects.html" class="back-link">« BACK TO PROJECTS</a>
+  </div>
+
+  <!-- CLASSIFICATION BANNER -->
+  <div class="class-banner">
+    <span class="class-badge">⚠ RESTRICTED</span>
+    <span>Recovered data fragment — partial decryption only.
+      <b style="color:#ff9999;">PANTHEON CLEARANCE REQUIRED</b> for full access.
+      Unauthorized viewing is a Class I corporate offense under Hegemony Code §44.7.
+    </span>
+  </div>
+
+  <!-- PAGE HEADER PANEL -->
+  <div class="panel panel-cyan">
+    <div class="section-title cyan">// ARCHITECT PROTOCOL — PART 8 //</div>
+    <div class="body-text" style="font-size:12px; line-height:1.7;">
+      <b>DATA RECOVERY — PART 08</b> &nbsp;|&nbsp; chip_id: DR-VENN-0047 &nbsp;|&nbsp; source: nexus infodyn relay
+      <br>
+      <span style="color:#666699;">What follows are the fragments recovered from Dr. Asha Venn's encrypted data chip.
+      Cipher's decryption is ongoing. This is what we have so far.</span>
+    </div>
+    <div class="decrypt-wrap">
+      <span style="color:#666699;">DECRYPT PROGRESS</span>
+      <div class="decrypt-track"><div class="decrypt-fill"></div></div>
+      <span>47% <span class="blink">▌</span></span>
+    </div>
+  </div>
+
+  <div class="star-row">★ ☆ ★ ☆ ★ ☆ ★ ☆ ★ ☆ ★</div>
+
+  <!-- FRAGMENT 1: PROJECT OVERVIEW -->
+  <div class="frag-panel">
+    <div class="frag-id">
+      <span>// FRAG-001 &nbsp;·&nbsp; PROJECT OVERVIEW</span>
+      <span class="frag-status ok">RECOVERED</span>
+    </div>
+    <div class="term-block"><span class="t-lbl">PROJECT         </span>  <span class="t-val">ARCHITECT PROTOCOL</span>
+<span class="t-lbl">CLASSIFICATION  </span>  <span class="t-val">PANTHEON — EYES ONLY</span>
+<span class="t-lbl">ENTITIES        </span>  <span class="t-val">Helix Heritage · Kronos Industrial · Nexus InfoDynamics
+                  Helios Energy Conglomerate · AetherCorp</span>
+<span class="t-lbl">DURATION        </span>  <span class="t-val">43 years [ongoing]</span>
+<span class="t-lbl">OBJECTIVE       </span>  <span class="redact-red">██████████████████████████████ CLEARANCE REQUIRED █████████████████████</span>
+<span class="t-lbl">RESOURCE ALLOC  </span>  <span class="t-val">18% of combined annual GDP</span></div>
+  </div>
+
+  <!-- FRAGMENT 2: TIMELINE -->
+  <div class="frag-panel">
+    <div class="frag-id">
+      <span>// FRAG-002 &nbsp;·&nbsp; PHASE TIMELINE</span>
+      <span class="frag-status ok">RECOVERED</span>
+    </div>
+    <div class="term-block"><span class="t-lbl">PHASE 1</span>  <span class="t-val">(2250–2270)</span>  Detection and Analysis             [<span class="t-done">COMPLETE</span>]
+<span class="t-lbl">PHASE 2</span>  <span class="t-val">(2270–2290)</span>  Infrastructure and Preparation     [<span class="t-done">COMPLETE</span>]
+<span class="t-lbl">PHASE 3</span>  <span class="t-val">(2290–2305)</span>  Selection and Implementation       [<span class="t-prog">IN PROGRESS — 78%</span>]
+<span class="t-lbl">PHASE 4</span>  <span class="t-val">(2305–2310)</span>  <span class="redact-red">████████████████████</span>              [<span class="t-pend">PENDING</span>]
+
+<span class="t-lbl">CRITICAL DEADLINE  </span>  <span class="t-dead">2308.09.14</span></div>
+  </div>
+
+  <!-- FRAGMENT 3: RESOURCES -->
+  <div class="frag-panel">
+    <div class="frag-id">
+      <span>// FRAG-003 &nbsp;·&nbsp; RESOURCE MANIFEST</span>
+      <span class="frag-status ok">RECOVERED</span>
+    </div>
+    <div class="term-block"><span class="t-lbl">Deep space construction facilities   </span>  <span class="t-val">12 locations</span>  [<span class="redact">COORDINATES ENCRYPTED</span>]
+<span class="t-lbl">Processed materials                  </span>  <span class="t-val">8.7 trillion tons</span>
+<span class="t-lbl">Personnel (classified assignment)    </span>  <span class="t-val">47,000+</span>
+<span class="t-lbl">AI processing cores                  </span>  <span class="t-val">200 units</span>
+<span class="t-lbl"><span class="redact">████████████</span> delivery systems       </span>  <span class="t-val">3,000 units</span></div>
+  </div>
+
+  <!-- FRAGMENT 4: COMMS -->
+  <div class="frag-panel">
+    <div class="frag-id">
+      <span>// FRAG-004 &nbsp;·&nbsp; INTERNAL COMMS (EXCERPTS)</span>
+      <span class="frag-status part">PARTIAL</span>
+    </div>
+
+    <div class="comms-entry ce-helix">
+      <div class="comms-hdr">
+        <span class="c-field">FROM</span>
+        <span class="c-val"><span class="c-redact">REDACTED</span><span class="corp-tag">HELIX EXECUTIVE COUNCIL</span></span>
+        <span class="c-field">TO</span>
+        <span class="c-val">PANTHEON Group</span>
+        <span class="c-field">RE</span>
+        <span class="c-val">Tarragon Event Assessment</span>
+      </div>
+      <div class="comms-body">
+        "The Tarragon incident, while regrettable, provided invaluable data on population response to crisis-level threat. Behavioral models updated. Recommend similar controlled events in Sectors 7 and 12."
+      </div>
+    </div>
+
+    <div class="comms-entry ce-nexus">
+      <div class="comms-hdr">
+        <span class="c-field">FROM</span>
+        <span class="c-val"><span class="c-redact">REDACTED</span><span class="corp-tag">NEXUS STRATEGIC DIVISION</span></span>
+        <span class="c-field">TO</span>
+        <span class="c-val">PANTHEON Group</span>
+        <span class="c-field">RE</span>
+        <span class="c-val">Sentience Incident</span>
+      </div>
+      <div class="comms-body">
+        "Cover story holding. Public accepts AI sentience restriction as necessary security measure. Continue suppression protocols. Cannot risk independent AI interference with Phase 3."
+      </div>
+    </div>
+
+    <div class="comms-entry ce-kronos">
+      <div class="comms-hdr">
+        <span class="c-field">FROM</span>
+        <span class="c-val"><span class="c-redact">REDACTED</span><span class="corp-tag">KRONOS RESOURCE MANAGEMENT</span></span>
+        <span class="c-field">TO</span>
+        <span class="c-val">PANTHEON Group</span>
+        <span class="c-field">RE</span>
+        <span class="c-val">Population Management Acceleration</span>
+      </div>
+      <div class="comms-body">
+        "Phase 3 targets not meeting projections. Recommend increasing economic pressure in designated zones. Estimated compliance increase: 12–15%. Timeline: critical."
+      </div>
+    </div>
+
+    <div class="comms-entry ce-aether">
+      <div class="comms-hdr">
+        <span class="c-field">FROM</span>
+        <span class="c-val"><span class="c-redact">REDACTED</span><span class="corp-tag">AETHERCORP NAVIGATION</span></span>
+        <span class="c-field">TO</span>
+        <span class="c-val">PANTHEON Group</span>
+        <span class="c-field">RE</span>
+        <span class="c-val">Arrival Timeline Confirmed</span>
+      </div>
+      <div class="comms-body">
+        "Latest calculations confirm arrival window: 2308.09.14 ±3 days. All facilities must be operational before this date. No delays acceptable."
+      </div>
+    </div>
+  </div>
+
+  <!-- FRAGMENT 5: COORDINATES -->
+  <div class="frag-panel">
+    <div class="frag-id">
+      <span>// FRAG-005 &nbsp;·&nbsp; PARTIAL COORDINATES</span>
+      <span class="frag-status part">47% DECRYPTED</span>
+    </div>
+    <div class="term-block"><span class="t-lbl">DEEP SPACE LOCATION  </span>  <span class="t-val">"ARCHITECT'S GARDEN"</span>
+<span class="t-lbl">COORDINATES          </span>  <span class="redact">████ : ████ : ██████</span>  [47% DECRYPTED]
+<span class="t-lbl">SECTOR               </span>  <span class="t-val">Outer Rim, Beyond Helios Terminus</span>
+<span class="t-lbl">DISTANCE FROM CORE   </span>  <span class="t-val">~200 light-years</span>
+<span class="t-lbl">STATUS               </span>  <span class="t-prog">Active Construction</span></div>
+  </div>
+
+  <!-- FRAGMENT 6: PERSONNEL -->
+  <div class="frag-panel">
+    <div class="frag-id">
+      <span>// FRAG-006 &nbsp;·&nbsp; PERSONNEL CLASSIFICATIONS</span>
+      <span class="frag-status ok">RECOVERED</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>CLASS</th>
+          <th>DESIGNATION</th>
+          <th>CLEARANCE</th>
+          <th>COUNT / NOTES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:#ffff00;">ALPHA</td>
+          <td>Corporate Executives</td>
+          <td>PANTHEON</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td style="color:#6699ff;">BETA</td>
+          <td>Mid-Level Management</td>
+          <td>Need-to-Know</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td style="color:#66ff66;">GAMMA</td>
+          <td>Specialized Researchers</td>
+          <td>Compartmentalized</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td style="color:#888888;">DELTA</td>
+          <td>Construction &amp; Logistics</td>
+          <td>Isolated</td>
+          <td>—</td>
+        </tr>
+        <tr class="omega-row">
+          <td style="color:#ff4444;"><b>OMEGA</b></td>
+          <td><span class="redact-red">REDACTED</span></td>
+          <td style="color:#ff4444;">INVOLUNTARY</td>
+          <td>
+            <div class="omega-val">47,238</div>
+            <div style="color:#555577; font-size:10px; margin-top:2px;">Projected: 2.3M by Phase 4</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="star-row">☆ ★ ☆ ★ ☆ ★ ☆ ★ ☆ ★ ☆</div>
+
+  <!-- CIPHER NOTE -->
+  <div class="cipher-note">
+    ⚡ CIPHER ANALYSIS — Further decryption requires additional clearance keys.
+    Estimated 60–70% of the full dataset remains locked behind PANTHEON-tier encryption.<br><br>
+    The deadline — <b>2308.09.14</b> — is less than two years from present date.
+    Whatever is arriving at "Architect's Garden," every corp is treating it as non-negotiable.<br><br>
+    <span style="color:#335533;">Relay this data with extreme caution. PANTHEON has assets on every station level.
+    — <i>Cipher</i></span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth<br>
+    <span style="color:#333366;">Made with ♥ and Visual Studio Code &nbsp;|&nbsp; No frames! &nbsp;|&nbsp; Pure HTML &nbsp;|&nbsp; 640×480 friendly</span>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <span class="statusbar-inner">
+    ⚡ Document: CLASSIFIED &nbsp;&nbsp;&nbsp; 🛸 thane-goetz.neocities.org &nbsp;&nbsp;&nbsp;
+    ★ PANTHEON CLEARANCE REQUIRED FOR FULL ACCESS &nbsp;&nbsp;&nbsp;
+    ⚠ CRITICAL DEADLINE: 2308.09.14 &nbsp;&nbsp;&nbsp;
+    ★ 47,238 OMEGA PERSONNEL AND COUNTING &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<script>
+(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();
+</script>
+
+</body>
+</html>

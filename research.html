@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Radio astronomy research by Thane Goetz — classifying 1,836 triple radio sources from VLASS using morphology, bending, and flag axes. Target journal: ApJS.">
+  <title>STARBASE 451 :: Research</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    .abstract-box {
+      background: #000020;
+      border: 1px dashed #336699;
+      padding: 8px 10px;
+      color: #99ccff;
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 8px 0;
+      font-style: italic;
+    }
+    .class-card {
+      background: rgba(0,0,30,0.8);
+      border: 1px solid #334466;
+      padding: 8px;
+      margin-bottom: 6px;
+    }
+    .class-card-title {
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      color: #00ccff;
+      border-bottom: 1px solid #334466;
+      margin-bottom: 4px;
+    }
+    .class-card p { color: #aaccff; font-size: 12px; line-height: 1.6; }
+    .tag {
+      display: inline-block;
+      background: #001144;
+      border: 1px solid #334499;
+      color: #6699ff;
+      font-size: 10px;
+      padding: 1px 6px;
+      margin: 2px 2px 2px 0;
+    }
+    .progress-wrap { margin: 4px 0; }
+    .progress-label { color: #9999cc; font-size: 11px; }
+    .progress-bar {
+      height: 8px;
+      background: #001100;
+      border: 1px solid #003300;
+      margin: 2px 0 4px;
+      position: relative;
+    }
+    .progress-fill { position:absolute; top:0; left:0; bottom:0; background:#009933; }
+    .progress-fill.amber { background: #cc8800; }
+    .progress-fill.red   { background: #990000; }
+    .cite {
+      color: #666699;
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+    .cite b { color: #9999cc; }
+
+    /* ACCORDION */
+    .acc-item { margin-bottom: 6px; border: 1px solid #334466; }
+    .acc-header {
+      background: #000820;
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .acc-header:hover { background: #001133; }
+    .acc-header .acc-title {
+      font-family: 'VT323', monospace;
+      font-size: 22px;
+      color: #00ccff;
+      letter-spacing: 1px;
+    }
+    .acc-header .acc-meta {
+      font-size: 10px;
+      color: #666699;
+      text-align: right;
+      line-height: 1.5;
+    }
+    .acc-header .acc-arrow {
+      color: #00ff99;
+      font-size: 18px;
+      margin-left: 12px;
+      transition: transform 0.2s;
+      font-family: monospace;
+    }
+    .acc-item.open .acc-arrow { transform: rotate(90deg); }
+    .acc-body {
+      display: none;
+      padding: 12px;
+      background: #00001a;
+      border-top: 1px solid #223355;
+    }
+    .acc-item.open .acc-body { display: block; }
+    .acc-status {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 7px;
+      border: 1px solid;
+      margin-left: 8px;
+      vertical-align: middle;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .acc-status.active  { color: #00ff99; border-color: #00ff99; }
+    .acc-status.ongoing { color: #ffaa00; border-color: #ffaa00; }
+    .acc-status.planned { color: #666699; border-color: #666699; }
+    .acc-status.contrib { color: #aaaaff; border-color: #aaaaff; }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ★ RESEARCH DIVISION — STARBASE 451 ★ &nbsp;&nbsp;&nbsp;
+      Active Galactic Nuclei | Jet Classification | FITS Analysis &nbsp;&nbsp;&nbsp;
+      ★ All observations conducted at the Pennsylvania Backyard Observatory ★
+    </span>
+  </div>
+
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Science Officer Thane's Deep Space Terminal ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html" class="active">[ RESEARCH ]</a>
+    <a href="projects.html">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <div class="columns">
+
+    <!-- MAIN -->
+    <div>
+
+      <!-- INTRO -->
+      <div class="panel panel-cyan">
+        <div class="section-title cyan">// RESEARCH TERMINAL //</div>
+        <div class="body-text">
+          Welcome to my research section!! This is where I document my active and ongoing projects.
+          Click any entry below to expand it.
+        </div>
+      </div>
+
+      <!-- ACCORDION LIST -->
+      <div id="acc">
+
+        <!-- PROJECT 1: VLASS TRIPLE SOURCES -->
+        <div class="acc-item open">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div>
+              <span class="acc-title">PROJECT ALPHA: VLASS TRIPLE RADIO SOURCE CLASSIFICATION</span>
+              <span class="acc-status active">ACTIVE</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="acc-meta">Radio Astronomy / AGN<br>Target: ApJS</div>
+              <span class="acc-arrow">▶</span>
+            </div>
+          </div>
+          <div class="acc-body">
+
+            <div style="margin-bottom:10px; padding:8px 10px; border:1px solid #336699; background:#000820; font-size:11px; color:#6699ff; line-height:1.7;">
+              <b style="color:#00ccff;">PAPER:</b> Achong, Hooper, Morris, <b style="color:#ffff00;">Goetz</b>, Einwalter, Bach, Benedetto &amp; Gordon (2026)<br>
+              <i>"A Quick Look at the 3 GHz Radio Sky. III. Characterizing the Triple Radio Sources in VLASS"</i><br>
+              <span style="color:#aaaaaa;">In preparation — Target journal: <b>ApJS</b></span>
+            </div>
+
+            <div class="abstract-box">
+              <b>ABSTRACT:</b> Human visual classification of 1,836 triple radio sources identified in the
+              Very Large Array Sky Survey (VLASS) at 3 GHz. Each source is classified along three
+              independent axes — morphology, source bending, and flags — using a detailed workflow
+              and glossary developed by a 7-person team across Lycoming College and UW-Madison.
+              The goal is to characterize bent-jet AGN for use in IGM density measurements and
+              as signposts to galaxy clusters and groups at cosmological distances.
+            </div>
+
+            <div class="star-row" style="font-size:12px; animation:none;">— — — — — — — — — — — — —</div>
+
+            <div style="margin-bottom:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">MORPHOLOGY CLASSIFICATION SCHEME</div>
+
+              <div class="class-card">
+                <div class="class-card-title">TRIPLE (t)</div>
+                <p>Radio source with three distinct components — two lobes plus a visible radio core. The most common class in the sample.</p>
+                <span class="tag">CORE IDENTIFIED</span><span class="tag">BIDIRECTIONAL</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">DOUBLE (d)</div>
+                <p>Two-lobe source with no identifiable core component. The third "component" detected by DRAGNHunter may be an artifact, an unrelated source, or substructure.</p>
+                <span class="tag">NO CORE</span><span class="tag">TWO LOBES</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">X-SHAPE (x) / S-SHAPE (s)</div>
+                <p>X-shaped sources show a secondary wing axis misaligned from the primary jets. S-shaped sources show an undulating jet axis. Both indicate jet reorientation events.</p>
+                <span class="tag">JET REORIENTATION</span><span class="tag">WING EMISSION</span><span class="tag">PRECESSION</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">HEAD-TAIL (h-t) / ONE-SIDED (1-side)</div>
+                <p>Head-tail sources have emission swept so far back the two strands become nearly parallel — classic ram pressure morphology. One-sided sources show emission on only one side of the AGN, often due to relativistic beaming.</p>
+                <span class="tag">RAM PRESSURE</span><span class="tag">RELATIVISTIC BEAMING</span><span class="tag">IGM INTERACTION</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">COMPOSITE (c) / INCOMPLETE (i) / BLOB (b) / WEIRD (w)</div>
+                <p>Composite: multiple unrelated sources in the same detection. Incomplete: sub-structure of a larger source. Blob: indistinct diffuse emission. Weird: beyond all classification vocabulary — must be seen.</p>
+                <span class="tag">EDGE CASES</span><span class="tag">ARTIFACTS</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">BENDING CLASSIFICATION</div>
+              <div class="body-text" style="font-size:11px; margin-bottom:6px;">
+                Bending is rated on a 0–3 confidence scale focusing on <b>systematic</b> bending consistent with ram pressure from IGM motion — not jet reorientation (x/s-shapes).
+              </div>
+              <table class="data-table">
+                <thead><tr><th>VALUE</th><th>MEANING</th></tr></thead>
+                <tbody>
+                  <tr><td style="color:#666699;">0</td><td>No bending apparent</td></tr>
+                  <tr><td style="color:#6699ff;">1</td><td>Possible bending — modest confidence, low S/N features</td></tr>
+                  <tr><td style="color:#ffaa00;">2</td><td>Reasonably clear systematic bending</td></tr>
+                  <tr><td style="color:#00ff99;">3</td><td>High confidence — clearly bent jet axis or hotspot sequence</td></tr>
+                  <tr><td style="color:#ff6699;">(asym)</td><td>Asymmetric bending — different confidence on each side of core</td></tr>
+                  <tr><td style="color:#ff6699;">(t-p)</td><td>Trailing plume — lobes swept back further than jet bending implies</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-bottom:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">DATA &amp; TOOLS</div>
+              <table class="data-table">
+                <thead><tr><th>SOURCE / TOOL</th><th>ROLE</th><th>STATUS</th></tr></thead>
+                <tbody>
+                  <tr><td>VLASS (3 GHz)</td><td>Primary radio survey — 1,836 triple sources</td><td style="color:#00ff00;">ACTIVE</td></tr>
+                  <tr><td>WISE (infrared)</td><td>Host galaxy identification</td><td style="color:#00ff00;">ACTIVE</td></tr>
+                  <tr><td>PanSTARRS (optical)</td><td>Optical host confirmation</td><td style="color:#00ff00;">ACTIVE</td></tr>
+                  <tr><td>DRAGNHunter</td><td>Automated triple component detection (Gordon et al. 2023)</td><td style="color:#00ff00;">ACTIVE</td></tr>
+                  <tr><td>SAOImageDS9</td><td>Visual classification — 4-panel montage per source</td><td style="color:#00ff00;">ACTIVE</td></tr>
+                  <tr><td>opends9.py</td><td>Driver script: auto-loads DS9 windows for each source</td><td style="color:#00ff00;">ACTIVE</td></tr>
+                  <tr><td>Python / Astropy</td><td>Bending angle measurement, radius of curvature, catalog</td><td style="color:#ffaa00;">IN PROGRESS</td></tr>
+                  <tr><td>TOPCAT</td><td>Catalog cross-matching and table analysis</td><td style="color:#00ff00;">ACTIVE</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-bottom:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">CLASSIFICATION PROCESS</div>
+              <div class="body-text" style="font-size:11px; line-height:1.8;">
+                7 classifiers split into two teams by institution. <b style="color:#00ccff;">Lycoming College</b> (faculty + 3 undergrads including me) started from the lowest R.A. values. <b style="color:#00ccff;">UW-Madison</b> (senior scientist + 2 postbac scholars) started from the highest and worked downward. Teams met weekly. Each classifier worked independently before comparing notes, preserving original classifications in separate spreadsheets. Once teams crossed each other in the catalog, overlapping sources were discussed and a consensus classification was recorded.
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <div style="color:#ff66aa; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">MISSION PROGRESS</div>
+              <div class="progress-wrap">
+                <div class="progress-label">Human classification of all 1,836 sources</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:90%;"></div></div>
+                <div class="progress-label">Bending angle measurements (Kaylan)</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:85%;"></div></div>
+                <div class="progress-label">Radius of curvature automation (Melissa &amp; Thane)</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:70%;"></div></div>
+                <div class="progress-label">Artifact analysis &amp; multi-parameter space</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:55%;"></div></div>
+                <div class="progress-label">Host galaxy &amp; environment cross-matching</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:40%;"></div></div>
+                <div class="progress-label">Paper write-up</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:35%;"></div></div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <div style="color:#6699ff; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">KEY REFERENCES</div>
+              <div class="cite"><b>[1]</b> Lacy et al. (2020) — VLASS overview</div>
+              <div class="cite"><b>[2]</b> Gordon et al. (2021) — VLASS component catalog</div>
+              <div class="cite"><b>[3]</b> Gordon et al. (2023) — VLASS DRAGN (double/triple) source catalog</div>
+              <div class="cite"><b>[4]</b> Morris et al. (2022) — IGM density from bent radio AGN</div>
+              <div class="cite"><b>[5]</b> Freeland &amp; Wilcots (2011) — Bent jets as IGM probes</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CONTRIBUTION: DRAGNs IN THE FOREST -->
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div>
+              <span class="acc-title">CONTRIBUTION: DRAGNs IN THE FOREST — RANDOM FOREST ARTIFACT IDENTIFICATION</span>
+              <span class="acc-status contrib">ACKNOWLEDGED</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="acc-meta">Radio Astronomy / ML<br>Submitted to ApJ</div>
+              <span class="acc-arrow">▶</span>
+            </div>
+          </div>
+          <div class="acc-body">
+
+            <div class="body-text">
+              <i>"DRAGNs in the Forest: Identifying Artifacts with Random Forest Models in the VLASS DRAGNs Catalog"</i><br>
+              <span style="color:#666699; font-size:11px;">Einwalter, Hooper, Morris, Bach &amp; Gordon (2026) — arXiv:2512.20999 — Submitted to ApJ</span>
+            </div>
+
+            <div class="body-text" style="margin-top:6px;">
+              I contributed visual classification of triple radio sources from the VLASS DRAGNs catalog as part of a related project.
+              The paper trains random forest models to identify imaging artifacts in VLASS Quick Look DRAGNs —
+              multi-component radio sources that may include spurious detections from the survey's simplified imaging algorithm.
+              Acknowledged in the paper for assisting with visual classification of the triples dataset.
+            </div>
+
+            <div class="proj-section">// PAPER SUMMARY //</div>
+            <div class="body-text">
+              The VLASS DRAGNs catalog (Gordon et al. 2023) contains 17,724 double and triple radio sources, ~11% of which
+              are spurious artifact detections. This paper trains random forest classifiers on the 1,836 triple sources
+              to identify 0-, 2-, and 3-artifact classes, then applies the model to classify the 15,888 double sources.
+              The best model (log-log LAS S/N and flux S/N selected training set) achieves a weighted F1 score of
+              <b style="color:#00ff99;">97.01%</b>, producing a catalog with <b style="color:#00ff99;">99.3% completeness</b> and
+              <b style="color:#00ff99;">97.7% artifact-free purity</b> — outperforming the existing DRAGNhunter Q-flag method.
+            </div>
+
+            <div class="proj-section">// MY ROLE //</div>
+            <table class="data-table">
+              <thead><tr><th>TASK</th><th>DESCRIPTION</th><th>STATUS</th></tr></thead>
+              <tbody>
+                <tr><td>Visual classification</td><td>Manual inspection of VLASS triple sources for artifact identification</td><td style="color:#00ff99;">COMPLETE</td></tr>
+                <tr><td>Acknowledgement</td><td>Credited in paper acknowledgments alongside Mia Benedetto</td><td style="color:#aaaaff;">PUBLISHED (arXiv)</td></tr>
+              </tbody>
+            </table>
+
+            <div class="proj-section">// KEY RESULTS //</div>
+            <div class="stat-grid">
+              <div class="stat-box"><div class="stat-val" style="color:#00ff99;">97.01%</div><div class="stat-label">Weighted F1 Score</div></div>
+              <div class="stat-box"><div class="stat-val" style="color:#00ff99;">99.3%</div><div class="stat-label">Catalog Completeness</div></div>
+              <div class="stat-box"><div class="stat-val" style="color:#00ff99;">97.7%</div><div class="stat-label">Artifact-Free Purity</div></div>
+              <div class="stat-box"><div class="stat-val">17,724</div><div class="stat-label">DRAGNs Classified</div></div>
+            </div>
+
+            <div class="proj-section">// REFERENCES //</div>
+            <div class="cite"><b>[1]</b> Einwalter et al. (2026) — DRAGNs in the Forest, arXiv:2512.20999</div>
+            <div class="cite"><b>[2]</b> Gordon et al. (2023) — VLASS DRAGNs catalog (ApJS 267, 37)</div>
+            <div class="cite"><b>[3]</b> Gordon et al. (2021) — VLASS component catalog (ApJS 255, 30)</div>
+
+          </div>
+        </div>
+
+        <!-- PROJECT 2: XRG MORPHOLOGY CATALOG -->
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div>
+              <span class="acc-title">PROJECT BETA: X-SHAPED RADIO GALAXY CATALOG</span>
+              <span class="acc-status ongoing">ONGOING</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="acc-meta">Radio Astronomy / AGN<br>Senior Research / Fellowship</div>
+              <span class="acc-arrow">▶</span>
+            </div>
+          </div>
+          <div class="acc-body">
+
+            <div class="abstract-box">
+              <b>ABSTRACT:</b> X-shaped radio galaxies (XRGs) exhibit a distinctive double-axis morphology:
+              a primary jet axis and a secondary "wing" axis misaligned from the main lobes.
+              This project builds a quantitative catalog of XRG properties — jet misalignment angles,
+              wing-to-lobe flux ratios, and morphological classification metrics — starting from the
+              Cheung (2007) sample. The goal is to characterize XRG structure with reproducible,
+              numerical methods rather than subjective visual labels.
+            </div>
+
+            <div class="star-row" style="font-size:12px; animation:none;">— — — — — — — — — — — — —</div>
+
+            <div style="margin-bottom:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">DATA SOURCES</div>
+              <table class="data-table">
+                <thead><tr><th>SURVEY</th><th>WAVELENGTH</th><th>USE</th></tr></thead>
+                <tbody>
+                  <tr><td>FIRST</td><td>Radio (1.4 GHz)</td><td>Primary radio morphology</td></tr>
+                  <tr><td>NVSS</td><td>Radio (1.4 GHz)</td><td>Total flux, extended emission</td></tr>
+                  <tr><td>VLASS</td><td>Radio (3 GHz)</td><td>High-resolution morphology</td></tr>
+                  <tr><td>LoTSS</td><td>Radio (144 MHz)</td><td>Low-frequency extended structure</td></tr>
+                  <tr><td>SDSS</td><td>Optical</td><td>Host galaxy identification</td></tr>
+                  <tr><td>Pan-STARRS</td><td>Optical</td><td>Host galaxy backup / overlap</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-bottom:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">PIPELINE WORKFLOW</div>
+
+              <div class="class-card">
+                <div class="class-card-title">STEP 1 — Source Selection</div>
+                <p>~20 XRG candidates from Cheung (2007). Download radio FITS + optical host galaxy images. Output: initial source list CSV.</p>
+                <span class="tag">CHEUNG 2007</span><span class="tag">~20 SOURCES</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">STEP 2 — Image Visualization</div>
+                <p>Load images into DS9. Overlay radio contours on optical. Identify core, lobes, and wings. Verify X-shape morphology visually.</p>
+                <span class="tag">DS9</span><span class="tag">RADIO/OPTICAL OVERLAY</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">STEP 3 — Jet Geometry Measurement</div>
+                <p>Measure position angles of primary jet axis and secondary wing axis. Compute misalignment angle: <b style="color:#00ccff;">ΔPA = |PA_jet − PA_wing|</b>. Store in CSV tables.</p>
+                <span class="tag">POSITION ANGLES</span><span class="tag">MISALIGNMENT ΔPA</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">STEP 4 — Flux Measurements</div>
+                <p>Define regions in DS9 for each lobe and wing. Integrate flux per region. Compute wing-to-lobe flux ratio and lobe asymmetry metrics.</p>
+                <span class="tag">REGION FLUX</span><span class="tag">WING/LOBE RATIO</span><span class="tag">LOBE ASYMMETRY</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">STEP 5 — Classification Metrics</div>
+                <p>Design numerical morphological metrics: wing prominence, jet bending angle, lobe symmetry, wing/lobe flux ratio. Goal: reproducible quantitative labels, not subjective judgements.</p>
+                <span class="tag">WING PROMINENCE</span><span class="tag">BENDING ANGLE</span><span class="tag">SYMMETRY</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">STEP 6 — Automated Pipeline</div>
+                <p>Python scripts <b style="color:#00ccff;">xrg_pipeline.py</b> and <b style="color:#00ccff;">flux_tools.py</b> load FITS files, normalize catalogs, extract axes via PCA, and compute flux automatically.</p>
+                <span class="tag">xrg_pipeline.py</span><span class="tag">flux_tools.py</span><span class="tag">PCA AXIS EXTRACTION</span>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">STEP 7 — Catalog Production</div>
+                <p>Final output: standardized dataset with columns:</p>
+                <div style="margin-top:6px; overflow-x:auto;">
+                  <table class="data-table" style="font-size:10px;">
+                    <thead><tr><th>Source</th><th>Survey</th><th>Jet PA</th><th>Wing PA</th><th>ΔPA</th><th>Lobe Flux</th><th>Wing Flux</th><th>Ratio</th></tr></thead>
+                    <tbody><tr><td colspan="8" style="color:#666699; text-align:center;">— catalog in progress —</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">STEP 8 — Colloquium Presentation</div>
+                <p>Preparing a ~35 minute research talk (~30 slides). Structure: AGN background → XRG overview → data sources → methodology → pipeline → results → implications & future work.</p>
+                <span class="tag">~35 MIN TALK</span><span class="tag">~30 SLIDES</span><span class="tag">IN PREP</span>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <div style="color:#ff66aa; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">MISSION PROGRESS</div>
+              <div class="progress-wrap">
+                <div class="progress-label">Source selection (Cheung 2007 sample)</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:90%;"></div></div>
+                <div class="progress-label">Radio/optical overlays</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:60%;"></div></div>
+                <div class="progress-label">Jet geometry measurements</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:40%;"></div></div>
+                <div class="progress-label">Flux measurements</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:30%;"></div></div>
+                <div class="progress-label">Python pipeline (xrg_pipeline.py)</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:35%;"></div></div>
+                <div class="progress-label">Catalog production</div>
+                <div class="progress-bar"><div class="progress-fill red" style="width:20%;"></div></div>
+                <div class="progress-label">Colloquium presentation</div>
+                <div class="progress-bar"><div class="progress-fill red" style="width:25%;"></div></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PROJECT 3: GLOBULAR CLUSTER PROPER MOTION -->
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div>
+              <span class="acc-title">PROJECT GAMMA: GLOBULAR CLUSTER PROPER MOTION</span>
+              <span class="acc-status ongoing">EARLY STAGE</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="acc-meta">Stellar Dynamics<br>Observational Astronomy</div>
+              <span class="acc-arrow">▶</span>
+            </div>
+          </div>
+          <div class="acc-body">
+
+            <div class="abstract-box">
+              <b>ABSTRACT:</b> Analysis of proper motion and structural changes in globular clusters
+              using multi-epoch archival FITS imagery. The project tracks changes in cluster angular size
+              and stellar color profiles over time using archival data from MAST, with potential
+              extension to Gaia proper motion vectors for individual stars.
+            </div>
+
+            <div class="star-row" style="font-size:12px; animation:none;">— — — — — — — — — — — — —</div>
+
+            <div class="class-card">
+              <div class="class-card-title">STEP 1 — Data Collection</div>
+              <p>Download multi-epoch FITS images from MAST database. Multiple observation dates required to detect changes.</p>
+              <span class="tag">MAST</span><span class="tag">MULTI-EPOCH</span>
+            </div>
+            <div class="class-card">
+              <div class="class-card-title">STEP 2 — Visualization</div>
+              <p>Load images into DS9. Examine cluster structure and compare epochs side-by-side.</p>
+              <span class="tag">DS9</span>
+            </div>
+            <div class="class-card">
+              <div class="class-card-title">STEP 3 — Angular Size Measurement</div>
+              <p>Track changes in cluster core and tidal radius across epochs. Detect structural evolution.</p>
+              <span class="tag">CORE RADIUS</span><span class="tag">TIDAL RADIUS</span>
+            </div>
+            <div class="class-card">
+              <div class="class-card-title">STEP 4 — Color Analysis</div>
+              <p>Measure color differences across the cluster to analyze stellar population distributions and age gradients.</p>
+              <span class="tag">COLOR PROFILES</span><span class="tag">STELLAR POPULATIONS</span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:15px; margin-bottom:4px;">POSSIBLE EXTENSIONS</div>
+              <div class="body-text" style="font-size:11px;">
+                If DS9 proves insufficient: switch to <b>Gaia</b> proper motion catalog data and use Python for full vector motion analysis of individual cluster members.
+              </div>
+              <span class="tag">GAIA DR3</span><span class="tag">PYTHON VECTOR ANALYSIS</span>
+            </div>
+
+            <div style="margin-top:12px;">
+              <div style="color:#ff66aa; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">MISSION PROGRESS</div>
+              <div class="progress-wrap">
+                <div class="progress-label">Literature review</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:50%;"></div></div>
+                <div class="progress-label">Data collection from MAST</div>
+                <div class="progress-bar"><div class="progress-fill red" style="width:20%;"></div></div>
+                <div class="progress-label">Visualization setup</div>
+                <div class="progress-bar"><div class="progress-fill red" style="width:10%;"></div></div>
+                <div class="progress-label">Measurements &amp; analysis</div>
+                <div class="progress-bar"><div class="progress-fill red" style="width:0%;"></div></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PROJECT 4: RADIO-OPTICAL CROSS-MATCHING -->
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div>
+              <span class="acc-title">METHOD: RADIO-OPTICAL SOURCE CROSS-MATCHING</span>
+              <span class="acc-status active">ACTIVE</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="acc-meta">Multi-wavelength Astronomy<br>Supporting XRG Research</div>
+              <span class="acc-arrow">▶</span>
+            </div>
+          </div>
+          <div class="acc-body">
+
+            <div class="abstract-box">
+              <b>ABSTRACT:</b> Overlay radio emission maps onto optical host galaxy images to determine
+              host galaxy location, jet orientation relative to the host, and confirm source identity.
+              This is a core supporting technique for the XRG morphology catalog project.
+            </div>
+
+            <div class="star-row" style="font-size:12px; animation:none;">— — — — — — — — — — — — —</div>
+
+            <div class="class-card">
+              <div class="class-card-title">STEP 1 — Load Optical Image</div>
+              <p>Retrieve SDSS optical frame for the target host galaxy field.</p>
+              <span class="tag">SDSS</span>
+            </div>
+            <div class="class-card">
+              <div class="class-card-title">STEP 2 — Load Radio Map</div>
+              <p>Load FIRST or NVSS radio FITS image of the same field.</p>
+              <span class="tag">FIRST</span><span class="tag">NVSS</span>
+            </div>
+            <div class="class-card">
+              <div class="class-card-title">STEP 3 — Overlay Contours</div>
+              <p>Render radio contours on top of the optical background image in DS9. Adjust contour levels to reveal morphological structure.</p>
+              <span class="tag">DS9 CONTOURS</span>
+            </div>
+            <div class="class-card">
+              <div class="class-card-title">STEP 4 — Verify Alignment</div>
+              <p>Confirm that the radio core position matches the optical host galaxy nucleus. Determine jet orientation axis relative to host morphology.</p>
+              <span class="tag">ASTROMETRIC CHECK</span><span class="tag">JET ORIENTATION</span>
+            </div>
+
+            <div style="margin-top:8px; color:#666699; font-size:11px;">
+              Output: annotated radio-optical composite images used as figures in the XRG catalog and colloquium presentation.
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PROJECT 5: FITS AUTOMATION TOOLS -->
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <div>
+              <span class="acc-title">TOOLS: FITS PROCESSING AUTOMATION</span>
+              <span class="acc-status ongoing">ONGOING</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="acc-meta">Research Software<br>Astronomy Computing</div>
+              <span class="acc-arrow">▶</span>
+            </div>
+          </div>
+          <div class="acc-body">
+
+            <div class="abstract-box">
+              <b>ABSTRACT:</b> A suite of Python tools to automate repetitive FITS image handling tasks
+              across all active research projects. Reduces manual file loading, standardizes visualization
+              settings, and enables batch processing of large source catalogs.
+            </div>
+
+            <div class="star-row" style="font-size:12px; animation:none;">— — — — — — — — — — — — —</div>
+
+            <div style="margin-bottom:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">TOOLS</div>
+              <table class="data-table">
+                <thead><tr><th>SCRIPT</th><th>PURPOSE</th><th>STATUS</th></tr></thead>
+                <tbody>
+                  <tr><td>opends9.py</td><td>Open FITS files in DS9 automatically, apply visualization settings</td><td style="color:#ffaa00;">IN DEV</td></tr>
+                  <tr><td>xrg_pipeline.py</td><td>End-to-end XRG morphology measurement pipeline</td><td style="color:#ffaa00;">IN DEV</td></tr>
+                  <tr><td>flux_tools.py</td><td>Region flux extraction and wing/lobe ratio computation</td><td style="color:#ffaa00;">IN DEV</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-bottom:10px;">
+              <div style="color:#ffff00; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">opends9.py — PLANNED FEATURES</div>
+              <div class="class-card">
+                <div class="class-card-title">Current Capability</div>
+                <p>Opens a specified FITS file in DS9 and applies basic visualization settings. Reduces manual drag-and-drop file handling.</p>
+              </div>
+              <div class="class-card">
+                <div class="class-card-title">Planned Improvements</div>
+                <p>Tkinter GUI with file picker, batch loading of full source folders, automated overlay controls, and export of measurements directly to CSV.</p>
+                <span class="tag">TKINTER GUI</span><span class="tag">BATCH LOADING</span><span class="tag">AUTO OVERLAYS</span><span class="tag">CSV EXPORT</span>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <div style="color:#ff66aa; font-family:'VT323',monospace; font-size:18px; margin-bottom:6px;">MISSION PROGRESS</div>
+              <div class="progress-wrap">
+                <div class="progress-label">opends9.py — basic DS9 launcher</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:70%;"></div></div>
+                <div class="progress-label">opends9.py — Tkinter GUI</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:20%;"></div></div>
+                <div class="progress-label">xrg_pipeline.py — core structure</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:35%;"></div></div>
+                <div class="progress-label">flux_tools.py</div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:30%;"></div></div>
+                <div class="progress-label">Full batch automation</div>
+                <div class="progress-bar"><div class="progress-fill red" style="width:10%;"></div></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /#acc -->
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">SECTOR MAP</div>
+        <div class="planet-wrap"><div class="planet"></div></div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">RESEARCH STATS</div>
+        <div style="font-size:11px; color:#aaaaff; line-height:1.8;">
+          <span style="color:#ffff00;">VLASS Sources:</span> 1,836<br>
+          <span style="color:#ffff00;">Classifiers:</span> 7<br>
+          <span style="color:#ffff00;">Teams:</span> 2<br>
+          <span style="color:#ffff00;">Classification Axes:</span> 3<br>
+          <span style="color:#ffff00;">Scripts:</span> 3 active<br>
+          <span style="color:#ffff00;">Target Journal:</span> ApJS<br>
+          <span style="color:#ffff00;">Status:</span> In Preparation
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">DATA SOURCES</div>
+        <ul class="links-list">
+          <li><a href="https://sundog.stsci.edu/first/catalogs.html" target="_blank">FIRST Survey</a></li>
+          <li><a href="https://www.cv.nrao.edu/nvss/" target="_blank">NVSS Archive</a></li>
+          <li><a href="https://ned.ipac.caltech.edu" target="_blank">NASA/IPAC NED</a></li>
+          <li><a href="https://mast.stsci.edu" target="_blank">MAST Portal</a></li>
+          <li><a href="https://ui.adsabs.harvard.edu" target="_blank">ADS Abstract Svc</a></li>
+          <li><a href="https://vizier.cds.unistra.fr" target="_blank">VizieR Catalogs</a></li>
+        </ul>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">RELATED</div>
+        <ul class="links-list">
+          <li><a href="projects.html">opends9.py tool</a></li>
+          <li><a href="media.html">Astrophotos</a></li>
+          <li><a href="links.html">Astro links</a></li>
+        </ul>
+      </div>
+
+      <div class="side-box" style="text-align:center;">
+        <span class="cone">🚧</span>
+        <span class="blink" style="color:#ffaa00; font-size:11px; font-weight:bold; display:block; margin-top:2px;">MORE COMING SOON</span>
+        <div style="font-size:10px; color:#aa6600; margin-top:4px; line-height:1.4;">
+          Globular cluster<br>proper motion<br>section — soon!!
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth
+  </div>
+
+</div>
+
+<div class="statusbar">
+  <span class="statusbar-inner">
+    ⚡ Research Terminal — Loading FITS headers... &nbsp;&nbsp;&nbsp;
+    🛸 DS9 v3.0b running &nbsp;&nbsp;&nbsp;
+    ★ Current target: 3C 31 &nbsp;&nbsp;&nbsp;
+    ⚡ Reminder: backup classification CSV tonight!! &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<script>
+function toggleAcc(header) {
+  var item = header.parentElement;
+  item.classList.toggle('open');
+}
+</script>
+<script>(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();</script>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign the Starbase 451 guestbook! Leave your handle, where you're from, and how you found the site. All entries read personally by Science Officer Thane.">
+  <title>STARBASE 451 :: Guestbook</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    .gb-entry {
+      border: 1px solid #333366;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      background: rgba(0,0,20,0.7);
+      position: relative;
+    }
+    .gb-header { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+    .gb-name { color: #ffff00; font-size: 13px; font-family: 'VT323', monospace; font-size: 20px; }
+    .gb-location { color: #6699ff; font-size: 11px; }
+    .gb-date { color: #446688; font-size: 11px; margin-left: auto; }
+    .gb-msg { color: #99ffcc; font-size: 12px; line-height: 1.7; }
+    .gb-url { color: #66aacc; font-size: 11px; margin-top: 3px; }
+    .gb-url a { color: #66aacc; }
+    .gb-entry-num {
+      position: absolute; top: 6px; right: 8px;
+      color: #222244; font-family: 'VT323', monospace; font-size: 18px;
+    }
+
+    .gb-form-wrap {
+      background: rgba(0,0,30,0.9);
+      border: 2px solid #ff66ff;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+    .form-row { margin-bottom: 6px; }
+    .form-label { color: #ff66ff; font-size: 11px; display: block; margin-bottom: 2px; letter-spacing: 1px; }
+    .form-input {
+      background: #000020;
+      border: 1px solid #3333aa;
+      color: #00ff99;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      padding: 4px 6px;
+      width: 100%;
+      display: block;
+    }
+    .form-input:focus { outline: none; border-color: #6666ff; background: #000030; }
+    textarea.form-input { height: 70px; resize: vertical; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .submit-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+    .char-count { color: #446644; font-size: 10px; }
+
+    .pagination {
+      display: flex; gap: 4px; align-items: center;
+      font-size: 12px; color: #666699; margin-bottom: 8px;
+    }
+    .total-entries { color: #9999cc; font-size: 12px; margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ★ STARBASE 451 GUESTBOOK ★ &nbsp;&nbsp;&nbsp;
+      Sign the log!! Leave your handle and where you're from!! &nbsp;&nbsp;&nbsp;
+      ★ Please be nice — I will delete mean entries!! ★ &nbsp;&nbsp;&nbsp;
+      Thanks for visiting cyberspace traveler!! &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Science Officer Thane's Deep Space Terminal ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html" class="active">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <div class="columns">
+
+    <!-- MAIN -->
+    <div>
+
+      <!-- SIGN FORM -->
+      <div class="gb-form-wrap" style="text-align:center; padding: 24px 16px;">
+        <div class="section-title pink" style="margin-bottom:14px;">// SIGN THE STARLOG //</div>
+        <div class="body-text" style="margin-bottom:18px; font-size:12px; line-height:1.8;">
+          Hey visitor!! Please sign my guestbook before you leave!!<br>
+          Tell me where you're from, how you found the site, whatever!!<br>
+          <b>Be cool or I'll delete your entry lol</b>
+        </div>
+        <a href="http://users.smartgb.com/g/g.php?a=s&i=g19-02945-87" target="_blank" class="btn" style="font-size:14px; padding: 10px 22px; display:inline-block;">[ OPEN STARLOG &amp; SIGN ]</a>
+        <div style="color:#446688; font-size:10px; margin-top:12px;">opens in a new tab — powered by smartgb.com</div>
+      </div>
+
+      <!-- VIEW ENTRIES -->
+      <div class="panel" style="text-align:center; padding: 20px 16px;">
+        <div class="section-title" style="margin-bottom:12px;">// STARLOG ENTRIES //</div>
+        <div class="body-text" style="font-size:12px; margin-bottom:16px; line-height:1.8;">
+          Read all messages left by visitors to Starbase 451!!
+        </div>
+        <a href="http://users.smartgb.com/g/g.php?a=s&i=g19-02945-87" target="_blank" class="btn" style="display:inline-block;">[ VIEW ALL ENTRIES ]</a>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">SECTOR MAP</div>
+        <div class="planet-wrap"><div class="planet"></div></div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">GUESTBOOK STATS</div>
+        <div style="font-size:11px; color:#aaaaff; line-height:1.8;">
+          <span style="color:#ffff00;">From Earth:</span> most of them<br>
+          <span style="color:#ffff00;">First entry:</span> March 2026<br>
+          <span style="color:#ffff00;">Hosted by:</span> smartgb.com
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">RULES</div>
+        <ul class="links-list" style="font-size:10px;">
+          <li><span style="color:#ccffcc;">Be nice!!</span></li>
+          <li><span style="color:#ccffcc;">No spam</span></li>
+          <li><span style="color:#ccffcc;">No hate</span></li>
+          <li><span style="color:#ccffcc;">Link your site!!</span></li>
+          <li><span style="color:#ccffcc;">Have fun :)</span></li>
+        </ul>
+      </div>
+
+      <div class="side-box" style="text-align:center; font-size:11px; color:#9999cc; line-height:1.7;">
+        <div class="side-box-title">HOSTED BY</div>
+        <div style="font-family:'VT323',monospace; color:#ffff00; font-size:16px;">smartgb.com</div>
+        <div style="color:#446688; font-size:10px;">Free guestbooks<br>usable for NeoCities sites!!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth
+  </div>
+
+</div>
+
+<div class="statusbar">
+  <span class="statusbar-inner">  
+    ⚡ Guestbook — Please sign before you leave!! &nbsp;&nbsp;&nbsp;
+    🛸 All entries read personally by Science Officer Thane &nbsp;&nbsp;&nbsp;
+    ★ Find me on SpaceHey: spacehey.com/dr_pope &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+
+<script>(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();</script>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Photography gallery by Thane Goetz — astrophotography and general photography shot with a Nikon Z fc. Omega Nebula, JPL, Disneyland Galaxy's Edge, and more.">
+  <title>STARBASE 451 :: Media</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .photo-card {
+      background: #000020;
+      border: 2px solid #334466;
+      cursor: pointer;
+      transition: border-color 0.1s;
+    }
+    .photo-card:hover { border-color: #6699ff; }
+    .photo-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Astrophotography placeholders */
+    .nebula-1 { background: radial-gradient(ellipse 60% 50% at 40% 55%, #220044 0%, #440088 30%, #000011 70%); }
+    .nebula-2 { background: radial-gradient(ellipse 70% 40% at 55% 45%, #004422 0%, #008844 25%, #000011 65%); }
+    .nebula-3 { background: radial-gradient(ellipse 55% 60% at 45% 50%, #442200 0%, #884400 28%, #000011 65%); }
+    .nebula-4 { background: radial-gradient(ellipse 80% 30% at 50% 50%, #001144 0%, #004488 30%, #000011 70%); }
+    .nebula-5 { background: radial-gradient(circle at 50% 40%, #330022 0%, #660044 25%, #000011 60%); }
+    .nebula-6 { background: radial-gradient(ellipse 45% 65% at 50% 45%, #003333 0%, #006666 25%, #000011 65%); }
+    /* General photography placeholders */
+    .photo-g1 { background: linear-gradient(160deg, #1a0a00 0%, #552200 40%, #221100 100%); }
+    .photo-g2 { background: linear-gradient(180deg, #001a08 0%, #003d12 50%, #000e05 100%); }
+    .photo-g3 { background: linear-gradient(135deg, #0a0a14 0%, #1a1a33 50%, #080814 100%); }
+    .photo-g4 { background: linear-gradient(160deg, #1a0800 0%, #6b2200 35%, #ff6600 60%, #331100 100%); }
+    .photo-g5 { background: linear-gradient(180deg, #000814 0%, #001433 40%, #002255 100%); }
+    .photo-g6 { background: linear-gradient(135deg, #0d0d0d 0%, #2a1a0a 50%, #110d00 100%); }
+    .star-dots {
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(2px 2px at 60% 40%, rgba(200,220,255,0.9), transparent),
+        radial-gradient(1px 1px at 30% 15%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 90% 85%, rgba(255,255,255,0.4), transparent);
+    }
+    .photo-label {
+      padding: 4px 6px;
+      border-top: 1px solid #334466;
+    }
+    .photo-title { color: #aaccff; font-size: 11px; }
+    .photo-date  { color: #446688; font-size: 10px; float: right; }
+    .photo-meta  { color: #336655; font-size: 10px; clear: both; }
+    .lightbox-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-overlay.show { display: flex; }
+    .lightbox-inner {
+      border: 2px solid #6699ff;
+      background: #000020;
+      padding: 10px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+    .lightbox-art {
+      width: 100%;
+      aspect-ratio: 4/3;
+      margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .lightbox-title { color: #00ccff; font-family: 'VT323', monospace; font-size: 22px; }
+    .lightbox-info  { color: #9999cc; font-size: 11px; margin-top: 4px; line-height:1.6; }
+    .lightbox-close {
+      margin-top: 8px;
+      background: #000080; border: 2px outset #8888ff;
+      color: #ffff00; font-family: 'Share Tech Mono', monospace;
+      font-size: 12px; padding: 3px 14px; cursor: pointer;
+    }
+    .gear-note { font-size:10px; color:#667788; font-style:italic; margin-top:6px; }
+    .photo-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .lightbox-art img { width:100%; height:100%; object-fit:contain; display:block; }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ★ PHOTOGRAPHY GALLERY — STARBASE 451 ★ &nbsp;&nbsp;&nbsp;
+      Astrophotography &amp; General Photography by Science Officer Thane &nbsp;&nbsp;&nbsp;
+      Shot with Nikon Z fc &nbsp;&nbsp;&nbsp;
+      ★ All images © Thane — please ask before using!! ★
+    </span>
+  </div>
+
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Science Officer Thane's Deep Space Terminal ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html" class="active">[ MEDIA ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <div class="columns">
+
+    <!-- MAIN -->
+    <div>
+
+      <div class="panel panel-cyan">
+        <div class="section-title cyan">// MEDIA //</div>
+        <div class="body-text">
+          I shoot both <b>general photography</b> and <b>astrophotography</b> with my <b>Nikon Z fc</b>
+          (mirrorless, APS-C). For astro I don't have a dedicated telescope of my own — I borrow
+          from friends and colleagues when I get the chance, so setups vary. Click any image to see
+          details and exposure info.
+        </div>
+      </div>
+
+      <!-- ASTROPHOTOGRAPHY -->
+      <div class="panel">
+        <div class="section-title">// ASTROPHOTOGRAPHY //</div>
+        <div class="gallery-grid">
+
+          <div class="photo-card" onclick="openLightbox(0)">
+            <div class="photo-thumb"><img src="photos/omega-nebula-m17.jpg" alt="Omega Nebula M17" loading="lazy"></div>
+            <div class="photo-label">
+              <span class="photo-title">Omega Nebula (M17)</span>
+              <span class="photo-date">Jul 18, 2025</span>
+              <div class="photo-meta">ISO 794 · 15s · f/4.3 · 150mm · stacked</div>
+            </div>
+          </div>
+
+          <div class="photo-card" onclick="openLightbox(1)">
+            <div class="photo-thumb nebula-2"><div class="star-dots"></div></div>
+            <div class="photo-label">
+              <span class="photo-title">More coming soon...</span>
+              <span class="photo-date">—</span>
+              <div class="photo-meta">Placeholder</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- GENERAL PHOTOGRAPHY -->
+      <div class="panel panel-amber">
+        <div class="section-title amber">// GENERAL PHOTOGRAPHY //</div>
+        <div class="gallery-grid">
+
+          <div class="photo-card" onclick="openLightbox(2)">
+            <div class="photo-thumb"><img src="photos/disneyland-1.jpg" alt="Galaxy's Edge — Disneyland" loading="lazy"></div>
+            <div class="photo-label">
+              <span class="photo-title">Galaxy's Edge — Disneyland CA</span>
+              <span class="photo-date">May 5, 2025</span>
+              <div class="photo-meta">f/4.5 · 1/1000s · 22mm · ISO 160</div>
+            </div>
+          </div>
+
+          <div class="photo-card" onclick="openLightbox(3)">
+            <div class="photo-thumb"><img src="photos/disneyland-2.jpg" alt="Galaxy's Edge Radar — Disneyland" loading="lazy"></div>
+            <div class="photo-label">
+              <span class="photo-title">Galaxy's Edge — Disneyland CA</span>
+              <span class="photo-date">May 5, 2025</span>
+              <div class="photo-meta">f/5.3 · 1/1000s · 35mm · ISO 160</div>
+            </div>
+          </div>
+
+          <div class="photo-card" onclick="openLightbox(4)">
+            <div class="photo-thumb"><img src="photos/jpl-rover.jpg" alt="Mars Rover Testbed — JPL" loading="lazy"></div>
+            <div class="photo-label">
+              <span class="photo-title">Mars Rover Testbed — JPL</span>
+              <span class="photo-date">May 7, 2025</span>
+              <div class="photo-meta">f/1.8 · 1/60s · 6.4mm · ISO 40</div>
+            </div>
+          </div>
+
+          <div class="photo-card" onclick="openLightbox(5)">
+            <div class="photo-thumb"><img src="photos/santa-monica-sunset.jpg" alt="Sunset — Santa Monica Pier" loading="lazy"></div>
+            <div class="photo-label">
+              <span class="photo-title">Sunset — Santa Monica Pier</span>
+              <span class="photo-date">May 7, 2025</span>
+              <div class="photo-meta">f/13 · 1/2000s · 37mm · ISO 1000</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- GEAR TABLE -->
+      <div class="panel panel-blue">
+        <div class="section-title blue">// EQUIPMENT //</div>
+        <table class="data-table">
+          <thead><tr><th>ITEM</th><th>MODEL</th><th>NOTES</th></tr></thead>
+          <tbody>
+            <tr><td>Camera body</td><td>Nikon Z fc</td><td>Mirrorless, APS-C sensor</td></tr>
+            <tr><td>Lenses</td><td>Various</td><td>General &amp; widefield astrophotography</td></tr>
+            <tr><td>Telescope</td><td>Borrowed — varies</td><td>No permanent setup; borrow from friends &amp; colleagues</td></tr>
+            <tr><td>Stacking software</td><td>DeepSkyStacker</td><td>Free!! Great for astro frames</td></tr>
+            <tr><td>Editing</td><td>Various</td><td>Levels, curves, stretch</td></tr>
+          </tbody>
+        </table>
+        <div class="gear-note">* No dedicated telescope means I shoot astro opportunistically — borrowing setups at observatories, star parties, or from colleagues. Every image has its telescope noted in the lightbox.</div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">SECTOR MAP</div>
+        <div class="planet-wrap"><div class="planet"></div></div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">GALLERY STATS</div>
+        <div style="font-size:11px; color:#aaaaff; line-height:1.8;">
+          <span style="color:#ffff00;">Total images:</span> 5<br>
+          <span style="color:#ffff00;">Astrophotography:</span> 1<br>
+          <span style="color:#ffff00;">General photography:</span> 4<br>
+          <span style="color:#ffff00;">Camera:</span> Nikon Z fc<br>
+          <span style="color:#ffff00;">Telescope:</span> Borrowed<br>
+          <span style="color:#ffff00;">Locations:</span> CA &amp; PA
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">ASTRO CONDITIONS</div>
+        <div style="font-size:11px; color:#aaaaff; line-height:1.7;">
+          <span style="color:#ffff00;">Seeing:</span> 7/10 avg<br>
+          <span style="color:#ffff00;">Bortle:</span> Class 5 skies<br>
+          <span style="color:#ffff00;">Best months:</span><br>
+          Jun–Aug (Milky Way)<br>
+          Oct–Jan (Orion)
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">CAMERA</div>
+        <div style="font-size:11px; color:#aaaaff; line-height:1.7;">
+          <span style="color:#ffff00;">Body:</span> Nikon Z fc<br>
+          <span style="color:#ffff00;">Sensor:</span> APS-C<br>
+          <span style="color:#ffff00;">Mount:</span> Mirrorless<br>
+          <span style="color:#ffff00;">Use:</span> Everything!!
+        </div>
+      </div>
+
+      <div class="side-box" style="text-align:center;">
+        <span class="cone">🚧</span>
+        <span class="blink" style="color:#ffaa00; font-size:11px; font-weight:bold; display:block; margin-top:2px;">MORE COMING SOON</span>
+        <div style="font-size:10px; color:#aa6600; margin-top:4px; line-height:1.4;">
+          Real photos uploading<br>as they come in!!
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <div class="lightbox-art" id="lb-art"></div>
+    <div class="lightbox-title" id="lb-title"></div>
+    <div class="lightbox-info"  id="lb-info"></div>
+    <button class="lightbox-close" onclick="closeLightbox()">[ CLOSE ]</button>
+  </div>
+</div>
+
+<div class="statusbar">
+  <span class="statusbar-inner">
+    ⚡ Photography Gallery — 5 images &nbsp;&nbsp;&nbsp;
+    🛸 Tip: Click any photo for EXIF details &nbsp;&nbsp;&nbsp;
+    ★ Disneyland CA · JPL · Santa Monica · Williamsport PA &nbsp;&nbsp;&nbsp;
+    ⚡ Nikon Z fc + DWARFLAB DWARF 3 &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<script>
+var photos = [
+  // ASTROPHOTOGRAPHY
+  { title: "Omega Nebula (M17)", img: "photos/omega-nebula-m17.jpg",
+    info: "Shot: July 18, 2025 · 9:46 PM EDT\nISO 794 · 15s exposures · stacked\nf/4.3 · 150mm\nTelescope: DWARFLAB DWARF 3\nLocation: Williamsport, PA\n\nEmission nebula in Sagittarius — a star-forming region\nabout 5,000 light years away. The distinctive curved\nshape is what gives it the Swan Nebula nickname." },
+  { title: "More astro coming soon...", img: null, cls: "nebula-2",
+    info: "Placeholder — more astrophotos incoming!!" },
+  // GENERAL PHOTOGRAPHY
+  { title: "Galaxy's Edge — Disneyland CA", img: "photos/disneyland-1.jpg",
+    info: "Shot: May 5, 2025 · 11:44 AM\nNikon Z fc · f/4.5 · 1/1000s · 22mm · ISO 160\nLocation: Disneyland, California\n\nBlack Spire Outpost — the Star Wars: Galaxy's Edge\nland at Disneyland. Shot in B&W to lean into the\ngritty, industrial sci-fi atmosphere." },
+  { title: "Galaxy's Edge — Disneyland CA", img: "photos/disneyland-2.jpg",
+    info: "Shot: May 5, 2025 · 11:44 AM\nNikon Z fc · f/5.3 · 1/1000s · 35mm · ISO 160\nLocation: Disneyland, California\n\nThe radar dish / comms tower structure at\nGalaxy's Edge. Moody clouds really sold the\nalien planet aesthetic." },
+  { title: "Mars Rover Testbed — JPL", img: "photos/jpl-rover.jpg",
+    info: "Shot: May 7, 2025 · 12:52 PM\nSamsung SM-S908U · f/1.8 · 1/60s · 6.4mm · ISO 40\nLocation: NASA Jet Propulsion Laboratory, CA\n\nMars 2020 engineering testbed at JPL — the Earth-bound\ntwin of Perseverance used to test maneuvers and\ntroubleshoot the rover on Mars." },
+  { title: "Sunset — Santa Monica Pier", img: "photos/santa-monica-sunset.jpg",
+    info: "Shot: May 7, 2025 · 7:32 PM\nNikon Z fc · f/13 · 1/2000s · 37mm · ISO 1000\nLocation: Santa Monica, California\n\nSunset over the Pacific with Catalina Island silhouetted\nin the background. A single bird caught mid-flight in\nthe frame — completely unplanned!!" }
+];
+
+function openLightbox(i) {
+  var p = photos[i];
+  var art = document.getElementById('lb-art');
+  if (p.img) {
+    art.className = 'lightbox-art';
+    art.innerHTML = '<img src="' + p.img + '" alt="' + p.title + '">';
+  } else {
+    art.className = 'lightbox-art ' + (p.cls || '');
+    art.innerHTML = (p.cls && p.cls.startsWith('nebula')) ? '<div class="star-dots"></div>' : '';
+  }
+  document.getElementById('lb-title').textContent = p.title;
+  document.getElementById('lb-info').innerHTML = p.info.replace(/\n/g, '<br>');
+  document.getElementById('lightbox').classList.add('show');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+}
+</script>
+
+<script>(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();</script>
+
+</body>
+</html>

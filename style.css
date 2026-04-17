@@ -1,0 +1,492 @@
+/* ==========================================
+   XENOBASE STATION — SHARED STYLESHEET
+   Commander Thane's Deep Space Terminal
+   Est. 1999 | Built in Notepad
+   ========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
+/* --- RESET & BASE --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: #000010;          /* deep space black */
+  color: #00ff99;                     /* terminal green */
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+/* --- STARFIELD CANVAS (fixed bg) --- */
+#stars {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* --- PAGE WRAPPER --- */
+.page-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 8px 60px;
+}
+
+/* --- MARQUEE BANNER --- */
+.marquee-wrap {
+  background: #000080;
+  border: 2px solid #ffff00;
+  padding: 4px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 6px;
+}
+.marquee-inner {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+  color: #ffff00;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+@keyframes marquee {
+  from { transform: translateX(100vw); }
+  to   { transform: translateX(-100%); }
+}
+
+/* --- SITE HEADER --- */
+.site-header {
+  background: linear-gradient(180deg, #000060 0%, #000020 100%);
+  border: 3px ridge #6699ff;
+  text-align: center;
+  padding: 12px 8px 8px;
+  margin-bottom: 6px;
+}
+.site-title {
+  font-family: 'VT323', monospace;
+  font-size: 52px;
+  color: #00ccff;
+  text-shadow: 0 0 8px #00ccff, 0 0 20px #0066ff;
+  letter-spacing: 4px;
+  line-height: 1;
+}
+.site-subtitle {
+  color: #ff66ff;
+  font-size: 12px;
+  letter-spacing: 3px;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+.site-meta {
+  color: #6699ff;
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* --- NAVBAR --- */
+.navbar {
+  display: flex;
+  gap: 4px;
+  background: #000040;
+  border: 2px solid #3333aa;
+  padding: 4px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.navbar a {
+  background: #000080;
+  color: #ffff00;
+  border: 2px outset #8888ff;
+  padding: 3px 10px;
+  text-decoration: none;
+  font-size: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  cursor: pointer;
+  display: inline-block;
+}
+.navbar a:hover, .navbar a.active {
+  background: #0000cc;
+  border-style: inset;
+  color: #ffffff;
+}
+.navbar .online {
+  color: #ff0000;
+  font-size: 12px;
+  margin-left: auto;
+  animation: blink 1s step-start infinite;
+}
+
+/* --- STATUS BAR (bottom) --- */
+.statusbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #000040;
+  border-top: 1px solid #3333aa;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: #6699ff;
+  z-index: 100;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.statusbar-inner {
+  display: inline-block;
+  animation: marquee 28s linear infinite;
+}
+
+/* --- LAYOUT HELPERS --- */
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 180px;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.columns-equal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+/* --- PANELS --- */
+.panel {
+  background: rgba(0,0,40,0.85);
+  border: 2px solid #00ff99;
+  padding: 10px;
+  margin-bottom: 6px;
+}
+.panel-pink  { border-color: #ff66ff; }
+.panel-blue  { border-color: #6699ff; }
+.panel-amber { border-color: #ffaa00; }
+.panel-cyan  { border-color: #00ccff; }
+
+.section-title {
+  font-family: 'VT323', monospace;
+  font-size: 26px;
+  color: #ffff00;
+  border-bottom: 1px dashed #ffff00;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.section-title.pink  { color: #ff66ff; border-color: #ff66ff; }
+.section-title.blue  { color: #6699ff; border-color: #6699ff; }
+.section-title.amber { color: #ffaa00; border-color: #ffaa00; }
+.section-title.cyan  { color: #00ccff; border-color: #00ccff; }
+
+/* --- SIDEBAR BOX --- */
+.side-box {
+  background: rgba(0,0,60,0.9);
+  border: 2px solid #6666ff;
+  padding: 6px;
+  margin-bottom: 6px;
+}
+.side-box-title {
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  color: #ffff00;
+  text-align: center;
+  border-bottom: 1px solid #6666ff;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+/* --- TYPOGRAPHY --- */
+.body-text {
+  color: #ccffcc;
+  line-height: 1.75;
+  font-size: 13px;
+}
+.body-text b  { color: #ff66ff; }
+.body-text a  { color: #66ccff; text-decoration: underline; }
+.body-text a:hover { color: #ffffff; }
+
+.muted { color: #666699; font-size: 12px; }
+
+/* --- BLINK --- */
+.blink { animation: blink 1s step-start infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* --- STAR DIVIDER --- */
+.star-row {
+  color: #ffff00;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 4px;
+  margin: 8px 0;
+  animation: blink 2.2s step-start infinite;
+}
+
+/* --- TABLES --- */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin: 6px 0;
+}
+.data-table th {
+  background: #000080;
+  color: #00ffff;
+  border: 1px solid #3333aa;
+  padding: 4px 8px;
+  text-align: left;
+}
+.data-table td {
+  border: 1px solid #003333;
+  padding: 4px 8px;
+  color: #aaffaa;
+}
+.data-table tr:nth-child(odd)  td { background: rgba(0,20,40,0.6); }
+.data-table tr:nth-child(even) td { background: rgba(0,10,20,0.6); }
+
+/* --- BUTTONS --- */
+.btn {
+  background: #000080;
+  border: 2px outset #8888ff;
+  color: #ffff00;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  padding: 3px 14px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn:hover { background: #0000cc; border-style: inset; }
+.btn-red   { border-color: #ff6666; color: #ff9999; background: #400000; }
+.btn-red:hover { background: #660000; }
+
+/* --- VISITOR COUNTER --- */
+.counter-digits {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin: 4px 0;
+}
+.digit {
+  background: #001100;
+  border: 1px solid #00aa00;
+  color: #00ff00;
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  width: 20px;
+  text-align: center;
+  line-height: 1;
+  padding: 1px 0;
+}
+
+/* --- CSS PLANET --- */
+.planet-wrap { display: flex; justify-content: center; margin: 8px 0; }
+.planet {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #6699ff 0%, #0033aa 50%, #000033 100%);
+  box-shadow: 0 0 12px #0066ff, inset -8px -6px 0 rgba(0,0,30,0.6);
+  position: relative;
+  animation: planet-float 6s ease-in-out infinite;
+}
+.planet::after {
+  content: '';
+  position: absolute;
+  width: 90px; height: 18px;
+  border-radius: 50%;
+  border: 3px solid rgba(100,180,255,0.5);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotateX(70deg);
+}
+@keyframes planet-float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* --- LINKS LIST (sidebar) --- */
+.links-list { list-style: none; padding: 0; }
+.links-list li::before { content: ">> "; color: #ff6600; }
+.links-list li { margin-bottom: 3px; font-size: 11px; }
+.links-list a  { color: #66ccff; text-decoration: underline; cursor: pointer; }
+.links-list a:hover { color: #ffffff; }
+
+/* --- BEST VIEWED BAR --- */
+.best-viewed {
+  text-align: center;
+  background: #000040;
+  border: 1px solid #333366;
+  padding: 4px;
+  font-size: 11px;
+  color: #9999cc;
+  margin-bottom: 6px;
+}
+
+/* --- UNDER CONSTRUCTION --- */
+.cone {
+  font-size: 24px;
+  animation: wobble 0.5s ease-in-out infinite alternate;
+  display: inline-block;
+}
+@keyframes wobble {
+  from { transform: rotate(-8deg); }
+  to   { transform: rotate(8deg); }
+}
+
+/* --- WEB RING --- */
+.webring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #000020;
+  border: 1px dashed #6666cc;
+  padding: 6px;
+  font-size: 11px;
+  color: #9999cc;
+  flex-wrap: wrap;
+  text-align: center;
+}
+.webring-btn {
+  background: #000060;
+  border: 2px outset #6666cc;
+  color: #ccccff;
+  font-size: 11px;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+}
+.webring-btn:hover { background: #000099; border-style: inset; }
+.webring-badge {
+  border: 1px solid #6666cc;
+  padding: 3px 10px;
+  color: #ffff00;
+  font-size: 14px;
+  background: #000040;
+  letter-spacing: 1px;
+  font-family: 'VT323', monospace;
+}
+
+/* --- BLINKY / STICKER STRIP --- */
+.blinky-strip {
+  overflow: hidden;
+  background: #00000f;
+  border-top: 2px solid #002244;
+  border-bottom: 2px solid #002244;
+  padding: 5px 0;
+  margin-bottom: 6px;
+}
+.blinky-track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 5px;
+  width: max-content;
+  animation: blinky-scroll 50s linear infinite;
+}
+.blinky-strip:hover .blinky-track { animation-play-state: paused; }
+@keyframes blinky-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.blinky-track img {
+  height: 31px;
+  width: auto;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+  display: block;
+  border: 0;
+}
+/* CSS web badge style (permanent decoration + placeholder) */
+.wb {
+  display: inline-flex;
+  height: 31px;
+  min-width: 88px;
+  flex-shrink: 0;
+  border: 1px solid;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+  padding: 0 5px;
+  white-space: nowrap;
+  cursor: default;
+}
+.wb-blue   { background: #000066; border-color: #4444ff; color: #aaaaff; }
+.wb-green  { background: #002200; border-color: #009900; color: #00ff00; }
+.wb-purple { background: #110022; border-color: #7700cc; color: #cc66ff; }
+.wb-red    { background: #220000; border-color: #aa0000; color: #ff5555; }
+.wb-teal   { background: #001111; border-color: #007777; color: #00ffff; }
+.wb-amber  { background: #110800; border-color: #886600; color: #ffaa00; }
+.wb-pink   { background: #220011; border-color: #aa0077; color: #ff66cc; }
+.wb-gray   { background: #111122; border-color: #445566; color: #9999bb; }
+
+/* --- FOOTER --- */
+.footer {
+  text-align: center;
+  color: #333366;
+  font-size: 11px;
+  padding: 10px 0;
+  border-top: 1px dashed #333366;
+  margin-top: 6px;
+}
+.footer span { color: #666699; }
+
+/* --- HTML COMMENTS STYLE --- */
+.html-comment {
+  color: #336633;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+/* ==========================================
+   CRT MONITOR EFFECT
+   ========================================== */
+
+/* Scanlines overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 10000;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  animation: crt-flicker 9s step-start infinite;
+}
+
+/* Vignette — darkens corners/edges */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 9999;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.45) 82%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+}
+
+/* Subtle random flicker — fires briefly every ~9s */
+@keyframes crt-flicker {
+  0%   { opacity: 1; }
+  91%  { opacity: 1; }
+  92%  { opacity: 0.93; }
+  93%  { opacity: 1; }
+  95%  { opacity: 0.96; }
+  96%  { opacity: 1; }
+  98%  { opacity: 0.94; }
+  99%  { opacity: 1; }
+  100% { opacity: 1; }
+}

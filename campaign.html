@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="THE CORPORATE HEGEMONY — Player Dossier. Interactive D&D 5e character sheet for Thane's homebrew cyberpunk campaign set in the 2300s aboard Meridian Station.">
+  <title>STARBASE 451 :: CAMPAIGN // Corporate Hegemony Dossier</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    /* ==========================================
+       CORPORATE HEGEMONY — DOSSIER INTERIOR
+       Cyberpunk overlay on top of Starbase chrome.
+       Scoped under .dossier so the rest of the site
+       is not affected.
+       ========================================== */
+    .dossier {
+      background: #05091a;
+      border: 2px solid #00ccff;
+      padding: 0;
+      margin-bottom: 6px;
+      color: #cfe8ff;
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      box-shadow: 0 0 12px rgba(0, 204, 255, 0.25), inset 0 0 40px rgba(0, 80, 180, 0.15);
+    }
+
+    .dossier-header {
+      background: linear-gradient(180deg, #0a1030 0%, #05091a 100%);
+      border-bottom: 2px solid #00ccff;
+      padding: 12px 14px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .dossier-title {
+      font-family: 'VT323', monospace;
+      font-size: 34px;
+      color: #00ccff;
+      letter-spacing: 4px;
+      text-shadow: 0 0 8px #00ccff, 0 0 20px rgba(0, 102, 255, 0.6);
+      line-height: 1;
+    }
+    .dossier-subtitle {
+      color: #6699cc;
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+    .dossier-hexes { display: flex; gap: 6px; }
+    .hex {
+      width: 22px; height: 24px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: inline-block;
+    }
+    .hex-dark   { background: #1a2035; border: 1px solid #334466; }
+    .hex-purple { background: #7733cc; box-shadow: 0 0 8px #9944ff; }
+    .hex-cyan   { background: #0088cc; box-shadow: 0 0 8px #00ccff; }
+
+    .dossier-classified {
+      background: #02050f;
+      border-top: 1px solid #002244;
+      text-align: center;
+      color: #334466;
+      font-size: 10px;
+      letter-spacing: 3px;
+      padding: 4px 0;
+    }
+
+    .dossier-body { padding: 12px 14px; }
+
+    /* Section bars — the cyan divider with a label */
+    .ds-section {
+      background: #0a1428;
+      border-left: 3px solid #00ccff;
+      border-bottom: 1px solid #00ccff;
+      padding: 4px 10px;
+      margin: 14px 0 10px;
+      color: #00ccff;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+    .ds-section.warn { border-left-color: #ff3355; border-bottom-color: #ff3355; color: #ff5577; }
+
+    /* Field rows */
+    .field-row {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .cols-5 { grid-template-columns: repeat(5, 1fr); }
+    .cols-6 { grid-template-columns: repeat(6, 1fr); }
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-2 { grid-template-columns: 1fr 1fr; }
+
+    .field label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #6699cc;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field textarea,
+    .field select {
+      width: 100%;
+      background: #0a1428;
+      border: 1px solid #1a3050;
+      color: #aaddff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      padding: 4px 6px;
+      outline: none;
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: #00ccff;
+      box-shadow: 0 0 6px rgba(0, 204, 255, 0.5);
+      background: #0a1a35;
+    }
+    .field textarea { resize: vertical; min-height: 60px; line-height: 1.4; }
+
+    /* Ability score boxes */
+    .attr-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+    .attr-box {
+      background: linear-gradient(180deg, #0f1835 0%, #050a1a 100%);
+      border: 1px solid #3344aa;
+      text-align: center;
+      padding: 4px;
+    }
+    .attr-label {
+      background: #7733cc;
+      color: #ffffff;
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      letter-spacing: 3px;
+      padding: 2px 0;
+      margin-bottom: 4px;
+      text-shadow: 0 0 6px #bb66ff;
+    }
+    .attr-mod {
+      background: #050a1a;
+      border: 1px solid #1a3050;
+      padding: 4px 0;
+      margin-bottom: 4px;
+    }
+    .attr-mod-val {
+      display: block;
+      font-family: 'VT323', monospace;
+      font-size: 28px;
+      color: #00ccff;
+      line-height: 1;
+      min-height: 28px;
+    }
+    .attr-mod-label {
+      display: block;
+      font-size: 8px;
+      color: #6699cc;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+    .attr-score {
+      width: 100%;
+      background: #050a1a;
+      border: 1px solid #1a3050;
+      color: #aaddff;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
+      padding: 3px 0;
+      outline: none;
+    }
+    .attr-name { font-size: 9px; color: #6699cc; letter-spacing: 1px; margin-top: 4px; }
+
+    /* Skills two-column list */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 4px 10px;
+      align-items: center;
+    }
+    .skill {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      color: #aaccee;
+      border-bottom: 1px dotted #1a3050;
+      padding: 2px 0;
+    }
+    .skill input[type="checkbox"] {
+      accent-color: #00ccff;
+      margin-right: 6px;
+    }
+    .skill .skill-name { flex: 1; }
+    .skill .skill-abbr {
+      font-size: 10px;
+      color: #00ccff;
+      letter-spacing: 1px;
+      margin-left: 8px;
+    }
+    .passive-box {
+      background: #0a1428;
+      border: 1px solid #00ccff;
+      text-align: center;
+      padding: 8px;
+      min-width: 110px;
+    }
+    .passive-box .pb-label {
+      color: #00ccff;
+      font-size: 10px;
+      letter-spacing: 2px;
+      line-height: 1.2;
+    }
+    .passive-box .pb-val {
+      font-family: 'VT323', monospace;
+      font-size: 28px;
+      color: #aaddff;
+      margin-top: 4px;
+    }
+
+    /* Saving throws row */
+    .saves-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+    .save {
+      background: #0a1428;
+      border: 1px solid #1a3050;
+      padding: 6px;
+      text-align: center;
+    }
+    .save label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: #6699cc;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .save input[type="checkbox"] { accent-color: #00ccff; }
+    .save .save-val {
+      display: inline-block;
+      min-width: 32px;
+      margin-left: 4px;
+      color: #aaddff;
+      font-size: 13px;
+    }
+
+    /* Tactical vitals */
+    .vitals-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+    .vital {
+      background: linear-gradient(180deg, #0a1428 0%, #050a1a 100%);
+      border: 1px solid #1a3050;
+      text-align: center;
+      padding: 6px 4px;
+    }
+    .vital .v-label {
+      color: #00ccff;
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+    .vital .v-sub {
+      color: #6699cc;
+      font-size: 8px;
+      letter-spacing: 1px;
+      margin-top: 1px;
+    }
+    .vital input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #1a3050;
+      color: #aaddff;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
+      margin-top: 4px;
+      outline: none;
+    }
+    .vital input:focus { border-color: #00ccff; }
+
+    /* Death saves */
+    .death-box {
+      border: 1px solid #ff3355;
+      padding: 8px 10px;
+      background: #1a0510;
+    }
+    .death-box .db-title {
+      color: #ff5577;
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .death-dots label {
+      display: inline-block;
+      margin-right: 10px;
+      font-size: 11px;
+      color: #ff9999;
+      letter-spacing: 1px;
+    }
+    .death-dots input { accent-color: #ff3355; }
+
+    /* Tables (weapons, gear, augmentations) */
+    .ds-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .ds-table th {
+      background: #0a1428;
+      color: #00ccff;
+      border: 1px solid #1a3050;
+      padding: 4px 6px;
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+    .ds-table td {
+      border: 1px solid #1a3050;
+      padding: 0;
+    }
+    .ds-table input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #aaddff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      padding: 4px 6px;
+      outline: none;
+    }
+    .ds-table input:focus { background: #0a1a35; }
+
+    /* Corporate standing bars */
+    .corp-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+    .corp {
+      border: 1px solid #1a3050;
+      background: #0a1428;
+    }
+    .corp-head {
+      padding: 4px 6px;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #ffffff;
+      font-weight: bold;
+    }
+    .corp.helix  .corp-head { background: #0088cc; }
+    .corp.kronos .corp-head { background: #7733cc; }
+    .corp.nexus  .corp-head { background: #cccc33; color: #000; }
+    .corp.helios .corp-head { background: #ff8800; }
+    .corp.aether .corp-head { background: #33cc88; color: #000; }
+    .corp-body { padding: 6px; }
+    .corp-body label {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: #6699cc;
+      margin-bottom: 2px;
+      margin-top: 4px;
+    }
+    .corp-body label:first-child { margin-top: 0; }
+    .corp-body input[type="range"] { width: 100%; accent-color: #00ccff; }
+    .corp-scale {
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      color: #445577;
+      margin-top: -2px;
+    }
+
+    /* Faction allegiance */
+    .faction-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .faction {
+      background: #0a1428;
+      border: 1px solid #1a3050;
+      padding: 6px;
+    }
+    .faction .f-name {
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+    .faction.iwa    .f-name { color: #ff3355; }
+    .faction.ufc    .f-name { color: #ffdd33; }
+    .faction.church .f-name { color: #cc66ff; }
+    .faction.cartel .f-name { color: #ff8833; }
+    .faction input[type="range"] { width: 100%; accent-color: #00ccff; }
+
+    /* Type checkboxes (TECH / BIO / CORP) */
+    .type-toggle { display: flex; gap: 18px; align-items: center; font-size: 12px; flex-wrap: wrap; }
+    .type-toggle label { color: #aaccee; letter-spacing: 1px; }
+    .type-toggle .t-tech  input { accent-color: #00ccff; }
+    .type-toggle .t-bio   input { accent-color: #9944ff; }
+    .type-toggle .t-corp  input { accent-color: #ffaa33; }
+
+    /* Resource slots */
+    .slots-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .slot-cb {
+      width: 18px; height: 18px;
+      border: 1.5px solid #00ccff;
+      border-radius: 50%;
+      appearance: none;
+      cursor: pointer;
+      background: #050a1a;
+    }
+    .slot-cb:checked {
+      background: #00ccff;
+      box-shadow: 0 0 6px #00ccff;
+    }
+
+    /* Biometric override meter */
+    .biometric-meter {
+      display: flex;
+      gap: 3px;
+      margin: 6px 0 4px;
+    }
+    .bm-cell {
+      flex: 1;
+      height: 20px;
+      border: 1px solid #00ccff;
+      background: #050a1a;
+      cursor: pointer;
+    }
+    .bm-cell.active { background: #00ccff; box-shadow: 0 0 4px #00ccff; }
+    .bm-cell.warn   { border-color: #9944ff; }
+    .bm-cell.warn.active { background: #9944ff; box-shadow: 0 0 4px #9944ff; }
+    .bm-cell.danger { border-color: #ff3355; }
+    .bm-cell.danger.active { background: #ff3355; box-shadow: 0 0 4px #ff3355; }
+    .bm-scale {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: #445577;
+      letter-spacing: 1px;
+    }
+
+    /* Toolbar */
+    .dossier-toolbar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 10px 14px;
+      border-top: 1px solid #1a3050;
+      background: #05091a;
+    }
+    .ds-btn {
+      background: #0a1428;
+      border: 1px solid #00ccff;
+      color: #00ccff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      padding: 6px 14px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .ds-btn:hover {
+      background: #00ccff;
+      color: #050a1a;
+      box-shadow: 0 0 10px #00ccff;
+    }
+    .ds-btn.warn { border-color: #ff3355; color: #ff5577; }
+    .ds-btn.warn:hover { background: #ff3355; color: #050a1a; box-shadow: 0 0 10px #ff3355; }
+    .ds-btn.purple { border-color: #9944ff; color: #bb77ff; }
+    .ds-btn.purple:hover { background: #9944ff; color: #050a1a; box-shadow: 0 0 10px #9944ff; }
+
+    /* Rules callout */
+    .rules-box {
+      background: #0a1428;
+      border: 1px dashed #00ccff;
+      padding: 10px 12px;
+      color: #aaccee;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    .rules-box h4 {
+      color: #00ccff;
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+    .rules-box .rules-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    /* Print styles — sheet only */
+    @media print {
+      body { background: #fff !important; color: #000 !important; }
+      body::before, body::after, #stars,
+      .marquee-wrap, .site-header, .navbar, .best-viewed,
+      .blinky-strip, .panel:not(.dossier-panel-wrap),
+      .dossier-toolbar, .footer, .statusbar,
+      .no-print { display: none !important; }
+      .dossier { border-color: #000; box-shadow: none; background: #fff; color: #000; }
+      .dossier * { color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
+    }
+
+    /* Small screens */
+    @media (max-width: 720px) {
+      .cols-4, .cols-5, .cols-6 { grid-template-columns: repeat(2, 1fr); }
+      .attr-grid, .saves-row, .vitals-row, .corp-grid { grid-template-columns: repeat(3, 1fr); }
+      .faction-grid { grid-template-columns: repeat(2, 1fr); }
+      .skills-grid { grid-template-columns: 1fr; }
+      .rules-box .rules-cols { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <!-- TOP MARQUEE -->
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ★ CAMPAIGN TERMINAL — STARBASE 451 ★ &nbsp;&nbsp;&nbsp;
+      THE CORPORATE HEGEMONY — Dossier v2 · D&amp;D 5e Conversion · Era 2300s &nbsp;&nbsp;&nbsp;
+      ★ MERIDIAN STATION SECURITY LEVEL 5 — CLASSIFIED ★ &nbsp;&nbsp;&nbsp;
+      Session 3 complete — Cipher deal struck ★
+    </span>
+  </div>
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Campaign Terminal — Player Dossiers ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html">[ PROJECTS ]</a>
+    <a href="campaign.html" class="active">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <div class="best-viewed">
+    ⚠ This sheet is <b style="color:#ffff00;">BEST USED</b> with JavaScript enabled — auto-calculates modifiers, saves locally ⚠
+  </div>
+
+  <!-- INTRO PANEL (Starbase style) -->
+  <div class="panel panel-cyan">
+    <div class="section-title cyan">// INCOMING TRANSMISSION — TO: CAMPAIGN CREW //</div>
+    <div class="star-row">★ ☆ ★ ☆ ★ ☆ ★ ☆ ★ ☆ ★</div>
+    <div class="body-text">
+      <b>GREETINGS, OPERATIVE.</b> You have accessed the player dossier terminal for
+      <b>THE CORPORATE HEGEMONY</b> — a homebrew <b>D&amp;D 5e cyberpunk conversion</b>
+      set in the 2300s aboard <b>Meridian Station</b>, the largest neutral orbital hub in
+      human space. Five megacorporations — <b>Helix Industries</b>, <b>Kronos Industrial</b>,
+      <b>Nexus Infodynamics</b>, <b>Helios Syndicate</b>, and <b>Aether Corp</b> — carve up
+      the ring while factions like the <b>IWA Resistance</b>, the <b>UFC Union</b>, the
+      <b>Church of Algorithm</b>, and the <b>Cartels</b> push back from the shadows.
+      <br><br>
+      Below is your <b>interactive dossier</b>. Fill it out in the browser — your data is
+      saved to your own device only. When you're ready for the table, hit <b>PRINT</b> or
+      grab the original <b>PDF</b> for a clean paper copy.
+      <br><br>
+      <b style="color:#ffff00;">NEW PLAYER?</b> Scroll down past the intro for rules on how
+      to fill this thing out. <span class="blink" style="color:#ff5577;">CLASSIFIED — MERIDIAN STATION SECURITY LEVEL 5</span>
+    </div>
+    <div class="star-row">☆ ★ ☆ ★ ☆ ★ ☆ ★ ☆ ★ ☆</div>
+  </div>
+
+  <!-- RULES / INSTRUCTIONS PANEL -->
+  <div class="panel panel-amber">
+    <div class="section-title amber">// DOSSIER BRIEFING — HOW TO FILL THIS OUT //</div>
+    <div class="rules-box">
+      <h4>▸ THE BASICS</h4>
+      Standard D&amp;D 5e rules apply for <b>ability scores, proficiency, and most skills</b>.
+      Enter your <b>ability scores</b> (STR, DEX, CON, INT, WIS, CHA) and modifiers auto-calculate.
+      Enter your <b>level</b> and proficiency bonus updates automatically (+2 @ lvls 1–4, +3 @ 5–8, +4 @ 9–12, +5 @ 13–16, +6 @ 17–20).
+
+      <div class="rules-cols">
+        <div>
+          <h4>▸ RESKINNED SKILLS</h4>
+          Some classic skills have been flavor-swapped for the setting. They use the same
+          ability modifier and DC table as their 5e counterpart — only the name changes.
+          <ul style="margin:4px 0 0 16px; line-height:1.5;">
+            <li><b>Tech / Hacking</b> (INT) — Arcana reskin: computers, networks, ICE</li>
+            <li><b>Sciences</b> (INT) — Nature reskin: xenobiology, physics, chemistry</li>
+            <li><b>Corp Law</b> (INT) — Religion reskin: contract law, corporate charter, bylaws</li>
+            <li><b>Drone Handling</b> (WIS) — Animal Handling reskin: remote rigs &amp; drones</li>
+          </ul>
+        </div>
+        <div>
+          <h4>▸ AUGMENTATIONS &amp; CYBERNETICS</h4>
+          Log each implant's <b>location</b> (arm / eye / spine / neural), its <b>name</b>, and
+          the <b>mechanical effect</b>. Cybernetics count against your Biometric Override meter
+          (bottom of page 3). At 100% biometric you roll on the <b>Rogue AI Table</b>.
+          <br><br>
+          <h4>▸ CORP STANDING &amp; FACTIONS</h4>
+          Each corp has two sliders: <b>OPINION OF YOU</b> (personal rep) and <b>PUBLIC OPINION</b>
+          (how the public views them). Range is −100 to +100. Below −50 with any corp and bounty
+          hunters become a concern. Above +50 and you get contract offers.
+        </div>
+      </div>
+
+      <h4 style="margin-top:10px;">▸ SAVE / PRINT / PDF</h4>
+      Click <b>SAVE</b> to stash your sheet in this browser (localStorage).
+      Click <b>PRINT</b> to get a paper-friendly version (nav / banners auto-hide).
+      Click <b>DOWNLOAD PDF</b> for the original blank dossier.
+    </div>
+  </div>
+
+  <!-- ============================================
+       THE DOSSIER — fillable character sheet
+       ============================================ -->
+  <div class="panel dossier-panel-wrap" style="padding:0; background:transparent; border:none;">
+  <form id="dossier" class="dossier" autocomplete="off" onsubmit="return false;">
+
+    <!-- PAGE 1 HEADER -->
+    <div class="dossier-header">
+      <div>
+        <div class="dossier-title">CORPORATE HEGEMONY</div>
+        <div class="dossier-subtitle">DOSSIER · D&amp;D 5E CONVERSION · ERA: 2300s</div>
+      </div>
+      <div class="dossier-hexes">
+        <span class="hex hex-dark"></span>
+        <span class="hex hex-purple"></span>
+        <span class="hex hex-cyan"></span>
+      </div>
+    </div>
+
+    <div class="dossier-body">
+
+      <!-- IDENTITY -->
+      <div class="ds-section">IDENTITY &amp; CLASSIFICATION</div>
+      <div class="field-row cols-4">
+        <div class="field"><label>CHARACTER NAME</label><input type="text" data-k="char_name"></div>
+        <div class="field"><label>PLAYER NAME</label><input type="text" data-k="player_name"></div>
+        <div class="field"><label>CLASS (RESKIN)</label><input type="text" data-k="class"></div>
+        <div class="field"><label>BACKGROUND</label><input type="text" data-k="background"></div>
+      </div>
+      <div class="field-row cols-5">
+        <div class="field"><label>ORIGIN / HOME STATION</label><input type="text" data-k="origin"></div>
+        <div class="field"><label>SOCIAL TIER</label><input type="text" data-k="tier"></div>
+        <div class="field"><label>LEVEL</label><input type="number" id="f_level" data-k="level" min="1" max="20" value="1"></div>
+        <div class="field"><label>XP</label><input type="number" data-k="xp" min="0"></div>
+        <div class="field"><label>PROF. BONUS</label><input type="text" id="f_prof" data-k="prof" value="+2" readonly></div>
+      </div>
+
+      <!-- CORE ATTRIBUTES -->
+      <div class="ds-section">CORE ATTRIBUTES</div>
+      <div class="attr-grid">
+        <!-- STR -->
+        <div class="attr-box">
+          <div class="attr-label">STR</div>
+          <div class="attr-mod">
+            <span class="attr-mod-val" id="mod_str">—</span>
+            <span class="attr-mod-label">MODIFIER</span>
+          </div>
+          <input type="number" class="attr-score" data-attr="str" data-k="str" min="1" max="30" placeholder="10">
+          <div class="attr-name">STRENGTH</div>
+        </div>
+        <!-- DEX -->
+        <div class="attr-box">
+          <div class="attr-label">DEX</div>
+          <div class="attr-mod">
+            <span class="attr-mod-val" id="mod_dex">—</span>
+            <span class="attr-mod-label">MODIFIER</span>
+          </div>
+          <input type="number" class="attr-score" data-attr="dex" data-k="dex" min="1" max="30" placeholder="10">
+          <div class="attr-name">DEXTERITY</div>
+        </div>
+        <!-- CON -->
+        <div class="attr-box">
+          <div class="attr-label">CON</div>
+          <div class="attr-mod">
+            <span class="attr-mod-val" id="mod_con">—</span>
+            <span class="attr-mod-label">MODIFIER</span>
+          </div>
+          <input type="number" class="attr-score" data-attr="con" data-k="con" min="1" max="30" placeholder="10">
+          <div class="attr-name">CONSTITUTION</div>
+        </div>
+        <!-- INT -->
+        <div class="attr-box">
+          <div class="attr-label">INT</div>
+          <div class="attr-mod">
+            <span class="attr-mod-val" id="mod_int">—</span>
+            <span class="attr-mod-label">MODIFIER</span>
+          </div>
+          <input type="number" class="attr-score" data-attr="int" data-k="int" min="1" max="30" placeholder="10">
+          <div class="attr-name">INTELLIGENCE</div>
+        </div>
+        <!-- WIS -->
+        <div class="attr-box">
+          <div class="attr-label">WIS</div>
+          <div class="attr-mod">
+            <span class="attr-mod-val" id="mod_wis">—</span>
+            <span class="attr-mod-label">MODIFIER</span>
+          </div>
+          <input type="number" class="attr-score" data-attr="wis" data-k="wis" min="1" max="30" placeholder="10">
+          <div class="attr-name">WISDOM</div>
+        </div>
+        <!-- CHA -->
+        <div class="attr-box">
+          <div class="attr-label">CHA</div>
+          <div class="attr-mod">
+            <span class="attr-mod-val" id="mod_cha">—</span>
+            <span class="attr-mod-label">MODIFIER</span>
+          </div>
+          <input type="number" class="attr-score" data-attr="cha" data-k="cha" min="1" max="30" placeholder="10">
+          <div class="attr-name">CHARISMA</div>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="ds-section">SKILLS &amp; PROFICIENCIES</div>
+      <div class="skills-grid">
+        <div>
+          <div class="skill"><input type="checkbox" data-k="sk_athletics"><span class="skill-name">Athletics</span><span class="skill-abbr">STR</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_acrobatics"><span class="skill-name">Acrobatics</span><span class="skill-abbr">DEX</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_sleight"><span class="skill-name">Sleight of Hand</span><span class="skill-abbr">DEX</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_stealth"><span class="skill-name">Stealth</span><span class="skill-abbr">DEX</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_tech"><span class="skill-name">Tech / Hacking</span><span class="skill-abbr">INT</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_history"><span class="skill-name">History</span><span class="skill-abbr">INT</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_investigation"><span class="skill-name">Investigation</span><span class="skill-abbr">INT</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_sciences"><span class="skill-name">Sciences</span><span class="skill-abbr">INT</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_corplaw"><span class="skill-name">Corp Law</span><span class="skill-abbr">INT</span></div>
+        </div>
+        <div>
+          <div class="skill"><input type="checkbox" data-k="sk_drone"><span class="skill-name">Drone Handling</span><span class="skill-abbr">WIS</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_insight"><span class="skill-name">Insight</span><span class="skill-abbr">WIS</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_medicine"><span class="skill-name">Medicine</span><span class="skill-abbr">WIS</span></div>
+          <div class="skill"><input type="checkbox" id="sk_perception_cb" data-k="sk_perception"><span class="skill-name">Perception</span><span class="skill-abbr">WIS</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_survival"><span class="skill-name">Survival</span><span class="skill-abbr">WIS</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_deception"><span class="skill-name">Deception</span><span class="skill-abbr">CHA</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_intimidation"><span class="skill-name">Intimidation</span><span class="skill-abbr">CHA</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_performance"><span class="skill-name">Performance</span><span class="skill-abbr">CHA</span></div>
+          <div class="skill"><input type="checkbox" data-k="sk_persuasion"><span class="skill-name">Persuasion</span><span class="skill-abbr">CHA</span></div>
+        </div>
+        <div class="passive-box">
+          <div class="pb-label">PASSIVE<br>PERCEPTION</div>
+          <div class="pb-val" id="passive_perc">—</div>
+        </div>
+      </div>
+
+      <!-- SAVING THROWS -->
+      <div class="ds-section">SAVING THROWS</div>
+      <div class="saves-row">
+        <div class="save"><label>STR</label><input type="checkbox" id="sv_str_cb" data-k="sv_str"><span class="save-val" id="sv_str_val">—</span></div>
+        <div class="save"><label>DEX</label><input type="checkbox" id="sv_dex_cb" data-k="sv_dex"><span class="save-val" id="sv_dex_val">—</span></div>
+        <div class="save"><label>CON</label><input type="checkbox" id="sv_con_cb" data-k="sv_con"><span class="save-val" id="sv_con_val">—</span></div>
+        <div class="save"><label>INT</label><input type="checkbox" id="sv_int_cb" data-k="sv_int"><span class="save-val" id="sv_int_val">—</span></div>
+        <div class="save"><label>WIS</label><input type="checkbox" id="sv_wis_cb" data-k="sv_wis"><span class="save-val" id="sv_wis_val">—</span></div>
+        <div class="save"><label>CHA</label><input type="checkbox" id="sv_cha_cb" data-k="sv_cha"><span class="save-val" id="sv_cha_val">—</span></div>
+      </div>
+
+      <!-- TACTICAL VITALS -->
+      <div class="ds-section">TACTICAL VITALS</div>
+      <div class="vitals-row">
+        <div class="vital"><div class="v-label">AC</div><div class="v-sub">ARMOR CLASS</div><input type="text" data-k="ac"></div>
+        <div class="vital"><div class="v-label">INIT</div><div class="v-sub">INITIATIVE</div><input type="text" data-k="init"></div>
+        <div class="vital"><div class="v-label">SPD</div><div class="v-sub">SPEED</div><input type="text" data-k="spd"></div>
+        <div class="vital"><div class="v-label">HP</div><div class="v-sub">HIT POINTS</div><input type="text" data-k="hp"></div>
+        <div class="vital"><div class="v-label">TEMP</div><div class="v-sub">TEMP HP</div><input type="text" data-k="temp"></div>
+        <div class="vital"><div class="v-label">DICE</div><div class="v-sub">HIT DICE</div><input type="text" data-k="hitdice"></div>
+      </div>
+
+      <!-- DEATH SAVES -->
+      <div class="ds-section warn">CRITICAL INJURY / DEATH SAVES</div>
+      <div class="death-box">
+        <div class="death-dots">
+          <label>SUCCESSES
+            <input type="checkbox" data-k="ds_s1">
+            <input type="checkbox" data-k="ds_s2">
+            <input type="checkbox" data-k="ds_s3">
+          </label>
+          <label>FAILURES
+            <input type="checkbox" data-k="ds_f1">
+            <input type="checkbox" data-k="ds_f2">
+            <input type="checkbox" data-k="ds_f3">
+          </label>
+        </div>
+      </div>
+
+      <!-- AUGMENTATIONS -->
+      <div class="ds-section">AUGMENTATIONS &amp; CYBERNETICS</div>
+      <table class="ds-table">
+        <thead>
+          <tr>
+            <th style="width:20%;">LOCATION</th>
+            <th style="width:35%;">AUGMENTATION NAME</th>
+            <th>EFFECT / BONUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><input type="text" data-k="aug_loc_1"></td><td><input type="text" data-k="aug_name_1"></td><td><input type="text" data-k="aug_eff_1"></td></tr>
+          <tr><td><input type="text" data-k="aug_loc_2"></td><td><input type="text" data-k="aug_name_2"></td><td><input type="text" data-k="aug_eff_2"></td></tr>
+          <tr><td><input type="text" data-k="aug_loc_3"></td><td><input type="text" data-k="aug_name_3"></td><td><input type="text" data-k="aug_eff_3"></td></tr>
+          <tr><td><input type="text" data-k="aug_loc_4"></td><td><input type="text" data-k="aug_name_4"></td><td><input type="text" data-k="aug_eff_4"></td></tr>
+        </tbody>
+      </table>
+
+      <!-- ============= PAGE 2 ============= -->
+
+      <!-- WEAPONS -->
+      <div class="ds-section" style="margin-top:22px;">WEAPONS &amp; OFFENSE</div>
+      <table class="ds-table">
+        <thead>
+          <tr>
+            <th style="width:30%;">WEAPON NAME</th>
+            <th style="width:12%;">ATK BONUS</th>
+            <th style="width:22%;">DAMAGE / TYPE</th>
+            <th style="width:12%;">RANGE</th>
+            <th>PROPERTIES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><input type="text" data-k="w_name_1"></td><td><input type="text" data-k="w_atk_1"></td><td><input type="text" data-k="w_dmg_1"></td><td><input type="text" data-k="w_rng_1"></td><td><input type="text" data-k="w_prop_1"></td></tr>
+          <tr><td><input type="text" data-k="w_name_2"></td><td><input type="text" data-k="w_atk_2"></td><td><input type="text" data-k="w_dmg_2"></td><td><input type="text" data-k="w_rng_2"></td><td><input type="text" data-k="w_prop_2"></td></tr>
+          <tr><td><input type="text" data-k="w_name_3"></td><td><input type="text" data-k="w_atk_3"></td><td><input type="text" data-k="w_dmg_3"></td><td><input type="text" data-k="w_rng_3"></td><td><input type="text" data-k="w_prop_3"></td></tr>
+          <tr><td><input type="text" data-k="w_name_4"></td><td><input type="text" data-k="w_atk_4"></td><td><input type="text" data-k="w_dmg_4"></td><td><input type="text" data-k="w_rng_4"></td><td><input type="text" data-k="w_prop_4"></td></tr>
+          <tr><td><input type="text" data-k="w_name_5"></td><td><input type="text" data-k="w_atk_5"></td><td><input type="text" data-k="w_dmg_5"></td><td><input type="text" data-k="w_rng_5"></td><td><input type="text" data-k="w_prop_5"></td></tr>
+        </tbody>
+      </table>
+
+      <!-- PROGRAMS / STIMS / ABILITIES -->
+      <div class="ds-section">PROGRAMS / STIMS / ABILITIES</div>
+      <div class="type-toggle" style="margin-bottom:8px;">
+        <span style="color:#6699cc; font-size:10px; letter-spacing:2px;">TYPE:</span>
+        <label class="t-tech"><input type="checkbox" data-k="t_tech"> TECH (Gadgets)</label>
+        <label class="t-bio"><input type="checkbox" data-k="t_bio"> BIO (Genes)</label>
+        <label class="t-corp"><input type="checkbox" data-k="t_corp"> CORP (Patron)</label>
+      </div>
+      <div class="field"><label>CANTRIPS / HACKS / EXPLOITS</label>
+        <textarea data-k="cantrips" style="min-height:80px;"></textarea>
+      </div>
+      <div style="margin-top:8px;">
+        <label style="display:block; font-size:9px; letter-spacing:2px; color:#6699cc; margin-bottom:2px;">RESOURCE SLOTS / COOLDOWNS</label>
+        <div class="slots-grid" id="resource_slots"></div>
+      </div>
+
+      <!-- CORPORATE STANDING -->
+      <div class="ds-section">CORPORATE STANDING &amp; RELATIONSHIPS</div>
+      <div class="corp-grid">
+        <!-- HELIX -->
+        <div class="corp helix">
+          <div class="corp-head">HELIX INDUSTRIES</div>
+          <div class="corp-body">
+            <label>OPINION OF YOU</label>
+            <input type="range" min="-100" max="100" value="0" data-k="helix_op">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+            <label>PUBLIC OPINION</label>
+            <input type="range" min="-100" max="100" value="0" data-k="helix_pub">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+          </div>
+        </div>
+        <!-- KRONOS -->
+        <div class="corp kronos">
+          <div class="corp-head">KRONOS INDUSTRIAL</div>
+          <div class="corp-body">
+            <label>OPINION OF YOU</label>
+            <input type="range" min="-100" max="100" value="0" data-k="kronos_op">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+            <label>PUBLIC OPINION</label>
+            <input type="range" min="-100" max="100" value="0" data-k="kronos_pub">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+          </div>
+        </div>
+        <!-- NEXUS -->
+        <div class="corp nexus">
+          <div class="corp-head">NEXUS INFODYNAMICS</div>
+          <div class="corp-body">
+            <label>OPINION OF YOU</label>
+            <input type="range" min="-100" max="100" value="0" data-k="nexus_op">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+            <label>PUBLIC OPINION</label>
+            <input type="range" min="-100" max="100" value="0" data-k="nexus_pub">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+          </div>
+        </div>
+        <!-- HELIOS -->
+        <div class="corp helios">
+          <div class="corp-head">HELIOS SYNDICATE</div>
+          <div class="corp-body">
+            <label>OPINION OF YOU</label>
+            <input type="range" min="-100" max="100" value="0" data-k="helios_op">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+            <label>PUBLIC OPINION</label>
+            <input type="range" min="-100" max="100" value="0" data-k="helios_pub">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+          </div>
+        </div>
+        <!-- AETHER -->
+        <div class="corp aether">
+          <div class="corp-head">AETHER CORP</div>
+          <div class="corp-body">
+            <label>OPINION OF YOU</label>
+            <input type="range" min="-100" max="100" value="0" data-k="aether_op">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+            <label>PUBLIC OPINION</label>
+            <input type="range" min="-100" max="100" value="0" data-k="aether_pub">
+            <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FACTIONS -->
+      <div class="ds-section">FACTION ALLEGIANCE</div>
+      <div class="faction-grid">
+        <div class="faction iwa">
+          <div class="f-name">IWA (RESISTANCE)</div>
+          <input type="range" min="-100" max="100" value="0" data-k="iwa">
+          <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+        </div>
+        <div class="faction ufc">
+          <div class="f-name">UFC (UNION)</div>
+          <input type="range" min="-100" max="100" value="0" data-k="ufc">
+          <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+        </div>
+        <div class="faction church">
+          <div class="f-name">CHURCH OF ALGORITHM</div>
+          <input type="range" min="-100" max="100" value="0" data-k="church">
+          <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+        </div>
+        <div class="faction cartel">
+          <div class="f-name">CARTEL / SYNDICATE</div>
+          <input type="range" min="-100" max="100" value="0" data-k="cartel">
+          <div class="corp-scale"><span>-100</span><span>0</span><span>+100</span></div>
+        </div>
+      </div>
+
+      <!-- CREDITS -->
+      <div class="ds-section">CREDITS &amp; FIELD NOTES</div>
+      <div class="field-row cols-2">
+        <div class="field"><label>CREDITS (CR)</label><input type="text" data-k="credits"></div>
+        <div class="field"><label>DEBT / LIENS</label><input type="text" data-k="debt"></div>
+      </div>
+      <div class="field"><label>ADDITIONAL NOTES / INTEL</label>
+        <textarea data-k="field_notes" style="min-height:90px;"></textarea>
+      </div>
+
+      <!-- ============= PAGE 3 ============= -->
+
+      <!-- PROFICIENCIES & LANGUAGES -->
+      <div class="ds-section" style="margin-top:22px;">PROFICIENCIES &amp; LANGUAGES</div>
+      <div class="field-row cols-2">
+        <div class="field">
+          <label>PROFICIENCIES</label>
+          <textarea data-k="profs" style="min-height:70px;"></textarea>
+        </div>
+        <div class="field">
+          <label>LANGUAGES (Corporate Standard always known)</label>
+          <textarea data-k="langs" style="min-height:70px;"></textarea>
+        </div>
+      </div>
+
+      <!-- COMMS & ID -->
+      <div class="ds-section">COMMUNICATIONS &amp; IDENTIFICATION</div>
+      <div class="field-row cols-3">
+        <div class="field">
+          <label>COMMLINK</label>
+          <select data-k="commlink">
+            <option value="">—</option>
+            <option value="Standard">Standard</option>
+            <option value="Encrypted">Encrypted</option>
+            <option value="Military-Grade">Military-Grade</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>DATAPAD</label>
+          <select data-k="datapad">
+            <option value="">—</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>ID CREDS</label>
+          <input type="text" data-k="id_creds">
+        </div>
+      </div>
+
+      <!-- CLASS FEATURES -->
+      <div class="ds-section">CLASS &amp; SUBCLASS FEATURES</div>
+      <div class="field-row cols-2">
+        <div class="field"><label>CLASS</label><input type="text" data-k="class_p3"></div>
+        <div class="field"><label>SUBCLASS / SPECIALISATION</label><input type="text" data-k="subclass"></div>
+      </div>
+      <div class="field-row cols-2">
+        <div class="field"><label>CLASS FEATURES</label><textarea data-k="class_feat" style="min-height:90px;"></textarea></div>
+        <div class="field"><label>RACIAL / BACKGROUND FEATURES</label><textarea data-k="race_feat" style="min-height:90px;"></textarea></div>
+      </div>
+
+      <!-- GEAR -->
+      <div class="ds-section">GEAR &amp; EQUIPMENT</div>
+      <table class="ds-table">
+        <thead>
+          <tr>
+            <th style="width:40%;">ITEM NAME</th>
+            <th style="width:10%;">QTY</th>
+            <th style="width:12%;">WEIGHT</th>
+            <th>NOTES</th>
+          </tr>
+        </thead>
+        <tbody id="gear_tbody">
+          <!-- 8 rows injected by JS -->
+        </tbody>
+      </table>
+
+      <!-- TECH / HACKING CONSOLE -->
+      <div class="ds-section">TECH &amp; HACKING CONSOLE</div>
+      <div class="field-row cols-3" style="align-items:end;">
+        <div class="field"><label>TECH SKILL BONUS</label><input type="text" data-k="tech_bonus"></div>
+        <div class="field" style="grid-column: span 2;">
+          <label>HACKING TOOLS</label>
+          <div style="display:flex; gap:18px; padding-top:6px;">
+            <label style="color:#00ccff; font-size:12px;"><input type="checkbox" data-k="ht_basic" style="accent-color:#00ccff;"> Basic</label>
+            <label style="color:#9944ff; font-size:12px;"><input type="checkbox" data-k="ht_adv" style="accent-color:#9944ff;"> Advanced</label>
+            <label style="color:#ff3355; font-size:12px;"><input type="checkbox" data-k="ht_mil" style="accent-color:#ff3355;"> Military</label>
+          </div>
+        </div>
+      </div>
+      <div class="field"><label>KNOWN EXPLOITS / PROGRAMS / ICE-BREAKERS</label>
+        <textarea data-k="exploits" style="min-height:70px;"></textarea>
+      </div>
+
+      <!-- BIOMETRIC OVERRIDE METER -->
+      <div class="ds-section">BIOMETRIC OVERRIDE METER</div>
+      <div class="biometric-meter" id="bio_meter"></div>
+      <div class="bm-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+      <div class="field-row cols-3" style="margin-top:6px;">
+        <div class="field"><label>CURRENT BIOMETRIC %</label><input type="text" id="bio_pct" data-k="bio_pct" placeholder="0"></div>
+      </div>
+
+    </div><!-- /dossier-body -->
+
+    <!-- CLASSIFIED FOOTER BAR -->
+    <div class="dossier-classified">
+      CLASSIFIED · PAGE 1–3 · MERIDIAN STATION SECURITY LEVEL 5
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="dossier-toolbar no-print">
+      <button type="button" class="ds-btn" onclick="saveDossier()">💾 SAVE TO THIS BROWSER</button>
+      <button type="button" class="ds-btn purple" onclick="loadDossier()">↻ RELOAD SAVED</button>
+      <button type="button" class="ds-btn" onclick="window.print()">🖨 PRINT</button>
+      <a class="ds-btn purple" href="CorporateHegemony_Dossier_v2.pdf" download>⬇ DOWNLOAD PDF</a>
+      <button type="button" class="ds-btn warn" onclick="resetDossier()">✗ RESET</button>
+      <span id="save_status" style="margin-left:auto; align-self:center; color:#6699cc; font-size:11px; letter-spacing:1px;"></span>
+    </div>
+
+  </form>
+  </div><!-- /wrap -->
+
+  <!-- CHANGELOG (per project rule) -->
+  <div class="panel panel-pink">
+    <div class="section-title pink">// CAMPAIGN PAGE CHANGELOG //</div>
+    <div class="body-text" style="font-size:12px;">
+      <span style="color:#ffff00;">2026.04.16</span> — Page created. Interactive Dossier v2 added with auto-calc modifiers, localStorage save, print layout, and PDF download.<br>
+      <span style="color:#ffff00;">2026.04.16</span> — Added [ CAMPAIGN ] nav link across the site.<br>
+      <span style="color:#ffff00;">2026.04.16</span> — Copied <code>CorporateHegemony_Dossier_v2.pdf</code> into site root for download.<br>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Campaign Terminal — The Corporate Hegemony</span> &nbsp;|&nbsp; Meridian Station<br>
+    <span style="color:#333366;">Made with ♥ — sheets auto-save to YOUR browser only &nbsp;|&nbsp; No server &nbsp;|&nbsp; No tracking</span>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <span class="statusbar-inner">
+    ⚡ Document: Dossier v2 Loaded &nbsp;&nbsp;&nbsp;
+    🛸 thane-goetz.neocities.org/campaign &nbsp;&nbsp;&nbsp;
+    ★ Auto-save uses localStorage only — data never leaves your device &nbsp;&nbsp;&nbsp;
+    ⚡ Print layout ready &nbsp;&nbsp;&nbsp;
+    ★ Blank PDF also available for download &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<!-- Starfield (shared) -->
+<script>
+(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();
+</script>
+
+<!-- DOSSIER LOGIC -->
+<script>
+(function(){
+  var STORE_KEY = 'sb451_corp_hegemony_dossier_v2';
+  var form = document.getElementById('dossier');
+
+  // ============ BUILD DYNAMIC BITS ============
+  // Resource slots — 2 rows x 10 circles
+  var rs = document.getElementById('resource_slots');
+  for (var i = 0; i < 20; i++) {
+    var cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.className = 'slot-cb';
+    cb.setAttribute('data-k', 'slot_' + i);
+    rs.appendChild(cb);
+    if (i === 9) rs.appendChild(document.createElement('br'));
+  }
+
+  // Gear rows — 8
+  var gb = document.getElementById('gear_tbody');
+  for (var g = 1; g <= 8; g++) {
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><input type="text" data-k="gear_name_' + g + '"></td>' +
+      '<td><input type="text" data-k="gear_qty_' + g + '"></td>' +
+      '<td><input type="text" data-k="gear_wt_' + g + '"></td>' +
+      '<td><input type="text" data-k="gear_notes_' + g + '"></td>';
+    gb.appendChild(tr);
+  }
+
+  // Biometric meter — 20 cells (0 to 100%)
+  var bm = document.getElementById('bio_meter');
+  for (var b = 0; b < 20; b++) {
+    var cell = document.createElement('div');
+    cell.className = 'bm-cell';
+    if (b >= 7 && b < 14) cell.className += ' warn';
+    if (b >= 14) cell.className += ' danger';
+    cell.setAttribute('data-idx', b);
+    cell.addEventListener('click', function(){
+      var idx = parseInt(this.getAttribute('data-idx'));
+      // Toggle up to clicked cell
+      var cells = bm.querySelectorAll('.bm-cell');
+      var shouldActivate = !this.classList.contains('active') || (idx > 0 && !cells[idx-1].classList.contains('active'));
+      for (var k = 0; k < cells.length; k++) {
+        if (k <= idx && shouldActivate) cells[k].classList.add('active');
+        else if (k > idx) cells[k].classList.remove('active');
+        else if (!shouldActivate && k === idx) cells[k].classList.remove('active');
+      }
+      var active = bm.querySelectorAll('.bm-cell.active').length;
+      document.getElementById('bio_pct').value = Math.round(active * 5) + '%';
+    });
+    bm.appendChild(cell);
+  }
+
+  // ============ AUTO-CALC ============
+  function mod(score) {
+    if (score === '' || isNaN(score)) return null;
+    return Math.floor((parseInt(score) - 10) / 2);
+  }
+  function fmt(n) { return (n === null) ? '—' : (n >= 0 ? '+' + n : String(n)); }
+
+  function profBonus(level) {
+    var l = parseInt(level) || 1;
+    if (l < 1) l = 1; if (l > 20) l = 20;
+    if (l <= 4)  return 2;
+    if (l <= 8)  return 3;
+    if (l <= 12) return 4;
+    if (l <= 16) return 5;
+    return 6;
+  }
+
+  function recalc() {
+    var attrs = ['str','dex','con','int','wis','cha'];
+    var mods = {};
+    attrs.forEach(function(a){
+      var el = form.querySelector('[data-attr="'+a+'"]');
+      var m = mod(el.value);
+      mods[a] = m;
+      document.getElementById('mod_' + a).textContent = fmt(m);
+    });
+
+    var lvl = document.getElementById('f_level').value;
+    var pb = profBonus(lvl);
+    document.getElementById('f_prof').value = '+' + pb;
+
+    // Saves: base = mod + (pb if proficient)
+    attrs.forEach(function(a){
+      var m = mods[a];
+      var prof = document.getElementById('sv_' + a + '_cb').checked;
+      var total = (m === null) ? null : (m + (prof ? pb : 0));
+      document.getElementById('sv_' + a + '_val').textContent = fmt(total);
+    });
+
+    // Passive Perception = 10 + WIS mod + (pb if Perception proficient)
+    var wisMod = mods.wis;
+    var pp = 10 + (wisMod || 0) + (document.getElementById('sk_perception_cb').checked ? pb : 0);
+    document.getElementById('passive_perc').textContent = (wisMod === null ? '—' : String(pp));
+  }
+
+  form.addEventListener('input', function(){ recalc(); autosave(); });
+  form.addEventListener('change', function(){ recalc(); autosave(); });
+
+  // ============ PERSISTENCE ============
+  function collect() {
+    var data = {};
+    form.querySelectorAll('[data-k]').forEach(function(el){
+      var k = el.getAttribute('data-k');
+      if (el.type === 'checkbox') data[k] = el.checked;
+      else data[k] = el.value;
+    });
+    // Biometric meter
+    var cells = document.querySelectorAll('#bio_meter .bm-cell.active').length;
+    data._bio_cells = cells;
+    return data;
+  }
+  function apply(data) {
+    if (!data) return;
+    form.querySelectorAll('[data-k]').forEach(function(el){
+      var k = el.getAttribute('data-k');
+      if (!(k in data)) return;
+      if (el.type === 'checkbox') el.checked = !!data[k];
+      else el.value = data[k];
+    });
+    // Biometric
+    var cells = document.querySelectorAll('#bio_meter .bm-cell');
+    cells.forEach(function(c, idx){
+      if (idx < (data._bio_cells || 0)) c.classList.add('active');
+      else c.classList.remove('active');
+    });
+    recalc();
+  }
+
+  var saveTimer;
+  function autosave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      try {
+        localStorage.setItem(STORE_KEY, JSON.stringify(collect()));
+        setStatus('⟳ auto-saved');
+      } catch(e){ setStatus('⚠ autosave failed'); }
+    }, 600);
+  }
+
+  function setStatus(msg) {
+    var el = document.getElementById('save_status');
+    if (!el) return;
+    el.textContent = msg;
+    setTimeout(function(){ if (el.textContent === msg) el.textContent = ''; }, 2500);
+  }
+
+  window.saveDossier = function() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(collect()));
+      setStatus('✓ SAVED to this browser');
+    } catch(e) { setStatus('⚠ save failed'); }
+  };
+  window.loadDossier = function() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) { setStatus('nothing to load'); return; }
+      apply(JSON.parse(raw));
+      setStatus('✓ LOADED');
+    } catch(e) { setStatus('⚠ load failed'); }
+  };
+  window.resetDossier = function() {
+    if (!confirm('Wipe this sheet and remove saved data from this browser?')) return;
+    try { localStorage.removeItem(STORE_KEY); } catch(e){}
+    form.reset();
+    document.querySelectorAll('#bio_meter .bm-cell').forEach(function(c){ c.classList.remove('active'); });
+    document.getElementById('bio_pct').value = '';
+    recalc();
+    setStatus('✓ reset');
+  };
+
+  // Auto-load on page enter
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) apply(JSON.parse(raw));
+  } catch(e){}
+
+  // Initial calc
+  recalc();
+})();
+</script>
+
+<!-- Native visitor counter (same as rest of site) -->
+<script>
+(function() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      try {
+        var site_data = JSON.parse(this.responseText);
+        var num_arr = site_data.info.views.toString().split("");
+        var num_str = "";
+        for (var i = 0; i < num_arr.length; i++) {
+          num_str += num_arr[i];
+          if ((num_arr.length - 1 - i) % 3 == 0 && (num_arr.length - 1 - i) != 0) num_str += ",";
+        }
+        var el = document.getElementById("hitcount");
+        var el2 = document.getElementById("marquee-hitcount");
+        if (el) el.innerHTML = num_str;
+        if (el2) el2.innerHTML = num_str;
+      } catch(e){}
+    }
+  };
+  xhttp.open("GET", "https://weirdscifi.ratiosemper.com/neocities.php?sitename=thane-goetz", true);
+  xhttp.send();
+})();
+</script>
+
+</body>
+</html>

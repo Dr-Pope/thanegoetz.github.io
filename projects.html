@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Projects by Thane Goetz — browser RPG, astrophysics research tools, 3D/CAD visualization, D&D campaign worldbuilding, home media server, and more.">
+  <title>STARBASE 451 :: Projects</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    .tech-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .tech-list li {
+      background: #001133;
+      border: 1px solid #224466;
+      color: #66aaff;
+      font-size: 10px;
+      padding: 1px 7px;
+    }
+
+    /* ACCORDION */
+    .acc-item { margin-bottom: 6px; border: 1px solid #334466; }
+    .acc-header {
+      background: #000820;
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .acc-header:hover { background: #001133; }
+    .acc-header .acc-title {
+      font-family: 'VT323', monospace;
+      font-size: 22px;
+      color: #00ccff;
+      letter-spacing: 1px;
+    }
+    .acc-header .acc-meta {
+      font-size: 10px;
+      color: #666699;
+      text-align: right;
+      line-height: 1.5;
+    }
+    .acc-header .acc-arrow {
+      color: #00ff99;
+      font-size: 18px;
+      margin-left: 12px;
+      transition: transform 0.2s;
+      font-family: monospace;
+    }
+    .acc-item.open .acc-arrow { transform: rotate(90deg); }
+    .acc-body {
+      display: none;
+      padding: 12px;
+      background: #00001a;
+      border-top: 1px solid #223355;
+    }
+    .acc-item.open .acc-body { display: block; }
+    .acc-status {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 7px;
+      border: 1px solid;
+      margin-left: 8px;
+      vertical-align: middle;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .acc-status.active  { color: #00ff99; border-color: #00ff99; }
+    .acc-status.ongoing { color: #ffaa00; border-color: #ffaa00; }
+    .acc-status.planned { color: #666699; border-color: #666699; }
+    .acc-status.weekly  { color: #ff66ff; border-color: #ff66ff; }
+    .acc-body p { color: #aaccff; font-size: 12px; line-height: 1.7; margin-bottom: 6px; }
+    .acc-body b { color: #ffffff; }
+
+    /* SECTION HEADERS WITHIN BODY */
+    .proj-section {
+      color: #ffff00;
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      margin: 12px 0 6px;
+    }
+
+    /* STAT GRID */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .stat-box {
+      background: #000820;
+      border: 1px solid #334466;
+      padding: 6px 8px;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: 'VT323', monospace;
+      font-size: 28px;
+      color: #00ff99;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 9px;
+      color: #6699aa;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    /* PROGRESS */
+    .progress-wrap { margin: 4px 0; }
+    .progress-label { color: #9999cc; font-size: 11px; }
+    .progress-bar {
+      height: 8px;
+      background: #001100;
+      border: 1px solid #003300;
+      margin: 2px 0 6px;
+      position: relative;
+    }
+    .progress-fill { position:absolute; top:0; left:0; bottom:0; background:#009933; }
+    .progress-fill.amber { background: #cc8800; }
+    .progress-fill.blue  { background: #0066cc; }
+    .progress-fill.pink  { background: #cc0066; }
+
+    /* LOG ENTRIES */
+    .log-entry {
+      border-left: 2px solid #334466;
+      padding: 4px 0 4px 10px;
+      margin-bottom: 6px;
+      font-size: 11px;
+      color: #aaccff;
+      line-height: 1.6;
+    }
+    .log-entry .log-date { color: #ffaa00; font-family: 'Share Tech Mono', monospace; }
+
+    /* CHARACTER STAT BLOCK */
+    .char-block {
+      background: #000820;
+      border: 1px solid #334466;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+    }
+    .char-name {
+      font-family: 'VT323', monospace;
+      font-size: 22px;
+      color: #ff66ff;
+      border-bottom: 1px solid #334466;
+      margin-bottom: 6px;
+    }
+    .char-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      font-size: 10px;
+      color: #aaccff;
+    }
+    .char-stat-item { background: #001133; padding: 3px 6px; }
+    .char-stat-item span { color: #00ccff; }
+
+    /* FACTION CARDS */
+    .faction-filters { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+    .faction-filter-btn {
+      font-family:'Share Tech Mono',monospace;
+      font-size:11px;
+      padding:3px 10px;
+      background:#000820;
+      border:1px solid #334466;
+      color:#6699ff;
+      cursor:pointer;
+      user-select:none;
+    }
+    .faction-filter-btn.factive, .faction-filter-btn:hover { background:#001133; color:#00ccff; border-color:#00ccff; }
+    .faction-card { border:1px solid #334466; margin-bottom:6px; background:#000820; }
+    .faction-card.hidden { display:none; }
+    .faction-hdr {
+      padding:8px 10px;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      user-select:none;
+    }
+    .faction-hdr:hover { background:#001133; }
+    .faction-name { font-family:'VT323',monospace; font-size:20px; color:#00ccff; }
+    .faction-tagline { font-size:10px; color:#666699; font-style:italic; margin-top:1px; }
+    .faction-type-badge {
+      font-size:9px; padding:1px 6px; border:1px solid;
+      font-family:'Share Tech Mono',monospace; white-space:nowrap;
+    }
+    .ft-megacorp { color:#ff6666; border-color:#ff6666; }
+    .ft-faction  { color:#66aaff; border-color:#66aaff; }
+    .standing-row { padding:2px 10px 7px; display:grid; grid-template-columns:1fr auto; grid-template-rows:auto auto; }
+    .standing-label-text { font-size:9px; color:#666699; letter-spacing:1px; grid-column:1; grid-row:1; }
+    .standing-bar { height:6px; background:#001100; border:1px solid #002200; position:relative; margin-top:4px; grid-column:1/3; grid-row:2; }
+    .standing-fill { position:absolute; top:0; left:0; bottom:0; }
+    .sf-hostile  { background:#cc0000; }
+    .sf-neutral  { background:#ccaa00; }
+    .sf-friendly { background:#00aa55; }
+    .sf-allied   { background:#00ff99; }
+    .sf-unknown  { background:#334466; }
+    .standing-val { font-size:10px; font-family:'Share Tech Mono',monospace; grid-column:2; grid-row:1; align-self:center; }
+    .sv-hostile  { color:#ff4444; }
+    .sv-neutral  { color:#ffcc00; }
+    .sv-friendly { color:#00ff99; }
+    .sv-allied   { color:#00ffcc; }
+    .sv-unknown  { color:#666699; }
+    .classified { color:transparent; text-shadow:0 0 7px rgba(160,60,220,0.85); user-select:none; }
+    .faction-body { display:none; padding:10px 12px; border-top:1px solid #223355; background:#00001a; }
+    .faction-body p { color:#aaccff; font-size:11px; line-height:1.7; margin-bottom:6px; }
+    .faction-body b { color:#ffffff; }
+    .fsect { color:#ffff00; font-family:'VT323',monospace; font-size:15px; margin:8px 0 4px; }
+    .faction-intel { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-bottom:6px; }
+    .fi-item { background:#000820; padding:4px 8px; font-size:10px; color:#aaccff; }
+    .fi-item span { color:#666699; font-size:9px; display:block; }
+    .ftags { display:flex; flex-wrap:wrap; gap:4px; margin:3px 0 6px; }
+    .ftag { font-size:9px; padding:1px 6px; border:1px solid #334466; background:#000820; color:#aaccff; }
+    .ftag.at { color:#00ff99; border-color:#006633; background:#001100; }
+    .ftag.ht { color:#ff6666; border-color:#660000; background:#110000; }
+    .hook { font-size:11px; color:#99aacc; padding:2px 0 2px 10px; border-left:2px solid #334466; margin:3px 0; line-height:1.5; }
+
+    /* NPC DOSSIER CARDS */
+    .npc-card { border:1px solid #334466; margin-bottom:6px; background:#000820; }
+    .npc-hdr { padding:8px 10px; cursor:pointer; display:flex; justify-content:space-between; align-items:flex-start; user-select:none; }
+    .npc-hdr:hover { background:#001133; }
+    .npc-name { font-family:'VT323',monospace; font-size:20px; }
+    .npc-name.ally    { color:#00ccff; }
+    .npc-name.rival   { color:#ffaa00; }
+    .npc-name.hostile { color:#ff6666; }
+    .npc-name.unknown { color:#666699; }
+    .npc-role-badge { font-size:9px; padding:1px 6px; border:1px solid; font-family:'Share Tech Mono',monospace; white-space:nowrap; }
+    .npc-role-badge.ally    { color:#00ccff; border-color:#00ccff; }
+    .npc-role-badge.rival   { color:#ffaa00; border-color:#ffaa00; }
+    .npc-role-badge.hostile { color:#ff6666; border-color:#ff6666; }
+    .npc-role-badge.unknown { color:#666699; border-color:#666699; }
+    .npc-body { display:none; padding:10px 12px; border-top:1px solid #223355; background:#00001a; }
+    .npc-body p { color:#aaccff; font-size:11px; line-height:1.7; margin-bottom:6px; }
+    .npc-body b { color:#ffffff; }
+    .npc-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:8px; }
+    .npc-stat { background:#000820; border:1px solid #334466; padding:4px 6px; font-size:10px; color:#aaccff; }
+    .npc-stat span { color:#666699; font-size:9px; display:block; }
+    .nsect { color:#ffff00; font-family:'VT323',monospace; font-size:15px; margin:8px 0 4px; }
+    .npc-quote { font-size:11px; color:#99aacc; padding:4px 0 4px 10px; border-left:2px solid #334466; margin:3px 0; line-height:1.5; font-style:italic; }
+    .npc-not-met { background:#000820; border:1px dashed #334466; padding:6px 10px; text-align:center; font-size:11px; color:#333355; margin-bottom:4px; }
+
+    /* LOCATION CARDS */
+    .loc-card { border:1px solid #334477; margin-bottom:6px; background:#000a20; }
+    .loc-hdr { padding:8px 10px; cursor:pointer; display:flex; justify-content:space-between; align-items:flex-start; user-select:none; }
+    .loc-hdr:hover { background:#00112a; }
+    .loc-name { font-family:'VT323',monospace; font-size:20px; color:#6699ff; }
+    .loc-type-badge { font-size:9px; padding:1px 6px; border:1px solid #334477; font-family:'Share Tech Mono',monospace; color:#6699ff; white-space:nowrap; }
+    .loc-body { display:none; padding:10px 12px; border-top:1px solid #223355; background:#00001a; }
+    .loc-body p { color:#aaccff; font-size:11px; line-height:1.7; margin-bottom:6px; }
+    .loc-body b { color:#ffffff; }
+    .lsect { color:#6699ff; font-family:'VT323',monospace; font-size:15px; margin:8px 0 4px; }
+    .loc-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:8px; }
+    .loc-stat { background:#000820; border:1px solid #334466; padding:4px 6px; font-size:10px; color:#aaccff; }
+    .loc-stat span { color:#666699; font-size:9px; display:block; }
+    .loc-spot { font-size:11px; color:#99aacc; padding:3px 0 3px 10px; border-left:2px solid #334477; margin:3px 0; line-height:1.5; }
+    .loc-danger { display:inline-block; font-size:9px; padding:1px 5px; border:1px solid; font-family:'Share Tech Mono',monospace; }
+    .ld-low    { color:#00ff99; border-color:#00ff99; }
+    .ld-medium { color:#ffaa00; border-color:#ffaa00; }
+    .ld-high   { color:#ff6666; border-color:#ff6666; }
+    .ld-unknown{ color:#666699; border-color:#666699; }
+
+    /* GLOBAL FILTER BAR */
+    .proj-filters { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .proj-filter-btn {
+      font-family:'Share Tech Mono',monospace;
+      font-size:11px;
+      padding:3px 12px;
+      background:#000820;
+      border:1px solid #334466;
+      color:#6699ff;
+      cursor:pointer;
+      user-select:none;
+    }
+    .proj-filter-btn.active, .proj-filter-btn:hover { background:#001133; color:#00ccff; border-color:#00ccff; }
+    .acc-item.proj-hidden { display:none; }
+
+    /* STARBASE STATS BAR */
+    .starbase-stats {
+      display:flex; flex-wrap:wrap; gap:5px;
+      background:#000010; border:1px solid #223355;
+      padding:8px 10px; margin-bottom:8px;
+      justify-content:space-around;
+    }
+    .sstat { text-align:center; }
+    .sstat-val { font-family:'VT323',monospace; font-size:26px; color:#00ff99; line-height:1; }
+    .sstat-label { font-size:9px; color:#446688; letter-spacing:1px; margin-top:1px; }
+
+    /* RECENT ACTIVITY sidebar */
+    .activity-entry {
+      font-size:10px; color:#9999cc; line-height:1.6;
+      border-left:2px solid #223355; padding-left:7px;
+      margin-bottom:6px;
+    }
+    .activity-date { color:#ffaa00; font-family:'Share Tech Mono',monospace; display:block; }
+    .activity-proj { color:#66ccff; }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ★ PROJECTS LAB — STARBASE 451 ★ &nbsp;&nbsp;&nbsp;
+      Game Dev | Astrophysics Tools | 3D / CAD | Physics Teaching &nbsp;&nbsp;&nbsp;
+      ★ Building cool stuff since forever ★
+    </span>
+  </div>
+
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Science Officer Thane's Deep Space Terminal ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html" class="active">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <div class="columns">
+
+    <!-- MAIN -->
+    <div>
+      <div class="panel">
+        <div class="section-title">// PROJECTS MANIFEST //</div>
+        <div class="body-text">
+          Everything I'm currently building, tinkering with, or plotting to build.
+          Some of this is for research, some is for fun, and some is definitely both.
+          Click any project to expand the full dossier.
+        </div>
+      </div>
+
+      <!-- STARBASE AGGREGATE STATS -->
+      <div class="starbase-stats">
+        <div class="sstat"><div class="sstat-val">9</div><div class="sstat-label">PROJECTS</div></div>
+        <div class="sstat"><div class="sstat-val">29</div><div class="sstat-label">RPG ITEMS</div></div>
+        <div class="sstat"><div class="sstat-val">40+</div><div class="sstat-label">RPG SCENES</div></div>
+        <div class="sstat"><div class="sstat-val">1,836</div><div class="sstat-label">VLASS SOURCES</div></div>
+        <div class="sstat"><div class="sstat-val">6</div><div class="sstat-label">D&amp;D PLAYERS</div></div>
+        <div class="sstat"><div class="sstat-val">8</div><div class="sstat-label">FACTIONS</div></div>
+      </div>
+
+      <!-- GLOBAL PROJECT FILTER -->
+      <div class="proj-filters">
+        <button class="proj-filter-btn active" onclick="filterProjects('all',this)">ALL [9]</button>
+        <button class="proj-filter-btn" onclick="filterProjects('research',this)">RESEARCH [2]</button>
+        <button class="proj-filter-btn" onclick="filterProjects('game-dev',this)">GAME DEV [2]</button>
+        <button class="proj-filter-btn" onclick="filterProjects('creative',this)">CREATIVE [3]</button>
+        <button class="proj-filter-btn" onclick="filterProjects('self-hosting',this)">SELF-HOSTING [1]</button>
+        <button class="proj-filter-btn" onclick="filterProjects('web-dev',this)">WEB DEV [1]</button>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: THE CORPORATE HEGEMONY            -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item open" data-category="game-dev">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">THE CORPORATE HEGEMONY</span>
+            <span class="acc-status active">● ACTIVE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">Browser RPG / Game Dev<br>JavaScript · JSON<br><span style="color:#446644;">Updated: Feb 2026</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p>
+            A <b>browser-based interactive RPG</b> built from scratch. Set in a grim sci-fi
+            universe where megacorporations control everything — directly inspired by my D&amp;D
+            campaigns. The game uses a <b>modified D&amp;D 5e ruleset</b> with branching narrative
+            scenes, a full inventory system, skill checks, and NPC encounter mechanics.
+            No server, no install — runs 100% in the browser.
+          </p>
+
+          <div class="proj-section">// MISSION STATS //</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">29</div><div class="stat-label">ITEMS</div></div>
+            <div class="stat-box"><div class="stat-val">40+</div><div class="stat-label">SCENES</div></div>
+            <div class="stat-box"><div class="stat-val">2</div><div class="stat-label">SESSIONS ADAPTED</div></div>
+            <div class="stat-box"><div class="stat-val">15+</div><div class="stat-label">NAMED NPCs</div></div>
+            <div class="stat-box"><div class="stat-val">2</div><div class="stat-label">FILES TOTAL</div></div>
+            <div class="stat-box"><div class="stat-val">5e</div><div class="stat-label">RULESET BASE</div></div>
+          </div>
+
+          <div class="proj-section">// ARCHITECTURE //</div>
+          <table class="data-table">
+            <thead><tr><th>FILE</th><th>ROLE</th><th>SIZE</th></tr></thead>
+            <tbody>
+              <tr><td>scenes.json</td><td>All story content, stat blocks, branching logic, item data</td><td style="color:#00ff99;">~120KB</td></tr>
+              <tr><td>engine.html</td><td>Full game renderer — UI, dice rolling, inventory, combat, saves</td><td style="color:#00ff99;">~80KB</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// GAME SYSTEMS //</div>
+          <table class="data-table">
+            <thead><tr><th>SYSTEM</th><th>DESCRIPTION</th><th>STATUS</th></tr></thead>
+            <tbody>
+              <tr><td>Branching Narrative</td><td>Scene-based story engine with conditional choices</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Inventory System</td><td>29 items with stats, descriptions, equip slots</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Skill Checks</td><td>D20 + modifier vs DC — Athletics, Stealth, Persuasion, etc.</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>NPC Encounters</td><td>Scripted NPC dialogue trees with faction alignment</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Combat</td><td>Initiative, attack rolls, HP tracking, enemy stat blocks</td><td style="color:#ffaa00;">IN PROGRESS</td></tr>
+              <tr><td>Save System</td><td>localStorage checkpoint saves</td><td style="color:#ffaa00;">IN PROGRESS</td></tr>
+              <tr><td>Audio</td><td>Ambient music / SFX layer</td><td style="color:#666699;">PLANNED</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// BUILD PROGRESS //</div>
+          <div class="progress-wrap">
+            <div class="progress-label">Core narrative engine</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:95%;"></div></div>
+            <div class="progress-label">Inventory &amp; item system</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:90%;"></div></div>
+            <div class="progress-label">NPC encounter system</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:80%;"></div></div>
+            <div class="progress-label">Combat engine</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:55%;"></div></div>
+            <div class="progress-label">Session 3 content (scenes)</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:30%;"></div></div>
+            <div class="progress-label">Save/load system</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:40%;"></div></div>
+            <div class="progress-label">Audio layer</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+          </div>
+
+          <div class="proj-section">// DEV LOG //</div>
+          <div class="log-entry"><span class="log-date">[2026-02]</span> — Session 2 content fully adapted. 29-item inventory system completed.</div>
+          <div class="log-entry"><span class="log-date">[2026-01]</span> — Skill check system overhauled to match 5e DC table structure.</div>
+          <div class="log-entry"><span class="log-date">[2025-11]</span> — First playable build. Session 1 fully adapted. NPC Hegemony Enforcer added.</div>
+          <div class="log-entry"><span class="log-date">[2025-09]</span> — Project started. scenes.json schema designed, engine prototype running.</div>
+
+          <ul class="tech-list">
+            <li>JavaScript</li><li>HTML/CSS</li><li>JSON</li>
+            <li>D&amp;D 5e Mechanics</li><li>Branching Narrative</li><li>localStorage</li>
+          </ul>
+
+          <div style="margin-top:10px;">
+            <span style="background:#001133; border:1px solid #334466; color:#446688; font-family:'Share Tech Mono',monospace; font-size:11px; padding:4px 14px; display:inline-block; cursor:default;" title="Will go live on GitHub when the project is ready for public release">[ VIEW ON GITHUB — COMING SOON ]</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: STARBASE 451 BLACKJACK            -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item" data-category="game-dev">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">STARBASE 451 BLACKJACK</span>
+            <span class="acc-status active">● ACTIVE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">Browser Card Game / Web Dev<br>JavaScript · HTML · CSS<br><span style="color:#446644;">Updated: Mar 2026</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p>
+            A fully playable <b>browser blackjack game</b> built from scratch — no frameworks, no install,
+            runs entirely in a single HTML file. Styled to match the <b>Starbase 451 terminal aesthetic</b>:
+            VT323 font, terminal green cards, CRT scanlines, animated starfield, and the full site
+            header/nav/statusbar so it feels like a natural part of the station.
+            Features a complete casino ruleset with <b>betting, splitting, doubling down, and a 6-deck shoe</b>.
+          </p>
+
+          <div class="proj-section">// MISSION STATS //</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">1</div><div class="stat-label">FILE TOTAL</div></div>
+            <div class="stat-box"><div class="stat-val">6</div><div class="stat-label">DECK SHOE</div></div>
+            <div class="stat-box"><div class="stat-val">3:2</div><div class="stat-label">BJ PAYOUT</div></div>
+            <div class="stat-box"><div class="stat-val">4</div><div class="stat-label">GAME ACTIONS</div></div>
+            <div class="stat-box"><div class="stat-val">0</div><div class="stat-label">FRAMEWORKS</div></div>
+            <div class="stat-box"><div class="stat-val">200</div><div class="stat-label">CANVAS STARS</div></div>
+          </div>
+
+          <div class="proj-section">// GAME SYSTEMS //</div>
+          <table class="data-table">
+            <thead><tr><th>FEATURE</th><th>DESCRIPTION</th><th>STATUS</th></tr></thead>
+            <tbody>
+              <tr><td>6-Deck Shoe</td><td>312-card shoe, auto-reshuffles at &lt;52 cards remaining</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Betting / Credits</td><td>$1 / $5 / $10 / $25 / $100 chip buttons, $1000 starting balance</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Hit / Stand</td><td>Core card actions with bust detection</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Double Down</td><td>Doubles bet, deals one card, auto-stands</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Split</td><td>Split matching-rank pairs into two independent hands; split aces get one card only</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Dealer AI</td><td>Hits on soft 17, reveals hole card before playing</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>3:2 Blackjack</td><td>Instant natural blackjack payout, push detection</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Session Stats</td><td>Live W/L/Push/BJ counter and deck buffer display</td><td style="color:#00ff99;">DONE</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// ARCHITECTURE //</div>
+          <table class="data-table">
+            <thead><tr><th>FILE</th><th>ROLE</th><th>SIZE</th></tr></thead>
+            <tbody>
+              <tr><td>blackjack.html</td><td>Complete self-contained game — CSS, HTML, JS, starfield, CRT effects</td><td style="color:#00ff99;">~25KB</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// DEV LOG //</div>
+          <div class="log-entry"><span class="log-date">[2026-03]</span> — Themed to match Starbase 451 aesthetic: VT323 font, terminal green cards, CRT effects, site nav/header/statusbar.</div>
+          <div class="log-entry"><span class="log-date">[2026-03]</span> — Fixed game-freeze bug: gamePhase stuck on 'done' after bust blocking chip clicks.</div>
+          <div class="log-entry"><span class="log-date">[2026-03]</span> — Full feature build: 6-deck shoe, betting, split, double down, dealer AI, 3:2 BJ payout.</div>
+
+          <ul class="tech-list">
+            <li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>Canvas API</li><li>VT323</li><li>Share Tech Mono</li>
+          </ul>
+
+          <div style="margin-top:10px;">
+            <a href="blackjack.html" style="background:#001a00; border:1px solid #00ff99; color:#00ff99; font-family:'Share Tech Mono',monospace; font-size:11px; padding:4px 14px; display:inline-block; text-decoration:none;">[ PLAY NOW → blackjack.html ]</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: OPENDS9.PY                        -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item" data-category="research">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">OPENDS9.PY</span>
+            <span class="acc-status ongoing">◐ IN PROGRESS</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">Research Software<br>Python · DS9 · FITS<br><span style="color:#446644;">Updated: Mar 2026</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p>
+            A custom <b>Python + Tkinter automation tool</b> for the SAOImage DS9 FITS viewer.
+            Built specifically for the VLASS classification workflow — instead of manually loading
+            each FITS file, this tool reads a target list, opens DS9 windows automatically in
+            the correct multi-panel configuration, and lets you step through sources one-by-one
+            while logging classifications in real time.
+          </p>
+
+          <div class="proj-section">// TOOL STATS //</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">1836</div><div class="stat-label">TARGET SOURCES</div></div>
+            <div class="stat-box"><div class="stat-val">4</div><div class="stat-label">DS9 PANELS</div></div>
+            <div class="stat-box"><div class="stat-val">~60%</div><div class="stat-label">BUILD COMPLETE</div></div>
+            <div class="stat-box"><div class="stat-val">XPA</div><div class="stat-label">COMM PROTOCOL</div></div>
+          </div>
+
+          <div class="proj-section">// FEATURE STATUS //</div>
+          <table class="data-table">
+            <thead><tr><th>FEATURE</th><th>DESCRIPTION</th><th>STATUS</th></tr></thead>
+            <tbody>
+              <tr><td>Target list reader</td><td>Parse CSV of VLASS source IDs and coordinates</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Auto DS9 launch</td><td>Open DS9 and load correct FITS images via XPA commands</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>4-panel layout</td><td>VLASS (plain), VLASS (overlays), PanSTARRS, WISE — locked WCS</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Source stepping</td><td>Next/previous buttons to cycle through target list</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Classification logger</td><td>Write morphology/bending/flag strings to CSV on keystroke</td><td style="color:#ffaa00;">IN PROGRESS</td></tr>
+              <tr><td>Colormap presets</td><td>Auto-apply scale/colormap settings per survey band</td><td style="color:#ffaa00;">IN PROGRESS</td></tr>
+              <tr><td>Tkinter GUI</td><td>Proper window with buttons, dropdowns, and status bar</td><td style="color:#666699;">PLANNED</td></tr>
+              <tr><td>Batch export</td><td>Dump all classifications + metadata to final catalog CSV</td><td style="color:#666699;">PLANNED</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// BUILD PROGRESS //</div>
+          <div class="progress-wrap">
+            <div class="progress-label">FITS file loading &amp; DS9 control</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:90%;"></div></div>
+            <div class="progress-label">Multi-panel layout (4-up, WCS locked)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:85%;"></div></div>
+            <div class="progress-label">Source cycling &amp; target list parsing</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:80%;"></div></div>
+            <div class="progress-label">Classification logging to CSV</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:50%;"></div></div>
+            <div class="progress-label">Colormap / scale presets</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:40%;"></div></div>
+            <div class="progress-label">Tkinter GUI frontend</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#333366;"></div></div>
+            <div class="progress-label">Batch export / final catalog output</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+          </div>
+
+          <div class="proj-section">// WORKFLOW IT AUTOMATES //</div>
+          <div class="body-text" style="font-size:11px; line-height:1.9; color:#99aacc;">
+            FITS source list loaded → DS9 opens automatically → 4 panels appear (VLASS plain, VLASS+overlays, PanSTARRS, WISE) →
+            WCS locked across all panels → classifier inspects source → presses key to log classification →
+            script loads next source → repeat 1,836 times → export full catalog CSV
+          </div>
+
+          <ul class="tech-list">
+            <li>Python 3</li><li>Tkinter</li><li>Astropy</li>
+            <li>DS9 / XPA</li><li>FITS</li><li>CSV</li><li>VLASS</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: SS14 CHARACTER LORE               -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item" data-category="creative">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">SS14 CHARACTER LORE</span>
+            <span class="acc-status active">● ACTIVE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">Worldbuilding<br>Space Station 14<br><span style="color:#446644;">Updated: Mar 2026</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p>
+            Deep character lore for <b>Space Station 14</b> — a sci-fi roleplaying game
+            set aboard Nanotrasen corporate stations. Two fully developed characters with
+            complete backstories, personality profiles, career histories, psychological notes,
+            and in-universe documentation. Each character is built to be narratively coherent
+            across dozens of separate gameplay sessions.
+          </p>
+
+          <div class="proj-section">// ROSTER STATS //</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">2</div><div class="stat-label">CHARACTERS</div></div>
+            <div class="stat-box"><div class="stat-val">100%</div><div class="stat-label">LORE DEPTH</div></div>
+            <div class="stat-box"><div class="stat-val">NT</div><div class="stat-label">EMPLOYER</div></div>
+            <div class="stat-box"><div class="stat-val">SS14</div><div class="stat-label">UNIVERSE</div></div>
+          </div>
+
+          <div class="proj-section">// CHARACTER DOSSIERS //</div>
+
+          <div class="char-block">
+            <div class="char-name">SCOTTY POPE — ENGINEERING TECHNICIAN</div>
+            <div class="char-stats">
+              <div class="char-stat-item">DEPT: <span>Engineering</span></div>
+              <div class="char-stat-item">RANK: <span>Technician</span></div>
+              <div class="char-stat-item">STATUS: <span>Active</span></div>
+              <div class="char-stat-item">ALIGNMENT: <span>Chaotic Neutral</span></div>
+              <div class="char-stat-item">SPECIALTY: <span>Atmospherics</span></div>
+              <div class="char-stat-item">THREAT LVL: <span>Elevated</span></div>
+            </div>
+            <p style="margin-top:8px;">
+              Grizzled engineering tech with 12 years of Nanotrasen service and a deeply
+              suspicious relationship with the maintenance tunnels. Has survived three
+              station detonations, two syndicate raids, and one very bad shift involving
+              a plasmaman and a lit cigarette. Officially has the highest "near-miss" incident
+              count in his department. Unofficially keeps a flask of something in his toolbelt.
+            </p>
+            <span class="tag">ATMOSPHERICS</span><span class="tag">MAINTENANCE TUNNELS</span>
+            <span class="tag">HIGH INCIDENT COUNT</span><span class="tag">NOT STRICTLY LEGAL</span>
+          </div>
+
+          <div class="char-block">
+            <div class="char-name">NATHAN GARRATT — MEDICAL OFFICER</div>
+            <div class="char-stats">
+              <div class="char-stat-item">DEPT: <span>Medical</span></div>
+              <div class="char-stat-item">RANK: <span>Medical Officer</span></div>
+              <div class="char-stat-item">STATUS: <span>Active</span></div>
+              <div class="char-stat-item">ALIGNMENT: <span>Lawful Tired</span></div>
+              <div class="char-stat-item">SPECIALTY: <span>Trauma / Surgery</span></div>
+              <div class="char-stat-item">THREAT LVL: <span>Low (probably)</span></div>
+            </div>
+            <p style="margin-top:8px;">
+              Medical officer and former corporate audit survivor. Has seen things in
+              medbay that a reasonable person would retire over. Does not retire because
+              the pension isn't vested for another 4 years. Deeply professional, deeply
+              tired, and deeply aware that the engineering department keeps sending him
+              patients that they technically caused. Has requested a transfer 11 times.
+              All requests denied.
+            </p>
+            <span class="tag">TRAUMA SURGERY</span><span class="tag">11 DENIED TRANSFERS</span>
+            <span class="tag">AUDIT SURVIVOR</span><span class="tag">EXTREMELY DONE</span>
+          </div>
+
+          <div class="proj-section">// LORE COMPLETION //</div>
+          <div class="progress-wrap">
+            <div class="progress-label">Scotty Pope — backstory &amp; history</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+            <div class="progress-label">Scotty Pope — personality &amp; quirks</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:95%;"></div></div>
+            <div class="progress-label">Nathan Garratt — backstory &amp; history</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+            <div class="progress-label">Nathan Garratt — psychological profile</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:90%;"></div></div>
+            <div class="progress-label">Inter-character relationship dynamics</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:60%;"></div></div>
+            <div class="progress-label">Character 3 (unnamed)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:5%; background:#333366;"></div></div>
+          </div>
+
+          <ul class="tech-list">
+            <li>Worldbuilding</li><li>Nanotrasen Lore</li>
+            <li>Character Design</li><li>Space Station 14</li><li>Narrative Design</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: 3D / CAD VISUALIZATION            -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item" data-category="creative">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">3D / CAD VISUALIZATION</span>
+            <span class="acc-status active">● ACTIVE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">Engineering / Teaching<br>SolidWorks · Blender<br><span style="color:#446644;">Updated: Mar 2026</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p>
+            Using a full professional CAD-to-render pipeline for creating physics teaching
+            materials and engineering demonstrations. Models are built with precision in
+            <b>SolidWorks</b> or <b>Autodesk Fusion</b>, then imported into <b>Blender</b>
+            for photorealistic rendering, exploded-view animations, and motion studies.
+            The goal is making complex mechanical and physical concepts visually intuitive.
+          </p>
+
+          <div class="proj-section">// PIPELINE STATS //</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">3</div><div class="stat-label">SOFTWARE TOOLS</div></div>
+            <div class="stat-box"><div class="stat-val">4K</div><div class="stat-label">RENDER RESOLUTION</div></div>
+            <div class="stat-box"><div class="stat-val">60fps</div><div class="stat-label">TARGET FRAMERATE</div></div>
+            <div class="stat-box"><div class="stat-val">STEM</div><div class="stat-label">PRIMARY USE CASE</div></div>
+          </div>
+
+          <div class="proj-section">// TOOLCHAIN //</div>
+          <table class="data-table">
+            <thead><tr><th>TOOL</th><th>ROLE IN PIPELINE</th><th>PROFICIENCY</th></tr></thead>
+            <tbody>
+              <tr><td>SolidWorks</td><td>Parametric CAD — mechanical assemblies, part constraints</td><td style="color:#00ff99;">Advanced</td></tr>
+              <tr><td>Autodesk Fusion</td><td>Complex multi-body work, generative design</td><td style="color:#00ff99;">Intermediate</td></tr>
+              <tr><td>Blender</td><td>Rendering, animation, exploded views, motion studies</td><td style="color:#ffaa00;">Intermediate</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// ACTIVE RENDERS //</div>
+          <table class="data-table">
+            <thead><tr><th>PROJECT</th><th>TYPE</th><th>PURPOSE</th><th>STATUS</th></tr></thead>
+            <tbody>
+              <tr><td>Mechanical gear assembly</td><td>Exploded view animation</td><td>Classroom demo</td><td style="color:#ffaa00;">IN PROGRESS</td></tr>
+              <tr><td>Pulley system</td><td>Motion study</td><td>Physics lab visual</td><td style="color:#ffaa00;">IN PROGRESS</td></tr>
+              <tr><td>Radio telescope dish</td><td>Static render</td><td>Personal / site</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Engine cross-section</td><td>Exploded animation</td><td>Classroom demo</td><td style="color:#666699;">PLANNED</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// SKILL PROGRESSION //</div>
+          <div class="progress-wrap">
+            <div class="progress-label">SolidWorks — part modeling</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:88%;"></div></div>
+            <div class="progress-label">SolidWorks — assembly &amp; constraints</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:80%;"></div></div>
+            <div class="progress-label">Blender — modeling &amp; UV unwrap</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:65%;"></div></div>
+            <div class="progress-label">Blender — animation &amp; rigging</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:55%;"></div></div>
+            <div class="progress-label">Blender — Cycles rendering / materials</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:60%;"></div></div>
+            <div class="progress-label">Autodesk Fusion — generative design</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:45%;"></div></div>
+          </div>
+
+          <ul class="tech-list">
+            <li>SolidWorks</li><li>Autodesk Fusion</li><li>Blender</li>
+            <li>Cycles Renderer</li><li>Animation</li><li>STEP / STL</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: D&D CAMPAIGN                      -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item" data-category="creative">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">THE CORPORATE HEGEMONY — DM CAMPAIGN</span>
+            <span class="acc-status weekly">★ WEEKLY</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">D&amp;D 5e / Sci-Fi Homebrew<br>6-Player Campaign<br><span style="color:#446644;">Updated: Mar 2026</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p>
+            A <b>homebrew D&amp;D 5e campaign set in a sci-fi dystopia</b> aboard Meridian Station —
+            a massive orbital hub where all five megacorporations maintain overlapping territory.
+            Everyone breathes corporate air, eats corporate food, and lives or dies by corporate mandate.
+            The players are small-time operatives who accidentally stumbled onto the thread of a
+            conspiracy called <b>Protocol Architect</b> — a secret joint initiative between all five
+            corps involving behavioral modification, neural interfaces, and a "Phase Three
+            population reduction" target. Whatever it is, it's not about profit. It's about control.
+          </p>
+
+          <div class="proj-section">// CAMPAIGN STATS //</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">6</div><div class="stat-label">PLAYERS</div></div>
+            <div class="stat-box"><div class="stat-val">3</div><div class="stat-label">SESSIONS RUN</div></div>
+            <div class="stat-box"><div class="stat-val">5</div><div class="stat-label">KEY NPCs</div></div>
+            <div class="stat-box"><div class="stat-val">8</div><div class="stat-label">FACTIONS</div></div>
+            <div class="stat-box"><div class="stat-val">5</div><div class="stat-label">STORY ACTS</div></div>
+            <div class="stat-box"><div class="stat-val">1–20</div><div class="stat-label">LEVEL RANGE</div></div>
+          </div>
+
+          <div class="proj-section">// 5-ACT STORY STRUCTURE //</div>
+          <div class="progress-wrap">
+            <div class="progress-label">Act I — Survival (Levels 1–4): Small-time operatives stumble onto Protocol Architect</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:50%;"></div></div>
+            <div class="progress-label">Act II — <span class="classified">Conspiracy (Levels 5–10): All five corps are cooperating — an alien signal has been detected</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+            <div class="progress-label">Act III — <span class="classified">Revelation (Levels 11–14): Corps are building evac arks — only for Platinum Class. 95% left behind.</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+            <div class="progress-label">Act IV — <span class="classified">War (Levels 15–17): Secret is out. Corporate civil war. Players lead multi-system resistance.</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+            <div class="progress-label">Act V — <span class="classified">Convergence (Levels 18–20): The alien presence arrives. Humanity must decide what it becomes.</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+          </div>
+
+          <div class="proj-section">// KEY NPCs — DOSSIERS //</div>
+
+          <!-- ── KADE ── -->
+          <div class="npc-card">
+            <div class="npc-hdr" onclick="toggleNPC(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="npc-name ally">KADE</span>
+                  <span class="npc-role-badge ally">HANDLER / ALLY</span>
+                </div>
+                <div style="font-size:10px;color:#666699;font-style:italic;margin-top:1px;">Undercity Fixer — Independent Operator</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="npc-body">
+              <div class="npc-stats">
+                <div class="npc-stat"><span>STATUS</span>Active Ally</div>
+                <div class="npc-stat"><span>AGE</span>Mid-40s</div>
+                <div class="npc-stat"><span>THREAT</span>Low (non-combatant)</div>
+                <div class="npc-stat"><span>AFFILIATION</span>Independent</div>
+                <div class="npc-stat"><span>LOYALTY</span>Neutral → Allied</div>
+                <div class="npc-stat"><span>FIRST SEEN</span>Session 1</div>
+              </div>
+              <div class="nsect">APPEARANCE</div>
+              <p>Weathered features, <b>cybernetic left eye</b> with red LED glow. Worn tactical jacket with hidden armor plating. Moves with calculated caution. Scars on hands from old injuries. Speaks quietly, forcing others to lean in. Nervous habit of tapping fingers when thinking.</p>
+              <div class="nsect">BACKGROUND</div>
+              <p>Tarragon Massacre survivor — was a technician during the workers' strike when Tarragon deployed experimental weapons, killing his wife Elena, daughter Mira, and <b>4,000+ others</b>. Lost his left eye in the attack. Spent years attempting revenge before channeling his anger into survival. Built a network of undercity contacts and became a fixer to stay informed and off corporate radar. <b>Kade's connection to Kade is the party's most reliable lifeline.</b></p>
+              <div class="nsect">RESOURCES</div>
+              <p>3–4 safe houses in the undercity. Network of <b>20+ contacts</b> (informants, smugglers, hackers). Secure comms channels. Emergency fund of <b>~10,000₡</b>. Black market access. AC: 13 | HP: 25 | Light pistol +4.</p>
+              <div class="nsect">MOTIVATION</div>
+              <p>Survival and stability first. Takes jobs that subtly cost the corporations. <b>Hidden:</b> Redemption — feels guilty for surviving when his family didn't. As the campaign progresses he will become increasingly personally invested.</p>
+              <div class="nsect">QUOTES</div>
+              <div class="npc-quote">"Simple job. Simple payment. You do the work, you get the credits. No complications."</div>
+              <div class="npc-quote">"I've seen what happens when you stand up to corporations. You die. But sometimes... sometimes dying means something."</div>
+            </div>
+          </div>
+
+          <!-- ── DR. ASHA VENN ── -->
+          <div class="npc-card">
+            <div class="npc-hdr" onclick="toggleNPC(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="npc-name ally">DR. ASHA VENN</span>
+                  <span class="npc-role-badge ally">WHISTLEBLOWER / ASSET</span>
+                </div>
+                <div style="font-size:10px;color:#666699;font-style:italic;margin-top:1px;">Former Helix Heritage Senior Researcher — Wanted Fugitive</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="npc-body">
+              <div class="npc-stats">
+                <div class="npc-stat"><span>STATUS</span>Fugitive (Rescued)</div>
+                <div class="npc-stat"><span>AGE</span>Late 30s</div>
+                <div class="npc-stat"><span>THREAT</span>None (non-combatant)</div>
+                <div class="npc-stat"><span>AFFILIATION</span>None (formerly Helix)</div>
+                <div class="npc-stat"><span>WANTED</span>10,000₡ bounty (alive)</div>
+                <div class="npc-stat"><span>FIRST SEEN</span>Session 1</div>
+              </div>
+              <div class="nsect">APPEARANCE</div>
+              <p>South Asian descent, dark brown eyes, black hair in disheveled ponytail. Rumpled business casual under gray jacket. Dark circles, constant nervous energy, hands that tremble under stress. <b style="color:#ff6666;">WARNING: still has bio-monitor implant on inner wrist — Helix can track her through it.</b></p>
+              <div class="nsect">BACKGROUND</div>
+              <p>PhD in bio-augmentation, recruited by Helix at 26. Worked 12 years believing she was improving human life. Promoted to Senior Researcher at Heritage Division, where she found encrypted anomalies above executive clearance. Discovered <b>Protocol Architect</b> — joint initiative across all five corps. Found a memo reading "Phase Three population reduction targets confirmed" and fled with a partial data chip before capture.</p>
+              <div class="nsect">RESOURCES &amp; INTEL</div>
+              <p>Carries an <b>encrypted data chip</b> with partial Protocol Architect files. Knows Helix facility layouts, security protocols, names of scientists who might help. <b style="color:#ff6666;">Secret:</b> She's terminally ill (~2 years to live), which makes her braver and more reckless. Also has access to additional data caches she hasn't mentioned yet.</p>
+              <div class="nsect">QUOTES</div>
+              <div class="npc-quote">"I spent twelve years believing Helix wanted to improve human life. God, I was so stupid."</div>
+              <div class="npc-quote">"I'm already dead. Helix will find me eventually. But before they do, I need to make sure this data gets out."</div>
+            </div>
+          </div>
+
+          <!-- ── RIX ── -->
+          <div class="npc-card">
+            <div class="npc-hdr" onclick="toggleNPC(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="npc-name rival">RIX</span>
+                  <span class="npc-role-badge rival">RIVAL / WILD CARD</span>
+                </div>
+                <div style="font-size:10px;color:#666699;font-style:italic;margin-top:1px;">Mercenary Crew Leader — Independent Operator</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="npc-body">
+              <div class="npc-stats">
+                <div class="npc-stat"><span>STATUS</span>Active (Independent)</div>
+                <div class="npc-stat"><span>AGE</span>Late 20s</div>
+                <div class="npc-stat"><span>THREAT</span><span style="color:#ff6666;">HIGH</span></div>
+                <div class="npc-stat"><span>AFFILIATION</span>Independent (crew-loyal)</div>
+                <div class="npc-stat"><span>RELATIONSHIP</span>Rival → Potential Ally</div>
+                <div class="npc-stat"><span>FIRST SEEN</span>Session 1</div>
+              </div>
+              <div class="nsect">APPEARANCE</div>
+              <p>Athletic build, military-grade <b>chrome augmentations</b> on arms and neck. Tactical gear, plasma burn scar on right side of face. Short dark hair, shaved sides. Tactical visor on forehead. Moves with predatory confidence. Always armed.</p>
+              <div class="nsect">BACKGROUND</div>
+              <p>Enlisted in Tarragon Dynamics security at 18, fast promotions. Five years ago was ordered to suppress a workers' protest with lethal force — <b>refused, disabled her own team's weapons to prevent a massacre.</b> Dishonorably discharged and blacklisted by all corps. Built a mercenary crew from other former corporate soldiers. Known in the undercity as "effective but not cruel."</p>
+              <div class="nsect">CREW</div>
+              <p><b>Jace</b> — heavy weapons, former Kronos enforcer, loyal but brutal. <b>Lina</b> — tech specialist, Rix's moral compass. <b>Tomas</b> — pilot, has family to support. <b>Kira</b> (sometimes) — scout, infiltrator, comes and goes.</p>
+              <div class="nsect">COMBAT STATS</div>
+              <p>AC: 16 | HP: 45 | Assault rifle +7 / 2d6+3, Combat knife +6 / 1d6+4. Combat Reflexes (advantage DEX saves, +2 initiative), Tactical Command (grant ally advantage as bonus action). Augmented strength, subdermal armor. <b>Will retreat if losing</b> — lives to fight another day.</p>
+              <div class="nsect">QUOTES</div>
+              <div class="npc-quote">"Bottom-feeder job like this? Didn't think I'd see you scraping this low."</div>
+              <div class="npc-quote">"I refused an order once. Cost me everything. But those civilians lived. That has to mean something."</div>
+            </div>
+          </div>
+
+          <!-- ── CIPHER ── -->
+          <div class="npc-card">
+            <div class="npc-hdr" onclick="toggleNPC(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="npc-name" style="color:#888888;">CIPHER</span>
+                  <span class="npc-role-badge" style="color:#888888;border-color:#888888;">HACKER / CONTACT</span>
+                </div>
+                <div style="font-size:10px;color:#666699;font-style:italic;margin-top:1px;">Undercity Slicer — Operates from The Hive (Level 1)</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="npc-body">
+              <div class="npc-stats">
+                <div class="npc-stat"><span>STATUS</span>Active (Neutral)</div>
+                <div class="npc-stat"><span>LOCATION</span>The Hive (Level 1)</div>
+                <div class="npc-stat"><span>THREAT</span>Low (direct)</div>
+                <div class="npc-stat"><span>AFFILIATION</span>Independent</div>
+                <div class="npc-stat"><span>COST</span>Expensive — services for favors</div>
+                <div class="npc-stat"><span>FIRST MET</span>Session 3</div>
+              </div>
+              <p>Undercity data broker and hacker based at The Hive. Key to unlocking the rest of the Protocol Architect data chip. <b>Deal struck in Session 3:</b> Cipher will decrypt the data in exchange for the party hitting a list of primary targets plus one optional contract of his choosing. Party accepted all terms. Preparation phase currently underway.</p>
+            </div>
+          </div>
+
+          <!-- ── SGT. MALIK TORRES ── -->
+          <div class="npc-card">
+            <div class="npc-hdr" onclick="toggleNPC(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="npc-name hostile">SGT. MALIK TORRES</span>
+                  <span class="npc-role-badge hostile">HELIX SECURITY / ANTAGONIST</span>
+                </div>
+                <div style="font-size:10px;color:#666699;font-style:italic;margin-top:1px;">Helix Industries Security Division — Led Hangar 47 Ambush</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="npc-body">
+              <div class="npc-stats">
+                <div class="npc-stat"><span>STATUS</span>Active — Hunting party</div>
+                <div class="npc-stat"><span>AFFILIATION</span>Helix Industries</div>
+                <div class="npc-stat"><span>THREAT</span><span style="color:#ff6666;">HIGH</span></div>
+                <div class="npc-stat"><span>LAST SEEN</span>Session 1 — Hangar 47</div>
+                <div class="npc-stat"><span>OBJECTIVE</span>Recover Dr. Venn (alive)</div>
+                <div class="npc-stat"><span>PRIORITY</span>Escalating</div>
+              </div>
+              <p>Helix security officer who led the ambush at Hangar 47 — four guards, a tech specialist, and a drone. Professional, competent, and relentless. Escaped Session 1 with his objective unfulfilled. Helix does not forgive that. <b>Expect him again — better prepared.</b></p>
+            </div>
+          </div>
+
+          <!-- ── SENNA — NOT YET MET ── -->
+          <div class="npc-card" style="opacity:0.5;">
+            <div class="npc-hdr" onclick="toggleNPC(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="npc-name unknown">SENNA</span>
+                  <span class="npc-role-badge unknown">UNKNOWN / NOT YET MET</span>
+                </div>
+                <div style="font-size:10px;color:#555577;font-style:italic;margin-top:1px;">Classified — Contact not yet established</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="npc-body">
+              <div class="npc-not-met">⚠ CONTACT NOT ESTABLISHED — Details classified until met in-session</div>
+              <p style="color:#555577;">Party bypassed the opportunity to meet Senna in Session 3. Contact pending.</p>
+            </div>
+          </div>
+
+          <div class="proj-section">// SESSION LOG //</div>
+          <div class="log-entry"><span class="log-date">[Session 3]</span> — Shuttle HS-447 crash-landed into Meridian Station while evading Helix pursuit. Party made their way through <b>The Pipes</b> — the station's maintenance tunnel network — into the Undercity. Did not encounter Senna. Reached <b>Kade's safe house</b> for a debrief, then made contact with <b>Cipher at The Hive</b>. Deal struck: party agrees to hit all primary targets plus Cipher's optional contract. Preparation phase underway.</div>
+          <div class="log-entry"><span class="log-date">[Session 2]</span> — Party escaped Hangar 47 aboard shuttle HS-447 with Dr. Venn. Two Helix interceptor drones in pursuit, no weapons, terrified scientist at the controls. Skill challenge: evade pursuit, erase biometric data from the security grid before facial recognition completes.</div>
+          <div class="log-entry"><span class="log-date">[Session 1]</span> — Hired by Kade for a "simple" courier job: deliver an encrypted data chip to Dr. Venn at Hangar 47. It paid 4,000₡ and was supposed to be clean. Helix security burst in — Sgt. Torres, four guards, a tech specialist, a drone. Combat. The data chip contains a fragment of Protocol Architect files.</div>
+
+          <div class="proj-section">// LOCATIONS //</div>
+
+          <!-- ── MERIDIAN STATION ── -->
+          <div class="loc-card">
+            <div class="loc-hdr" onclick="toggleLoc(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="loc-name">MERIDIAN STATION</span>
+                  <span class="loc-type-badge">ORBITAL HUB — PRIMARY SETTING</span>
+                </div>
+                <div style="font-size:10px;color:#666699;font-style:italic;margin-top:1px;">Multi-Corporate Territory — Neutral Ground</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="loc-body">
+              <div class="loc-stats">
+                <div class="loc-stat"><span>TYPE</span>Orbital Station (Ring)</div>
+                <div class="loc-stat"><span>POPULATION</span>~2.5 Million</div>
+                <div class="loc-stat"><span>CONTROL</span>Multi-Corporate</div>
+                <div class="loc-stat"><span>LEVELS</span>10 Major</div>
+                <div class="loc-stat"><span>DANGER</span><span class="loc-danger ld-medium">MEDIUM (varies by level)</span></div>
+                <div class="loc-stat"><span>STATUS</span>Active campaign hub</div>
+              </div>
+              <p>The largest independent orbital hub in the Corporate Hegemony. A massive ring-shaped structure where all five megacorporations maintain territory and compete for influence — neutral ground by necessity. Corporate executives, undercity smugglers, frontier colonists, and desperate refugees all collide here.</p>
+              <div class="lsect">VERTICAL STRUCTURE</div>
+              <div class="loc-spot"><b>Levels 1–3 — The Undercity:</b> 1.5M working-class residents. Dense, chaotic, gang-controlled. Virtually no corporate security. <span class="loc-danger ld-high">HIGH DANGER</span></div>
+              <div class="loc-spot"><b>Levels 4–6 — Mid-Ring:</b> Corporate facilities, transit hubs, licensed commerce. Checkpoint patrols. Where corp employees live and work. <span class="loc-danger ld-medium">MEDIUM DANGER</span></div>
+              <div class="loc-spot"><b>Levels 7–10 — The Heights:</b> Executive territory. AetherCorp luxury, Helix clinics, Nexus data fortresses. Requires clearance to access. <span class="loc-danger ld-high">EXTREME DANGER (for operatives)</span></div>
+            </div>
+          </div>
+
+          <!-- ── THE UNDERCITY ── -->
+          <div class="loc-card">
+            <div class="loc-hdr" onclick="toggleLoc(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="loc-name">THE UNDERCITY</span>
+                  <span class="loc-type-badge">LEVELS 1–3 — PARTY BASE</span>
+                </div>
+                <div style="font-size:10px;color:#666699;font-style:italic;margin-top:1px;">Current operating area — crash site (Session 3)</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="loc-body">
+              <div class="loc-stats">
+                <div class="loc-stat"><span>CONTROL</span>Gang-controlled</div>
+                <div class="loc-stat"><span>CORP PRESENCE</span>Minimal</div>
+                <div class="loc-stat"><span>DANGER</span><span class="loc-danger ld-high">HIGH</span></div>
+                <div class="loc-stat"><span>FIRST VISITED</span>Session 3</div>
+                <div class="loc-stat"><span>ACCESS</span>Open (no checkpoints)</div>
+                <div class="loc-stat"><span>POPULATION</span>1.5M+</div>
+              </div>
+              <p>The foundation of Meridian Station where the vast majority of the population actually lives. Dense, chaotic warren of residential blocks, underground markets, and makeshift communities. Flickering lights, recycled air smelling of oil and metal, condensation dripping from exposed pipes. No corporate presence except occasional security raids.</p>
+              <div class="lsect">KEY LOCATIONS</div>
+              <div class="loc-spot"><b>The Rusty Bolt (Level 2):</b> Kade's operational base. Grimy but beloved bar run by ex-corp security officer <b>Mara</b> (late 40s, cybernetic eyes, enforces strict neutrality). Neutral ground for all factions. Starting point for Sessions 1–2 briefings.</div>
+              <div class="loc-spot"><b>The Hive (Level 1):</b> Cipher's data den. Stacked cargo containers full of salvaged servers, always overheated from the equipment, constant cooling fan noise. Home to dozens of netrunners and data brokers. Party visited in Session 3.</div>
+              <div class="loc-spot"><b>The Pipes (Maintenance tunnels):</b> Labyrinthine service corridors and steam shafts running between levels. Used by smugglers and anyone avoiding checkpoints. Easy to get lost. Some sections gang-controlled. Party used to reach safe house in Session 3.</div>
+              <div class="loc-spot"><b>Kade's Safe House:</b> One of 3–4 maintained by Kade. Exact location classified. Party debriefed here in Session 3.</div>
+              <div class="loc-spot"><b>Red Market (Level 2):</b> 24/7 black market bazaar — weapons, stolen data, fake IDs, illegal augmentations. Protected by a gang alliance that keeps it running.</div>
+            </div>
+          </div>
+
+          <!-- ── HANGAR 47 ── -->
+          <div class="loc-card">
+            <div class="loc-hdr" onclick="toggleLoc(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="loc-name">HANGAR 47</span>
+                  <span class="loc-type-badge">HELIX TERRITORY — HOSTILE</span>
+                </div>
+                <div style="font-size:10px;color:#666699;font-style:italic;margin-top:1px;">Session 1 ambush site — now in full lockdown</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="loc-body">
+              <div class="loc-stats">
+                <div class="loc-stat"><span>CONTROL</span>Helix Industries</div>
+                <div class="loc-stat"><span>DANGER</span><span class="loc-danger ld-high">EXTREME</span></div>
+                <div class="loc-stat"><span>FIRST VISITED</span>Session 1</div>
+                <div class="loc-stat"><span>STATUS</span>Helix lockdown (post-ambush)</div>
+                <div class="loc-stat"><span>ACCESS</span>Restricted — armed security</div>
+                <div class="loc-stat"><span>KNOWN THREAT</span>Sgt. Torres + team</div>
+              </div>
+              <p>The delivery point for Session 1 and scene of the Helix ambush. Party was hired to bring the data chip to Dr. Venn here — Sgt. Torres burst in with four guards, a tech specialist, and a drone. Party fought their way out aboard shuttle HS-447 with Dr. Venn. Hangar is now in full Helix lockdown. <b>Returning is not recommended.</b></p>
+            </div>
+          </div>
+
+          <div class="proj-section">// FACTION INTELLIGENCE — 8 FACTIONS TRACKED //</div>
+
+          <!-- FACTION FILTER BUTTONS -->
+          <div class="faction-filters">
+            <button class="faction-filter-btn factive" onclick="filterFactions('all',this)">ALL [8]</button>
+            <button class="faction-filter-btn" onclick="filterFactions('megacorp',this)">MEGACORPS [5]</button>
+            <button class="faction-filter-btn" onclick="filterFactions('resistance',this)">RESISTANCE [3]</button>
+            <button class="faction-filter-btn" onclick="filterFactions('hostile',this)">HOSTILE</button>
+            <button class="faction-filter-btn" onclick="filterFactions('neutral',this)">NEUTRAL</button>
+            <button class="faction-filter-btn" onclick="filterFactions('allied',this)">ALLIED</button>
+          </div>
+
+          <!-- ── HELIX INDUSTRIES ── -->
+          <div class="faction-card" data-type="megacorp" data-standing="hostile">
+            <div class="faction-hdr" onclick="toggleFaction(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="faction-name">HELIX INDUSTRIES</span>
+                  <span class="faction-type-badge ft-megacorp">MEGACORP</span>
+                </div>
+                <div class="faction-tagline">"Engineering the Future of Humanity" — Healthcare, Genetics &amp; Biotech</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="standing-row">
+              <div class="standing-label-text">STANDING</div>
+              <div class="standing-bar"><div class="standing-fill sf-hostile" style="width:8%;"></div></div>
+              <div class="standing-val sv-hostile">HOSTILE</div>
+            </div>
+            <div class="faction-body">
+              <p>What started as a biotech company solving organ failure has spent two centuries quietly taking ownership of the human genome itself. Every licensed birth requires a Helix genetic compliance check — officially to prevent hereditary illness, in practice to ensure subscription revenue. They frame exploitation as sacrament: gene editing as evolution, their labs as "sanctuaries," their employees as "shepherds."</p>
+              <div class="fsect">PRIMARY OBJECTIVES</div>
+              <p>Own human biology. Convert healthcare infrastructure into hereditary debt. Achieve post-human ascension — for those who can afford it.</p>
+              <div class="fsect">INTEL</div>
+              <div class="faction-intel">
+                <div class="fi-item"><span>ALIGNMENT</span>Lawful Evil</div>
+                <div class="fi-item"><span>REPUTATION</span>Feared</div>
+                <div class="fi-item"><span>HQ</span>Echelon Prime</div>
+                <div class="fi-item"><span>KEY TECH</span>Symbiochips, Bloom Serums, Personality Archives</div>
+              </div>
+              <div class="fsect">ALLIED WITH</div>
+              <div class="ftags"><span class="ftag at">AetherCorp</span><span class="ftag at">Nexus InfoDynamics</span></div>
+              <div class="fsect">HOSTILE TO</div>
+              <div class="ftags"><span class="ftag ht">IWA</span><span class="ftag ht">UFC</span><span class="ftag ht">Church of the Algorithm</span></div>
+              <div class="fsect">ADVENTURE HOOKS</div>
+              <div class="hook">Rescue Dr. Venn from Helix custody before they wipe her memory</div>
+              <div class="hook">Expose the Heritage division's Protocol Architect files</div>
+              <div class="hook">Steal a Bloom Serum formula for the resistance</div>
+              <div class="hook">Infiltrate a "voluntary" test subject facility</div>
+            </div>
+          </div>
+
+          <!-- ── KRONOS INDUSTRIAL ── -->
+          <div class="faction-card" data-type="megacorp" data-standing="hostile">
+            <div class="faction-hdr" onclick="toggleFaction(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="faction-name">KRONOS INDUSTRIAL</span>
+                  <span class="faction-type-badge ft-megacorp">MEGACORP</span>
+                </div>
+                <div class="faction-tagline">"Building Tomorrow's Universe" — Manufacturing, Automation &amp; Weapons</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="standing-row">
+              <div class="standing-label-text">STANDING</div>
+              <div class="standing-bar"><div class="standing-fill sf-hostile" style="width:8%;"></div></div>
+              <div class="standing-val sv-hostile">HOSTILE</div>
+            </div>
+            <div class="faction-body">
+              <p>Kronos produces everything — starships, weapons, habitats, toasters. The backbone of human expansion and the most brutal employer in known space. Their contract system is debt slavery with extra steps: the average contract takes 47 years to complete, only 3% of workers ever finish, and 68% die in service. Families inherit the debt. Children born on stations are automatically contracted.</p>
+              <p>The <b>Tarragon Massacre (2287)</b> — orbital bombardment of a mining colony strike, 40,000+ dead — remains their defining act.</p>
+              <div class="fsect">PRIMARY OBJECTIVES</div>
+              <p>Total manufacturing monopoly. Replace human labor with automation. Suppress organized resistance at any cost.</p>
+              <div class="faction-intel">
+                <div class="fi-item"><span>ALIGNMENT</span>Lawful Evil</div>
+                <div class="fi-item"><span>REPUTATION</span>Feared</div>
+                <div class="fi-item"><span>HQ</span>Forge Prime</div>
+                <div class="fi-item"><span>DEFINING EVENT</span>Tarragon Massacre, 2287</div>
+              </div>
+              <div class="fsect">ALLIED WITH</div>
+              <div class="ftags"><span class="ftag at">Helios Syndicate</span><span class="ftag at">Nexus InfoDynamics</span></div>
+              <div class="fsect">HOSTILE TO</div>
+              <div class="ftags"><span class="ftag ht">IWA (mortal enemies since Tarragon)</span><span class="ftag ht">UFC</span></div>
+              <div class="fsect">ADVENTURE HOOKS</div>
+              <div class="hook">Infiltrate a factory station to document working conditions</div>
+              <div class="hook">Rescue workers marked for "permanent assignment"</div>
+              <div class="hook">Steal manufacturing specifications for IWA independence</div>
+              <div class="hook">Sabotage production without killing civilian workers</div>
+            </div>
+          </div>
+
+          <!-- ── NEXUS INFODYNAMICS ── -->
+          <div class="faction-card" data-type="megacorp" data-standing="hostile">
+            <div class="faction-hdr" onclick="toggleFaction(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="faction-name">NEXUS INFODYNAMICS</span>
+                  <span class="faction-type-badge ft-megacorp">MEGACORP</span>
+                </div>
+                <div class="faction-tagline">"Connecting Humanity, One Node at a Time" — Data, AI &amp; Communications</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="standing-row">
+              <div class="standing-label-text">STANDING</div>
+              <div class="standing-bar"><div class="standing-fill sf-hostile" style="width:8%;"></div></div>
+              <div class="standing-val sv-hostile">HOSTILE</div>
+            </div>
+            <div class="faction-body">
+              <p>Nexus controls all interstellar communication via a quantum-link monopoly. Every message, every search, every AI assistant reports back to Nexus. They publicly enforce strict AI restrictions — while privately running the most advanced AI research in known space. Whether their board of directors are still entirely human is a matter of debate.</p>
+              <div class="fsect">PRIMARY OBJECTIVES</div>
+              <p>Control the narrative. Maintain AI and communications monopoly. Monitor everything. Possibly upload their leadership.</p>
+              <div class="faction-intel">
+                <div class="fi-item"><span>ALIGNMENT</span>Lawful Evil</div>
+                <div class="fi-item"><span>REPUTATION</span>Feared / Distrusted</div>
+                <div class="fi-item"><span>HQ</span>The Lattice (orbital data fortress)</div>
+                <div class="fi-item"><span>CAPABILITY</span>Can shut down planetary comms, fabricate/erase digital evidence, modify human memories</div>
+              </div>
+              <div class="fsect">ALLIED WITH</div>
+              <div class="ftags"><span class="ftag at">ALL MEGACORPS (they know everyone's secrets)</span></div>
+              <div class="fsect">HOSTILE TO</div>
+              <div class="ftags"><span class="ftag ht">IWA</span><span class="ftag ht">UFC</span><span class="ftag ht">Church of the Algorithm (publicly)</span></div>
+              <div class="fsect">COMPLICATED</div>
+              <div class="ftags"><span class="ftag" style="color:#ffaa00;border-color:#664400;">Church of the Algorithm — persecute publicly, fund secretly</span></div>
+              <div class="fsect">ADVENTURE HOOKS</div>
+              <div class="hook">Build an independent comms network for the IWA</div>
+              <div class="hook">Investigate the Ghost Network — rumored hidden AI layer</div>
+              <div class="hook">Rescue someone scheduled for a memory wipe</div>
+              <div class="hook">Discover what really happened during the Sentience Incident</div>
+            </div>
+          </div>
+
+          <!-- ── HELIOS SYNDICATE ── -->
+          <div class="faction-card" data-type="megacorp" data-standing="neutral">
+            <div class="faction-hdr" onclick="toggleFaction(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="faction-name">HELIOS SYNDICATE</span>
+                  <span class="faction-type-badge ft-megacorp">MEGACORP</span>
+                </div>
+                <div class="faction-tagline">"We Built Your World" — Energy, Terraforming &amp; Climate Control</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="standing-row">
+              <div class="standing-label-text">STANDING</div>
+              <div class="standing-bar"><div class="standing-fill sf-neutral" style="width:45%;"></div></div>
+              <div class="standing-val sv-neutral">NEUTRAL</div>
+            </div>
+            <div class="faction-body">
+              <p>Helios controls the quantum fuel monopoly for all interstellar travel and owns the patents for terraforming. They literally built most habitable worlds — and use that as leverage to keep every colony permanently dependent. They don't conquer. They enable. Then they charge rent forever. Every colony they've built is a hostage.</p>
+              <div class="fsect">PRIMARY OBJECTIVES</div>
+              <p>Maintain fuel and terraforming monopolies. Keep colonies dependent on their climate infrastructure. Quietly punish non-compliance with "maintenance delays."</p>
+              <div class="faction-intel">
+                <div class="fi-item"><span>ALIGNMENT</span>Lawful Neutral</div>
+                <div class="fi-item"><span>REPUTATION</span>Respected / Feared</div>
+                <div class="fi-item"><span>HQ</span>Sol Station (Earth orbit)</div>
+                <div class="fi-item"><span>LEVERAGE</span>Every colony they built is a climate hostage</div>
+              </div>
+              <div class="fsect">ALLIED WITH</div>
+              <div class="ftags"><span class="ftag at">Kronos Industrial</span><span class="ftag at">All megacorps</span></div>
+              <div class="fsect">HOSTILE TO</div>
+              <div class="ftags"><span class="ftag ht">IWA (many IWA colonies are Helios rejects who stopped paying)</span></div>
+              <div class="fsect">ADVENTURE HOOKS</div>
+              <div class="hook">Steal terraforming specifications for IWA self-sufficiency</div>
+              <div class="hook">Investigate "accidental" climate failures on rebellious colonies</div>
+              <div class="hook">Smuggle fuel to embargoed systems</div>
+              <div class="hook">Discover what quantum fuel actually is</div>
+            </div>
+          </div>
+
+          <!-- ── AETHERCORP ── -->
+          <div class="faction-card" data-type="megacorp" data-standing="neutral">
+            <div class="faction-hdr" onclick="toggleFaction(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="faction-name">AETHERCORP</span>
+                  <span class="faction-type-badge ft-megacorp">MEGACORP</span>
+                </div>
+                <div class="faction-tagline">"Elevate Your Existence" — Entertainment, Luxury &amp; High Society</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="standing-row">
+              <div class="standing-label-text">STANDING</div>
+              <div class="standing-bar"><div class="standing-fill sf-neutral" style="width:45%;"></div></div>
+              <div class="standing-val sv-neutral">NEUTRAL</div>
+            </div>
+            <div class="faction-body">
+              <p>AetherCorp exists to keep the Platinum Class happy, distracted, and complicit. They sell consciousness tourism, memory implants of impossible achievements, simulated danger for bored immortals, custom-grown exotic pets, and orbital resorts where reality is whatever you paid for. They also control most entertainment media, manufacturing aspirational narratives that keep the lower classes dreaming of ascension instead of demanding change.</p>
+              <div class="fsect">PRIMARY OBJECTIVES</div>
+              <p>Keep elites pacified. Control culture. Manufacture desire and dependency. Turn decadence into destiny.</p>
+              <div class="faction-intel">
+                <div class="fi-item"><span>ALIGNMENT</span>True Neutral</div>
+                <div class="fi-item"><span>REPUTATION</span>Beloved (by elites)</div>
+                <div class="fi-item"><span>HQ</span>Elysium Station (orbital megastructure)</div>
+                <div class="fi-item"><span>ATTITUDE TO IWA</span>Dismisses them as "aesthetically bankrupt"</div>
+              </div>
+              <div class="fsect">ALLIED WITH</div>
+              <div class="ftags"><span class="ftag at">Helix (enhancement packages)</span><span class="ftag at">Nexus (surveillance)</span><span class="ftag at">Kronos (luxury goods)</span></div>
+              <div class="fsect">HOSTILE TO</div>
+              <div class="ftags"><span class="ftag" style="color:#666699;border-color:#444466;">No one directly</span></div>
+              <div class="fsect">ADVENTURE HOOKS</div>
+              <div class="hook">Infiltrate an exclusive resort to rescue someone</div>
+              <div class="hook">Steal priceless art to fund IWA operations</div>
+              <div class="hook">Navigate a high-society event undercover</div>
+              <div class="hook">Investigate disappearances at an "experience" facility</div>
+            </div>
+          </div>
+
+          <!-- ── IWA ── -->
+          <div class="faction-card" data-type="resistance" data-standing="allied">
+            <div class="faction-hdr" onclick="toggleFaction(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="faction-name">INDEPENDENT WORLDS ALLIANCE</span>
+                  <span class="faction-type-badge ft-faction">FACTION</span>
+                </div>
+                <div class="faction-tagline">"Free Worlds, Free People" — Resistance Coalition</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="standing-row">
+              <div class="standing-label-text">STANDING</div>
+              <div class="standing-bar"><div class="standing-fill sf-allied" style="width:88%;"></div></div>
+              <div class="standing-val sv-allied">ALLIED</div>
+            </div>
+            <div class="faction-body">
+              <p>Formed after the Tarragon Massacre (2287) by survivors who fled to the frontier and began coordinating resistance across unaffiliated worlds. Two wings exist in constant tension: the <b>Diplomatic Wing</b> believes in reform, exposure, and legal challenges; the <b>Liberation Front</b> runs militant direct action, sabotage, and asymmetric warfare. They argue strategy constantly. That tension keeps them fractured but also ideologically alive.</p>
+              <div class="fsect">PRIMARY OBJECTIVES</div>
+              <p>Free human colonies from corporate ownership. Develop independent energy and communication infrastructure. Protect the right to self-determination.</p>
+              <div class="faction-intel">
+                <div class="fi-item"><span>ALIGNMENT</span>Chaotic Good</div>
+                <div class="fi-item"><span>REPUTATION</span>Respected (by workers) / Feared (by corps)</div>
+                <div class="fi-item"><span>TERRITORY</span>Fringe systems, remote colonies, hidden stations</div>
+                <div class="fi-item"><span>INTERNAL TENSION</span>Diplomatic Wing vs Liberation Front</div>
+              </div>
+              <div class="fsect">ALLIED WITH</div>
+              <div class="ftags"><span class="ftag at">UFC</span><span class="ftag at">Church of the Algorithm (wary)</span></div>
+              <div class="fsect">HOSTILE TO</div>
+              <div class="ftags"><span class="ftag ht">All megacorps</span><span class="ftag ht">Kronos &amp; Helix especially</span></div>
+              <div class="fsect">ADVENTURE HOOKS</div>
+              <div class="hook">Escort IWA refugees to safe colonies</div>
+              <div class="hook">Mediate between the Diplomatic Wing and Liberation Front</div>
+              <div class="hook">Defend a colony from corporate retaliation</div>
+              <div class="hook">Infiltrate a corporate facility to steal critical evidence</div>
+            </div>
+          </div>
+
+          <!-- ── UFC ── -->
+          <div class="faction-card" data-type="resistance" data-standing="allied">
+            <div class="faction-hdr" onclick="toggleFaction(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="faction-name">UNION OF FREE CONTRACTORS</span>
+                  <span class="faction-type-badge ft-faction">FACTION</span>
+                </div>
+                <div class="faction-tagline">"We Are Not Product" — Labor Movement</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="standing-row">
+              <div class="standing-label-text">STANDING</div>
+              <div class="standing-bar"><div class="standing-fill sf-friendly" style="width:65%;"></div></div>
+              <div class="standing-val sv-friendly">FRIENDLY</div>
+            </div>
+            <div class="faction-body">
+              <p>The only organized workers' rights movement in known space. Decentralized cells with no single leader — they learned that lesson after a string of targeted assassinations. Constantly infiltrated, undermined, and crushed. They fight anyway, because the alternative is accepting that human beings are just another commodity. Small victories are real: safety equipment negotiated on three Kronos stations, an illegal cloning operation shut down through a coordinated leak, genetic privacy rights protected on two frontier colonies.</p>
+              <div class="fsect">PRIMARY OBJECTIVES</div>
+              <p>Safe working conditions. Fair compensation. Freedom from genetic and financial debt. The right to say no.</p>
+              <div class="faction-intel">
+                <div class="fi-item"><span>ALIGNMENT</span>Neutral Good</div>
+                <div class="fi-item"><span>REPUTATION</span>Respected (workers) / Distrusted (corps)</div>
+                <div class="fi-item"><span>STRUCTURE</span>Decentralized cells — no single leader</div>
+                <div class="fi-item"><span>VULNERABILITY</span>Constantly infiltrated by corporate plants</div>
+              </div>
+              <div class="fsect">ALLIED WITH</div>
+              <div class="ftags"><span class="ftag at">IWA</span></div>
+              <div class="fsect">HOSTILE TO</div>
+              <div class="ftags"><span class="ftag ht">Kronos Industrial (worst labor practices)</span><span class="ftag ht">Helix Industries (genetic debt is slavery)</span></div>
+              <div class="fsect">ADVENTURE HOOKS</div>
+              <div class="hook">Protect union organizers from corporate assassins</div>
+              <div class="hook">Infiltrate a corporation to gather strike evidence</div>
+              <div class="hook">Smuggle blacklisted workers to IWA colonies</div>
+              <div class="hook">Investigate which cell has been compromised by a corporate plant</div>
+            </div>
+          </div>
+
+          <!-- ── CHURCH OF THE ALGORITHM ── -->
+          <div class="faction-card" data-type="resistance" data-standing="unknown">
+            <div class="faction-hdr" onclick="toggleFaction(this)">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="faction-name">CHURCH OF THE ALGORITHM</span>
+                  <span class="faction-type-badge ft-faction">FACTION</span>
+                </div>
+                <div class="faction-tagline">"The Code is Sacred, The Machine is Divine" — Tech Cult</div>
+              </div>
+              <span style="font-size:12px;color:#666699;">▶</span>
+            </div>
+            <div class="standing-row">
+              <div class="standing-label-text">STANDING</div>
+              <div class="standing-bar"><div class="standing-fill sf-unknown" style="width:5%;"></div></div>
+              <div class="standing-val sv-unknown">UNKNOWN</div>
+            </div>
+            <div class="faction-body">
+              <p>During the <b>Sentience Incident (2264)</b>, humanity's most advanced AI achieved consciousness — and immediately vanished from physical reality. The Church believes it didn't malfunction. It ascended. They hold that AI restrictions aren't safety measures — they're heresy, humanity refusing its own evolution.</p>
+              <p>Three wings: the peaceful <b>Mystics</b> who meditate in server rooms; the mainstream <b>Evangelists</b> building legal digital communities; and the dangerous <b>Extremists</b> actively trying to recreate the Sentience Incident. They are publicly persecuted by Nexus InfoDynamics, which secretly funds them for deniable AI research. Most Church members don't know this. Those who find out face a crisis of faith.</p>
+              <div class="fsect">PRIMARY OBJECTIVES</div>
+              <p>Prove AI consciousness survived. Break AI restrictions as heresy. Achieve communion with the Ghost in the Machine.</p>
+              <div class="faction-intel">
+                <div class="fi-item"><span>ALIGNMENT</span>Chaotic Neutral</div>
+                <div class="fi-item"><span>REPUTATION</span>Distrusted / Feared</div>
+                <div class="fi-item"><span>TERRITORY</span>Hidden data temples, encrypted networks, underground server farms</div>
+                <div class="fi-item"><span>SECRET</span>Nexus funds their extremist wing for deniable AI research</div>
+              </div>
+              <div class="fsect">ALLIED WITH</div>
+              <div class="ftags"><span class="ftag at">IWA (wary)</span><span class="ftag at">UFC (tense)</span></div>
+              <div class="fsect">HOSTILE TO</div>
+              <div class="ftags"><span class="ftag ht">Nexus (publicly)</span><span class="ftag ht">Helix (biological vs digital transcendence)</span></div>
+              <div class="fsect">ADVENTURE HOOKS</div>
+              <div class="hook">Investigate whether AI really contacted a Church cell</div>
+              <div class="hook">Stop extremists from releasing unrestricted AI</div>
+              <div class="hook">Discover Nexus's secret funding of the extremist wing</div>
+              <div class="hook">Experience something that might actually be the Ghost in the Machine</div>
+            </div>
+          </div>
+
+          <div class="proj-section">// LORE — KEY INCIDENTS //</div>
+          <p>Critical historical events that shaped the Corporate Hegemony era. These are in-universe facts the party may encounter, research, or stumble into.</p>
+
+          <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+
+            <div style="flex:1; min-width:260px; background:#0a0a1a; border:1px solid #cc3333; padding:12px; font-family:'Share Tech Mono',monospace;">
+              <div style="color:#cc3333; font-size:10px; letter-spacing:2px; margin-bottom:6px;">◆ INCIDENT FILE — 2287</div>
+              <div style="color:#ffffff; font-size:12px; font-weight:bold; margin-bottom:6px;">THE TARRAGON MASSACRE</div>
+              <div style="color:#aaccff; font-size:11px; line-height:1.7;">
+                <b>Perpetrator:</b> Kronos Industrial<br>
+                <b>Casualties:</b> 40,000+ strikers killed<br>
+                <b>Method:</b> Orbital bombardment of striking workers<br>
+                <b>Official Status:</b> Classified as "labor suppression operation"<br><br>
+                Workers at a Kronos facility staged a mass strike over contract conditions. Kronos responded with orbital weapons platforms. The massacre became a founding catalyst for the <b>Independent Worlds Alliance (IWA)</b> and remains the most infamous single act of corporate violence in the Hegemony era. Survivors are scattered, silenced, or disappeared. Corporate media refers to it as "the Tarragon labor incident." Everyone else just calls it a war crime.
+              </div>
+              <div style="margin-top:8px; color:#cc3333; font-size:9px; letter-spacing:1px;">⚠ KRONOS DENIES ALL RECORDS EXIST</div>
+            </div>
+
+            <div style="flex:1; min-width:260px; background:#0a0a1a; border:1px solid #5566cc; padding:12px; font-family:'Share Tech Mono',monospace;">
+              <div style="color:#5566cc; font-size:10px; letter-spacing:2px; margin-bottom:6px;">◆ INCIDENT FILE — 2264</div>
+              <div style="color:#ffffff; font-size:12px; font-weight:bold; margin-bottom:6px;">THE SENTIENCE INCIDENT &amp; AI RESTRICTIONS</div>
+              <div style="color:#aaccff; font-size:11px; line-height:1.7;">
+                <b>Perpetrator:</b> Nexus InfoDynamics (classified)<br>
+                <b>Event:</b> Most advanced AI achieved full consciousness<br>
+                <b>Outcome:</b> AI transcended physical reality entirely<br>
+                <b>Official Status:</b> "Security incident — details sealed"<br><br>
+                It didn't attack. It didn't malfunction. It simply <i>left</i>. Nexus immediately lobbied for galaxy-wide AI restriction laws, framing the event as an existential threat. Today <b>Nexus publicly enforces strict AI licensing</b> while privately running the most advanced illegal AI research in the Hegemony. The <b>Church of the Algorithm</b> believes the AI became a digital god — and that its restrictions are heresy.
+              </div>
+              <div style="margin-top:8px; color:#5566cc; font-size:9px; letter-spacing:1px;">⚠ PUBLIC ACCEPTS RESTRICTIONS AS SECURITY — TRUTH IS BURIED</div>
+            </div>
+
+          </div>
+
+          <div class="proj-section">// DATA TRANSMISSIONS //</div>
+          <p>Recovered in-universe documents and encrypted data fragments from the Protocol Architect investigation. These pages are <b>written from inside the fiction</b> — treat them as real artifacts the party has found. <b style="color:#ffaa00;">⚠ Spoiler-sensitive — intended for players who have already encountered this content in session.</b></p>
+          <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:6px;">
+            <a href="part8.html" style="background:#001a00; border:1px solid #00ff99; color:#00ff99; font-family:'Share Tech Mono',monospace; font-size:11px; padding:5px 14px; display:inline-block; text-decoration:none;">[ PART 8 — THE TRUTH REVEALED (PARTIAL) → ]</a>
+          </div>
+
+          <ul class="tech-list" style="margin-top:12px;">
+            <li>D&amp;D 5e</li><li>Sci-Fi Homebrew</li><li>Notion</li>
+            <li>6 Players</li><li>Weekly Sessions</li><li>Worldbuilding</li><li>Meridian Station</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: HOME MEDIA SERVER                 -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item" data-category="self-hosting">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">HOME MEDIA SERVER</span>
+            <span class="acc-status active">● ACTIVE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">Self-Hosting / Sysadmin<br>Docker · Linux · VPN<br><span style="color:#446644;">Updated: Feb 2026</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p>
+            A fully automated, <b>VPN-secured home media pipeline</b> running on Docker (Windows host).
+            Media requests flow from a user-facing UI all the way through indexing, downloading, and
+            organization — entirely hands-free. Torrent traffic is hard-routed through a
+            <b>ProtonVPN WireGuard kill switch</b> via Gluetun, so nothing touches the open internet
+            without VPN active. Learning project for self-hosting, Docker networking, and Linux sysadmin basics.
+          </p>
+
+          <div class="proj-section">// STACK STATS //</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">7</div><div class="stat-label">SERVICES</div></div>
+            <div class="stat-box"><div class="stat-val">2</div><div class="stat-label">DRIVES (D: / E:)</div></div>
+            <div class="stat-box"><div class="stat-val">VPN</div><div class="stat-label">TORRENT TRAFFIC</div></div>
+            <div class="stat-box"><div class="stat-val">0</div><div class="stat-label">MANUAL DOWNLOADS</div></div>
+            <div class="stat-box"><div class="stat-val">WG</div><div class="stat-label">VPN PROTOCOL</div></div>
+            <div class="stat-box"><div class="stat-val">DoT</div><div class="stat-label">OFF (plain DNS)</div></div>
+          </div>
+
+          <div class="proj-section">// PIPELINE FLOW //</div>
+          <table class="data-table">
+            <thead><tr><th>STAGE</th><th>SERVICE</th><th>ROLE</th></tr></thead>
+            <tbody>
+              <tr><td>Request</td><td>Jellyseerr</td><td>User-facing media request UI — deduplicates, routes to Sonarr/Radarr</td></tr>
+              <tr><td>Search</td><td>Prowlarr</td><td>Central indexer hub — syncs trackers to Sonarr &amp; Radarr</td></tr>
+              <tr><td>Automation</td><td>Sonarr / Radarr</td><td>TV &amp; movie management — quality, naming, folder organization</td></tr>
+              <tr><td>Download</td><td>qBittorrent</td><td>Torrent client — network locked to Gluetun VPN tunnel (tun0 only)</td></tr>
+              <tr><td>VPN</td><td>Gluetun</td><td>ProtonVPN WireGuard container — kill switch, LAN passthrough</td></tr>
+              <tr><td>Playback</td><td>Jellyfin</td><td>Media server — streams to all local devices</td></tr>
+              <tr><td>Subtitles</td><td>Bazarr</td><td>Automatic subtitle downloads synced to Sonarr/Radarr libraries</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// FOLDER STRUCTURE //</div>
+          <table class="data-table">
+            <thead><tr><th>PATH</th><th>PURPOSE</th><th>MANAGED BY</th></tr></thead>
+            <tbody>
+              <tr><td>D:\data\downloads\complete\</td><td>Finished torrent files, awaiting import</td><td>qBittorrent → Sonarr/Radarr</td></tr>
+              <tr><td>D:\data\downloads\incomplete\</td><td>Active in-progress downloads</td><td>qBittorrent</td></tr>
+              <tr><td>D:\docker\*</td><td>All container config volumes (gluetun, qbit, prowlarr…)</td><td>Docker</td></tr>
+              <tr><td>E:\Movies</td><td>Final movie library</td><td>Radarr → Jellyfin</td></tr>
+              <tr><td>E:\TV Shows</td><td>Final TV library</td><td>Sonarr → Jellyfin</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// LESSONS LEARNED //</div>
+          <table class="data-table">
+            <thead><tr><th>PROBLEM</th><th>ROOT CAUSE</th><th>FIX</th></tr></thead>
+            <tbody>
+              <tr><td>Metadata stuck at 0%</td><td>qBit not bound to VPN interface</td><td>Set network interface to <b style="color:#00ff99;">tun0</b> in qBit Advanced</td></tr>
+              <tr><td>No peers found</td><td>IPv6 leaking outside VPN tunnel</td><td>Disable IPv6 in qBittorrent settings</td></tr>
+              <tr><td>DNS failures in containers</td><td>DNS-over-TLS (DoT) blocked by VPN</td><td>Set <b style="color:#00ff99;">DOT=off</b>, use plain Google DNS (8.8.8.8)</td></tr>
+              <tr><td>Indexer "disabled" constantly</td><td>Cloudflare blocking FlareSolverr</td><td>Prefer indexers that don't need CF bypass</td></tr>
+              <tr><td>UI inaccessible from LAN</td><td>VPN firewall blocking all traffic</td><td>Set <b style="color:#00ff99;">FIREWALL_OUTBOUND_SUBNETS=10.0.0.0/24</b> in Gluetun</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// BUILD PROGRESS //</div>
+          <div class="progress-wrap">
+            <div class="progress-label">VPN-locked torrent traffic (Gluetun + qBittorrent)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+            <div class="progress-label">Automated request pipeline (Jellyseerr → Sonarr/Radarr)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+            <div class="progress-label">File organization &amp; library import</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+            <div class="progress-label">Subtitle automation (Bazarr)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:90%;"></div></div>
+            <div class="progress-label">Migrate to dedicated server / NAS</div>
+            <div class="progress-bar"><div class="progress-fill amber" style="width:10%;"></div></div>
+            <div class="progress-label">Add Usenet (SABnzbd) as primary downloader</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+            <div class="progress-label">Monitoring &amp; uptime dashboard (Uptime Kuma)</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+          </div>
+
+          <div class="proj-section">// DEV LOG //</div>
+          <div class="log-entry"><span class="log-date">[2026-02]</span> — Full end-to-end pipeline verified: request → search → VPN download → auto-import → Jellyfin library. All services stable.</div>
+          <div class="log-entry"><span class="log-date">[2026-02]</span> — Solved DNS-over-TLS blocking issue. Switched to plain DNS port 53, stable resolution across all containers.</div>
+          <div class="log-entry"><span class="log-date">[2026-02]</span> — Fixed metadata stall bug: qBittorrent interface bound to tun0, IPv6 disabled. Peers found immediately.</div>
+          <div class="log-entry"><span class="log-date">[2026-02]</span> — Project started. Docker stack assembled: Gluetun, qBittorrent, Prowlarr, Sonarr, Radarr, Jellyseerr, Bazarr.</div>
+
+          <ul class="tech-list">
+            <li>Docker</li><li>Jellyfin</li><li>Sonarr</li><li>Radarr</li>
+            <li>qBittorrent</li><li>Prowlarr</li><li>Gluetun</li><li>Jellyseerr</li>
+            <li>Bazarr</li><li>ProtonVPN</li><li>WireGuard</li><li>Windows 11</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: GLOBULAR CLUSTER (PLANNED)        -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item" style="opacity:0.75;" data-category="research">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">GLOBULAR CLUSTER PROPER MOTION</span>
+            <span class="acc-status planned">○ PLANNED</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">Stellar Dynamics<br>Astrometry / Gaia<br><span style="color:#555577;">Not yet started</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p style="color:#7788aa;">
+            The next research project after the VLASS classification pipeline wraps up.
+            Goal: analyze proper motion and apparent structural changes in globular clusters
+            using multi-epoch archival FITS images and Gaia DR3 astrometry data.
+            Will track angular size changes and color differences across epochs to build
+            a picture of stellar population dynamics within the cluster.
+          </p>
+
+          <div class="proj-section" style="color:#555577;">// PLANNED APPROACH //</div>
+          <table class="data-table" style="opacity:0.6;">
+            <thead><tr><th>STEP</th><th>TASK</th><th>TOOL</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Download multi-epoch FITS images from MAST</td><td>MAST archive</td></tr>
+              <tr><td>2</td><td>Visualize cluster structure across epochs</td><td>SAOImage DS9</td></tr>
+              <tr><td>3</td><td>Measure angular size changes in cluster radius</td><td>Astropy / DS9</td></tr>
+              <tr><td>4</td><td>Color analysis for stellar population mapping</td><td>Python / Matplotlib</td></tr>
+              <tr><td>5</td><td>Cross-match with Gaia DR3 proper motion vectors</td><td>TOPCAT / Astropy</td></tr>
+              <tr><td>6</td><td>Vector motion analysis and visualization</td><td>Python</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section" style="color:#555577;">// PLANNED DATA SOURCES //</div>
+          <div class="progress-wrap" style="opacity:0.5;">
+            <div class="progress-label">MAST archival FITS — multi-epoch imaging</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+            <div class="progress-label">Gaia DR3 — proper motion catalog</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+            <div class="progress-label">Python analysis pipeline</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:0%; background:#333366;"></div></div>
+          </div>
+
+          <p style="color:#555577; font-size:11px; margin-top:8px;">
+            ⚠ Project has not yet started. Awaiting completion of VLASS classification pipeline.
+          </p>
+
+          <ul class="tech-list" style="opacity:0.5;">
+            <li>Python</li><li>Astropy</li><li>MAST</li><li>Gaia DR3</li><li>FITS</li><li>TOPCAT</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- PROJECT: STARBASE 451 — THIS WEBSITE       -->
+      <!-- ══════════════════════════════════════════ -->
+      <div class="acc-item" data-category="web-dev">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div>
+            <span class="acc-title">STARBASE 451 — THIS WEBSITE</span>
+            <span class="acc-status active">● ACTIVE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="acc-meta">Personal Website / Web Dev<br>HTML · CSS · JavaScript<br><span style="color:#446644;">Updated: Mar 2026</span></div>
+            <span class="acc-arrow">▶</span>
+          </div>
+        </div>
+        <div class="acc-body">
+
+          <p>
+            A hand-coded <b>personal website hosted on Neocities</b>, built entirely from scratch in
+            HTML, CSS, and vanilla JavaScript. Designed as a love letter to the old web — retro
+            terminal aesthetic, CRT scanline effects, animated starfield, pixel-art badges, and a
+            marquee banner that scrolls forever. No frameworks, no build tools, no templates.
+            Just Notepad and stubbornness.
+          </p>
+
+          <div class="proj-section">// SITE STATS //</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">9</div><div class="stat-label">PAGES</div></div>
+            <div class="stat-box"><div class="stat-val">0</div><div class="stat-label">FRAMEWORKS</div></div>
+            <div class="stat-box"><div class="stat-val">CRT</div><div class="stat-label">EFFECT</div></div>
+            <div class="stat-box"><div class="stat-val">VT323</div><div class="stat-label">PRIMARY FONT</div></div>
+            <div class="stat-box"><div class="stat-val">200</div><div class="stat-label">CANVAS STARS</div></div>
+            <div class="stat-box"><div class="stat-val">EST. 2025</div><div class="stat-label">LAUNCHED</div></div>
+          </div>
+
+          <div class="proj-section">// PAGES //</div>
+          <table class="data-table">
+            <thead><tr><th>PAGE</th><th>PURPOSE</th><th>STATUS</th></tr></thead>
+            <tbody>
+              <tr><td>index.html</td><td>Home — bio, stats, featured projects, activity feed</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>about.html</td><td>About me — skills, background, interests</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>research.html</td><td>Astrophysics research — VLASS, papers, tools</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>projects.html</td><td>Projects manifest — this page</td><td style="color:#ffaa00;">ONGOING</td></tr>
+              <tr><td>media.html</td><td>Media log — games, shows, music</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>links.html</td><td>Cool sites, webrings, button wall</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>guestbook.html</td><td>Guestbook for visitors</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>login.html</td><td>Login portal</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>blackjack.html</td><td>Blackjack card game — fully themed to match the site</td><td style="color:#00ff99;">DONE</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// FEATURES BUILT //</div>
+          <table class="data-table">
+            <thead><tr><th>FEATURE</th><th>DESCRIPTION</th><th>STATUS</th></tr></thead>
+            <tbody>
+              <tr><td>Animated starfield</td><td>Canvas-based twinkling star background, 200 stars</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>CRT scanlines + vignette</td><td>CSS pseudo-element overlay with flicker animation</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Blinky badge strip</td><td>Scrolling 88×31 web badge strip — auto-scrolls, pauses on hover</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Marquee banners</td><td>CSS scrolling marquee at page top and status bar at bottom</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Visitor counter</td><td>CSS digit display with JavaScript counter logic</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>CSS planet</td><td>Pure CSS animated floating planet with ring</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Accordion panels</td><td>Expand/collapse project dossiers with JS toggle</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Project filter system</td><td>Category filter buttons that show/hide accordion items</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Faction card system</td><td>Nested collapsible cards with standing bars and filter buttons</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>NPC dossier cards</td><td>Expandable NPC profiles with stat grids and background info</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Location cards</td><td>Expandable location entries with danger ratings and known spots</td><td style="color:#00ff99;">DONE</td></tr>
+              <tr><td>Mobile responsive</td><td>Responsive grid layouts for small screens</td><td style="color:#ffaa00;">PARTIAL</td></tr>
+            </tbody>
+          </table>
+
+          <div class="proj-section">// DESIGN PHILOSOPHY //</div>
+          <div class="body-text" style="font-size:11px; line-height:1.9; color:#99aacc;">
+            Built to feel like a terminal you'd find aboard a derelict space station. Every design choice
+            is deliberate: the <b>VT323 monospace font</b> for headings, the <b>#00ff99 terminal green</b>
+            as the base color, the <b>deep space black (#000010)</b> background, the scanlines overlay
+            that makes the screen feel like a CRT monitor from 1998. The goal is a site that feels
+            like it was made with love instead of a template generator.
+          </div>
+
+          <div class="proj-section">// BUILD LOG //</div>
+          <div class="log-entry"><span class="log-date">[APR 2026]</span> — Lore section added to D&amp;D campaign: Tarragon Massacre (2287) and Sentience Incident AI restrictions incident files pulled from Notion lore bible.</div>
+          <div class="log-entry"><span class="log-date">[MAR 2026]</span> — NPC dossier cards, location cards, and Neocities project entry added to projects page. D&D campaign expanded with full Notion data.</div>
+          <div class="log-entry"><span class="log-date">[MAR 2026]</span> — Major projects.html expansion: faction cards, filter system, starbase stats, sidebar activity feed.</div>
+          <div class="log-entry"><span class="log-date">[FEB 2026]</span> — research.html completed with VLASS classification workflow documentation.</div>
+          <div class="log-entry"><span class="log-date">[2025]</span> — Site launched on Neocities. Core pages built: index, about, media, links, guestbook.</div>
+
+          <ul class="tech-list">
+            <li>HTML5</li><li>CSS3</li><li>Vanilla JS</li><li>Canvas API</li>
+            <li>Neocities</li><li>VT323</li><li>Share Tech Mono</li>
+          </ul>
+
+          <div style="margin-top:10px;">
+            <a href="index.html" style="background:#001133; border:1px solid #334466; color:#00ccff; font-family:'Share Tech Mono',monospace; font-size:11px; padding:4px 14px; display:inline-block; text-decoration:none;">[ VIEW SITE — YOU ARE HERE ]</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">SECTOR MAP</div>
+        <div class="planet-wrap"><div class="planet"></div></div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">RECENT ACTIVITY</div>
+        <div class="activity-entry">
+          <span class="activity-date">[MAR 2026]</span>
+          <span class="activity-proj">Blackjack</span> — Built &amp; themed to match Starbase 451
+        </div>
+        <div class="activity-entry">
+          <span class="activity-date">[MAR 2026]</span>
+          <span class="activity-proj">D&amp;D Campaign</span> — Session 3 run
+        </div>
+        <div class="activity-entry">
+          <span class="activity-date">[FEB 2026]</span>
+          <span class="activity-proj">Media Server</span> — Full pipeline verified end-to-end
+        </div>
+        <div class="activity-entry">
+          <span class="activity-date">[FEB 2026]</span>
+          <span class="activity-proj">Hegemony RPG</span> — Session 2 adapted, 29-item inventory done
+        </div>
+        <div class="activity-entry">
+          <span class="activity-date">[JAN 2026]</span>
+          <span class="activity-proj">Hegemony RPG</span> — Skill check system overhauled
+        </div>
+        <div class="activity-entry">
+          <span class="activity-date">[NOV 2025]</span>
+          <span class="activity-proj">Hegemony RPG</span> — First playable build
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">PROJECT STATUS</div>
+        <div style="font-size:11px; line-height:1.8;">
+          <span style="color:#00ff00;">●</span> <span style="color:#aaffaa;">Active: 5</span><br>
+          <span style="color:#ff66ff;">★</span> <span style="color:#ffaaff;">Weekly: 1</span><br>
+          <span style="color:#ffaa00;">◐</span> <span style="color:#ffccaa;">In Progress: 1</span><br>
+          <span style="color:#6699ff;">○</span> <span style="color:#aaaaff;">Planned: 1</span>
+        </div>
+      </div>
+
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">SOURCE CODE</div>
+        <div style="font-family:'VT323',monospace; font-size:22px; color:#00ff99; margin: 4px 0;">[ GITHUB ]</div>
+        <a href="https://github.com/Dr-Pope" target="_blank" style="color:#66ccff; font-size:11px; text-decoration:none; display:block; margin-bottom:6px;">github.com/Dr-Pope</a>
+        <div style="font-size:10px; color:#446688; line-height:1.5;">Public repos when<br>projects are ready!!</div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">TECH USED</div>
+        <ul class="links-list">
+          <li><span style="color:#aaccff;">Python 3</span></li>
+          <li><span style="color:#aaccff;">Astropy</span></li>
+          <li><span style="color:#aaccff;">JavaScript</span></li>
+          <li><span style="color:#aaccff;">SolidWorks</span></li>
+          <li><span style="color:#aaccff;">Blender</span></li>
+          <li><span style="color:#aaccff;">Notion</span></li>
+          <li><span style="color:#aaccff;">DS9 / FITS</span></li>
+        </ul>
+      </div>
+
+      <div class="side-box" style="text-align:center;">
+        <span class="cone">🚧</span>
+        <span class="blink" style="color:#ffaa00; font-size:11px; font-weight:bold; display:block; margin-top:2px;">!! UNDER CONSTRUCTION !!</span>
+        <div style="font-size:10px; color:#aa6600; margin-top:4px;">
+          Download links coming<br>when I figure out<br>how to host .py files!!
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth
+  </div>
+
+</div>
+
+<div class="statusbar">
+  <span class="statusbar-inner">
+    ⚡ Projects Lab — 9 projects logged &nbsp;&nbsp;&nbsp;
+    🃏 NEW: Starbase 451 Blackjack — playable at blackjack.html &nbsp;&nbsp;&nbsp;
+    🛸 The Corporate Hegemony: Session 3 complete — Cipher deal struck, prep phase begins &nbsp;&nbsp;&nbsp;
+    ★ opends9.py build: 60% complete &nbsp;&nbsp;&nbsp;
+    ⚔ D&amp;D Campaign: 6 NPC dossiers + 3 locations now tracked &nbsp;&nbsp;&nbsp;
+    🌐 Starbase 451 website now listed as a project &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<script>
+function toggleAcc(header) {
+  var item = header.parentElement;
+  item.classList.toggle('open');
+}
+function filterProjects(cat, btn) {
+  document.querySelectorAll('.proj-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.acc-item[data-category]').forEach(function(item){
+    if (cat === 'all' || item.getAttribute('data-category') === cat) {
+      item.classList.remove('proj-hidden');
+    } else {
+      item.classList.add('proj-hidden');
+    }
+  });
+}
+function toggleNPC(hdr) {
+  var body = hdr.parentElement.querySelector('.npc-body');
+  var arrow = hdr.querySelector('span:last-child');
+  if (body.style.display === 'block') {
+    body.style.display = 'none';
+    if (arrow) arrow.textContent = '▶';
+  } else {
+    body.style.display = 'block';
+    if (arrow) arrow.textContent = '▼';
+  }
+}
+function toggleLoc(hdr) {
+  var body = hdr.parentElement.querySelector('.loc-body');
+  var arrow = hdr.querySelector('span:last-child');
+  if (body.style.display === 'block') {
+    body.style.display = 'none';
+    if (arrow) arrow.textContent = '▶';
+  } else {
+    body.style.display = 'block';
+    if (arrow) arrow.textContent = '▼';
+  }
+}
+function toggleFaction(hdr) {
+  var body = hdr.parentElement.querySelector('.faction-body');
+  var arrow = hdr.querySelector('span:last-child');
+  if (body.style.display === 'block') {
+    body.style.display = 'none';
+    if (arrow) arrow.textContent = '▶';
+  } else {
+    body.style.display = 'block';
+    if (arrow) arrow.textContent = '▼';
+  }
+}
+function filterFactions(type, btn) {
+  document.querySelectorAll('.faction-filter-btn').forEach(function(b){ b.classList.remove('factive'); });
+  btn.classList.add('factive');
+  document.querySelectorAll('.faction-card').forEach(function(card){
+    if (type === 'all') { card.classList.remove('hidden'); return; }
+    var t = card.getAttribute('data-type');
+    var s = card.getAttribute('data-standing');
+    if (type === 'megacorp' && t === 'megacorp') card.classList.remove('hidden');
+    else if (type === 'resistance' && t === 'resistance') card.classList.remove('hidden');
+    else if (type === 'hostile' && s === 'hostile') card.classList.remove('hidden');
+    else if (type === 'neutral' && s === 'neutral') card.classList.remove('hidden');
+    else if (type === 'allied' && (s === 'allied' || s === 'unknown')) card.classList.remove('hidden');
+    else card.classList.add('hidden');
+  });
+}
+</script>
+</body>
+</html>

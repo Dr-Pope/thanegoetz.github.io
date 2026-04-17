@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Thane Goetz — astrophysicist, Nikon Z fc photographer, SolidWorks/Blender artist, and Dungeon Master. NASA-funded AGN researcher. Pennsylvania-based space nerd.">
+  <title>STARBASE 451 :: About Me</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    .profile-pic {
+      width: 80px; height: 80px;
+      border: 3px ridge #6699ff;
+      background: radial-gradient(circle at 40% 30%, #334466, #000022);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      float: left;
+      margin: 0 12px 8px 0;
+    }
+    .stat-bar-wrap { margin: 4px 0; }
+    .stat-label { color: #9999cc; font-size: 11px; display: inline-block; width: 110px; }
+    .stat-bar {
+      display: inline-block;
+      height: 10px;
+      background: #003300;
+      border: 1px solid #006600;
+      vertical-align: middle;
+      position: relative;
+    }
+    .stat-fill {
+      position: absolute; top:0; left:0; bottom:0;
+      background: #00cc44;
+    }
+    .stat-val { color: #00ff66; font-size: 11px; margin-left: 4px; }
+    .fact-list { list-style: none; padding: 0; }
+    .fact-list li { color: #ccffcc; font-size: 12px; margin-bottom: 4px; padding-left: 4px; }
+    .fact-list li::before { content: "✦ "; color: #ff66ff; }
+    .timeline-entry { border-left: 2px solid #333399; padding: 4px 0 4px 10px; margin-bottom: 6px; position: relative; }
+    .timeline-entry::before { content: "◆"; color: #6699ff; position: absolute; left: -9px; top: 4px; font-size: 12px; }
+    .timeline-year { color: #ffff00; font-size: 12px; font-family: 'VT323', monospace; font-size: 18px; }
+    .timeline-desc { color: #aaaaff; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ★ ABOUT Science Officer Thane ★ &nbsp;&nbsp;&nbsp;
+      Astrophysicist | Dungeon Master | Game Dev &nbsp;&nbsp;&nbsp;
+      ★ Pennsylvania Sector, Earth &nbsp;&nbsp;&nbsp;
+      Currently listening to: Message Man by Twenty One Pilots ★
+    </span>
+  </div>
+
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Science Officer Thane's Deep Space Terminal ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html" class="active">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <div class="columns">
+
+    <!-- MAIN -->
+    <div>
+
+      <!-- PROFILE -->
+      <div class="panel">
+        <div class="section-title">// DOSSIER: Science Officer Thane//</div>
+        <div>
+          <div class="profile-pic">👨‍🚀</div>
+          <div class="body-text">
+            <b>NAME:</b> Science Officer Thane<br>
+            <b>RANK:</b> Senior Science Officer<br>
+            <b>SECTOR:</b> Pennsylvania, Earth<br>
+            <b>SPECIES:</b> Human (probably)<br>
+            <b>SpaceHey:</b> <a href="https://spacehey.com/dr_pope" target="_blank" style="color:#66ccff;">spacehey.com/dr_pope</a><br>
+          </div>
+          <div style="clear:both;"></div>
+        </div>
+        <div class="star-row">★ ☆ ★ ☆ ★ ☆ ★ ☆ ★</div>
+        <div class="body-text">
+          Hello there, space traveler! If you've landed on this page, you're probably curious about the person behind the pixels. My name is <b>Thane</b>
+          and I'm an <b>astrophysics student and researcher</b> based somewhere
+          in the great state of Pennsylvania.<br><br>
+
+          I've been fascinated by space since a young age when my dad used to turn on Star Trek
+          Voyager for me at night. I remember being mesmerized by the stars and planets on the screen, and asking him a million questions about them.
+          That curiosity never went away, and eventually led me to pursue a career in physics and astronomy.<br><br>
+
+          During my undergrad years, I had the incredible opportunity to work on a research project studying the morphology of AGN jets. It was like peering into the heart of a cosmic engine, and I was hooked!
+          Later in my undergrad years, I started to mentor students in the same research group,
+          and it was so rewarding to share my passion for astrophysics with them and help them discover the same joy of scientific discovery that I had experienced.
+
+          When I am not in class or doing research, I have a few hobbies that keep me busy. I'm an avid <b>photographer</b>.
+          I have a Nikon Z fc that I use to capture the beauty of the world, and I'm always on the lookout for new places to photograph as I am an avid traveler.
+          I also love <b>playing D&amp;D</b> with my friends. There's something magical about creating a story together and exploring imaginary worlds.
+          I'm currently running a campaign for a group of 6 brave adventurers, and it's been a blast so far!
+        </div>
+      </div>
+
+      <!-- SKILL BARS -->
+      <div class="panel panel-pink">
+        <div class="section-title pink">// SKILL READOUT //</div>
+
+        <div class="stat-bar-wrap">
+          <span class="stat-label">Physics</span>
+          <span class="stat-bar" style="width:160px;"><span class="stat-fill" style="width:75%; background:#00ccff;"></span></span>
+          <span class="stat-val" style="color:#00ccff;">75 / 100</span>
+        </div>
+        <div class="stat-bar-wrap">
+          <span class="stat-label">Photography</span>
+          <span class="stat-bar" style="width:160px;"><span class="stat-fill" style="width:25%; background:#ff66aa;"></span></span>
+          <span class="stat-val" style="color:#ff66aa;">25 / 100</span>
+        </div>
+        <div class="stat-bar-wrap">
+          <span class="stat-label">CAD / 3D Modeling</span>
+          <span class="stat-bar" style="width:160px;"><span class="stat-fill" style="width:85%; background:#6699ff;"></span></span>
+          <span class="stat-val" style="color:#6699ff;">85 / 100</span>
+        </div>
+        <div class="stat-bar-wrap">
+          <span class="stat-label">Dungeon Mastering</span>
+          <span class="stat-bar" style="width:160px;"><span class="stat-fill" style="width:85%; background:#cc44ff;"></span></span>
+          <span class="stat-val" style="color:#cc44ff;">85 / 100</span>
+        </div>
+        <div class="stat-bar-wrap">
+          <span class="stat-label">Python / Scripting</span>
+          <span class="stat-bar" style="width:160px;"><span class="stat-fill" style="width:95%; background:#00ff99;"></span></span>
+          <span class="stat-val" style="color:#00ff99;">95 / 100</span>
+        </div>
+        <div class="stat-bar-wrap">
+          <span class="stat-label">Being Cool Online</span>
+          <span class="stat-bar" style="width:160px;"><span class="stat-fill" style="width:99%; background:#ffaa00;"></span></span>
+          <span class="stat-val" style="color:#ffaa00;">99 / 100</span>
+        </div>
+      </div>
+
+      <!-- FUN FACTS -->
+      <div class="panel panel-blue">
+        <div class="section-title blue">// TRANSMISSION: FUN FACTS //</div>
+        <ul class="fact-list" style="line-height: 2.2;">
+          <li>Have met multiple <b style="color:#ffff00;">Physics Nobel Prize winners</b> in person</li>
+          <li>Presented original research at <b style="color:#ffff00;">multiple scientific conferences</b></li>
+          <li>Toured <b style="color:#ffff00;">NASA Goddard Space Flight Center</b>- saw things that should not be seen by civilians</li>
+          <li>Toured <b style="color:#ffff00;">NASA Jet Propulsion Laboratory (JPL)</b> - Yes, the one with all the rovers</li>
+          <li>Toured <b style="color:#ffff00;">NASA Kennedy Space Center</b> - stood where rockets leave the planet, and saw a spacex launch</li>
+          <li>Toured <b style="color:#ffff00;">NASA Langley Research Center</b> - the one from Hidden Figures</li>
+          <li>Toured <b style="color:#ffff00;">Green Bank Observatory</b> - world's largest steerable radio telescope</li>
+          <li>Toured <b style="color:#ffff00;">Fermilab</b> - particle physics, underground detectors, the whole deal</li>
+          <li>Just a few of the places that I took <b style="color:#ffff00;">scientific / behind-the-scenes tours</b></li>
+          <li>Still somehow finds time to run a D&amp;D campaign every week... well most weeks</li>
+        </ul>
+      </div>
+
+      <!-- RESEARCH JOURNEY -->
+      <div class="panel panel-cyan">
+        <div class="section-title cyan">// RESEARCH JOURNEY //</div>
+
+        <div class="timeline-entry">
+          <div class="timeline-year">2022</div>
+          <div class="timeline-desc">
+            <b style="color:#00ccff;">PhysCon</b> — Washington, D.C.<br>
+            Presented original research at the Physics Congress, one of the largest national gatherings of undergraduate physics students.
+          </div>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-year">Summer 2023</div>
+          <div class="timeline-desc">
+            Began <b style="color:#00ccff;">Exoplanet Research</b> — first deep dive into observational astrophysics, studying planetary detection and characterization.
+          </div>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-year">Late 2023</div>
+          <div class="timeline-desc">
+            Pivoted to <b style="color:#00ccff;">Active Galactic Nuclei (AGN)</b> research — studying the morphology and bending of extragalactic radio jets in VLASS. Still going strong.
+          </div>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-year">2024</div>
+          <div class="timeline-desc">
+            <b style="color:#00ccff;">APS April Meeting</b> — California<br>
+            Presented AGN research at the American Physical Society meeting. Became a <b style="color:#ffff00;">funded researcher</b> over the summer to continue the VLASS triple sources project.
+          </div>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-year">Early 2025</div>
+          <div class="timeline-desc">
+            <b style="color:#00ccff;">AAS 245th Meeting</b> — Washington, D.C.<br>
+            Presented at the American Astronomical Society meeting. The big one.
+          </div>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-year">June 2025</div>
+          <div class="timeline-desc">
+            Awarded a <b style="color:#ffff00;">Research Fellowship</b> — recognition for ongoing contributions to the AGN jet classification project.
+          </div>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-year">Summer 2025</div>
+          <div class="timeline-desc">
+            Research funded by <b style="color:#ffff00;">NASA</b> — continuing the VLASS triple radio source classification project toward publication in ApJS.
+            <span style="color:#00ff99; font-size:11px; display:block; margin-top:3px;">▶ CURRENTLY ACTIVE</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">SECTOR MAP</div>
+        <div class="planet-wrap"><div class="planet"></div></div>
+        <div style="font-size:10px; color:#6699ff; margin-top:4px; line-height:1.6; letter-spacing:1px;">
+          PLANET: Thane-7<br>CLASS: M-MODIFIED<br>POPULATION: 1 CREW
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">QUICK FACTS</div>
+        <ul class="fact-list">
+          <li>INFJ-T</li>
+          <li>Cat person</li>
+          <li>Nikon Z fc shooter</li>
+          <li>Nightowl</li>
+          <li>Coffee dependent</li>
+          <li>Borrows telescopes</li>
+          <li>Linux on weekends</li>
+        </ul>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">NOW PLAYING</div>
+        <div style="background:#001100; border:1px solid #003300; padding:6px; font-size:11px; text-align:center;">
+          <div style="color:#00ff00; margin-bottom:2px;">▶ NOW PLAYING</div>
+          <div style="color:#aaffaa; font-size:12px;">Message Man</div>
+          <div style="color:#666699; font-size:10px;">Twenty One Pilots</div>
+          <div style="margin-top:4px; color:#336633;">
+            ⏮ ◀◀ ▶▶ ⏭ &nbsp; 🔇
+          </div>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-box-title">CURRENT READS</div>
+        <ul class="links-list">
+          <li><span style="color:#ccffcc;">Fahrenheit 451</span></li>
+          <li><span style="color:#ccffcc;">Harry Potter and the Philosopher's Stone</span></li>
+        </ul>
+      </div>
+
+      <div class="side-box" style="text-align:center; font-size:11px; color:#9999cc;">
+        <div class="side-box-title">MOOD TODAY</div>
+        <div style="font-size:28px; margin: 4px 0;">🌌</div>
+        <div style="color:#aaaaff;">astronomical</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth
+  </div>
+
+</div>
+
+<div class="statusbar">
+  <span class="statusbar-inner">
+    ⚡ About Me — Loading profile data... &nbsp;&nbsp;&nbsp;
+    ★ D&amp;D night is EVERY Friday!! &nbsp;&nbsp;&nbsp;
+    ⚡ Currently typing this in Visual Studio Code &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<script>(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();</script>
+
+</body>
+</html>
