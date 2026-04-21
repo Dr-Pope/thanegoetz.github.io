@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Starbase 451 — Ship's Log</title>
+    <link>https://thane-goetz.neocities.org/log.html</link>
+    <atom:link href="https://thane-goetz.neocities.org/feed.xml" rel="self" type="application/rss+xml" />
+    <description>Ship's Log transmissions from Science Officer Thane — devlog, AGN research updates, astrophotography, and Corporate Hegemony campaign notes from Starbase 451.</description>
+    <language>en-us</language>
+    <copyright>© 2025–2026 Thane Goetz</copyright>
+    <managingEditor>gamerthane@gmail.com (Thane Goetz)</managingEditor>
+    <webMaster>gamerthane@gmail.com (Thane Goetz)</webMaster>
+    <lastBuildDate>Fri, 17 Apr 2026 12:00:00 +0000</lastBuildDate>
+    <generator>Hand-maintained, just like the old days</generator>
+    <ttl>1440</ttl>
+
+    <item>
+      <title>CHESS on Broadway</title>
+      <link>https://thane-goetz.neocities.org/log.html#entry-2026-04-11-chess-broadway</link>
+      <guid isPermaLink="true">https://thane-goetz.neocities.org/log.html#entry-2026-04-11-chess-broadway</guid>
+      <pubDate>Sat, 11 Apr 2026 23:00:00 +0000</pubDate>
+      <category>personal</category>
+      <description><![CDATA[<p>Caught the Broadway revival of <b>CHESS</b> tonight — my first Broadway show, ever. A close friend invited me and I figured what the heck, why not. By the end of the opening act I understood the allure. <i>Difficult and Dangerous Times</i> in particular was wonderful.</p><p>The trip up was worth every mile and every train transfer. Left the theatre with "One Night in Bangkok" on permanent loop in my head.</p><p>More thoughts once I've slept on it.</p>]]></description>
+    </item>
+
+  </channel>
+</rss>

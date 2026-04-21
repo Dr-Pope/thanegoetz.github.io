@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ship's Log — devlog, research updates, astrophotos, and field notes from Science Officer Thane of Starbase 451.">
+  <title>STARBASE 451 :: Ship's Log</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="alternate" type="application/rss+xml" title="Starbase 451 Ship's Log" href="feed.xml">
+  <script src="visitor.js"></script>
+  <style>
+    /* ---------- LOG PAGE ---------- */
+    .log-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 10px;
+      padding: 6px 8px;
+      background: rgba(0,0,20,0.7);
+      border: 1px dashed #6666ff;
+    }
+    .log-controls-label {
+      color: #ff66ff;
+      letter-spacing: 2px;
+      padding: 0 6px 0 2px;
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+    }
+    .tag-btn {
+      background: #000040;
+      border: 2px outset #6666cc;
+      color: #ccccff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      padding: 2px 8px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .tag-btn:hover { background: #000080; }
+    .tag-btn.active {
+      background: #000099;
+      border-style: inset;
+      color: #ffff00;
+    }
+    .tag-rss {
+      margin-left: auto;
+      background: #400000;
+      border-color: #ff6666;
+      color: #ffcccc;
+    }
+    .tag-rss:hover { background: #660000; }
+
+    .log-entry {
+      border-left: 3px solid #6666ff;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      background: rgba(0,0,30,0.7);
+    }
+    .log-entry.tag-research   { border-left-color: #00ccff; }
+    .log-entry.tag-astrophoto { border-left-color: #ff66ff; }
+    .log-entry.tag-dnd        { border-left-color: #ffaa00; }
+    .log-entry.tag-devlog     { border-left-color: #00ff99; }
+    .log-entry.tag-personal   { border-left-color: #ffff00; }
+
+    .log-entry-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px dashed #333366;
+    }
+    .log-date {
+      font-family: 'VT323', monospace;
+      font-size: 22px;
+      color: #ffff00;
+      letter-spacing: 2px;
+    }
+    .log-title {
+      font-family: 'VT323', monospace;
+      font-size: 22px;
+      color: #00ccff;
+      letter-spacing: 1px;
+    }
+    .log-tags { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+    .log-tag {
+      font-size: 10px;
+      padding: 1px 6px;
+      border: 1px solid #444488;
+      color: #aaaaff;
+      background: #000020;
+      letter-spacing: 1px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .log-tag.t-research   { color: #00ccff; border-color: #00ccff; }
+    .log-tag.t-astrophoto { color: #ff66ff; border-color: #ff66ff; }
+    .log-tag.t-dnd        { color: #ffaa00; border-color: #ffaa00; }
+    .log-tag.t-devlog     { color: #00ff99; border-color: #00ff99; }
+    .log-tag.t-personal   { color: #ffff99; border-color: #ffff99; }
+
+    .log-body { color: #ccffcc; line-height: 1.75; font-size: 13px; }
+    .log-body b { color: #ff66ff; }
+    .log-body a { color: #66ccff; text-decoration: underline; }
+    .log-body a:hover { color: #ffffff; }
+    .log-body p { margin: 0 0 8px 0; }
+    .log-body p:last-child { margin-bottom: 0; }
+    .log-body ul { margin: 4px 0 8px 18px; }
+
+    .log-empty {
+      text-align: center;
+      padding: 30px;
+      color: #666699;
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      letter-spacing: 2px;
+      display: none;
+    }
+    .log-empty.show { display: block; }
+
+    .log-anchor {
+      display: inline-block;
+      margin-top: 4px;
+      color: #444488;
+      font-size: 10px;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .log-anchor:hover { color: #ffffff; }
+
+    .log-entry:target {
+      box-shadow: 0 0 0 2px #ffff00, 0 0 12px #ffff00;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <!-- TOP MARQUEE -->
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ★ SHIP'S LOG :: LIVE TRANSMISSION ★ &nbsp;&nbsp;&nbsp;
+      Newest entries at top &nbsp;&nbsp;&nbsp;
+      ★ Click a tag to filter ★ &nbsp;&nbsp;&nbsp;
+      Subscribe via RSS &nbsp;&nbsp;&nbsp; ★ ALIENS ARE REAL ★ &nbsp;&nbsp;&nbsp; FREE TIBET ★
+    </span>
+  </div>
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <div class="site-title">SHIP'S LOG</div>
+    <div class="site-subtitle">:: Captain's Transmissions from Starbase 451 ::</div>
+    <div class="site-meta">CHRONOLOGICAL ARCHIVE &nbsp;|&nbsp; UNCENSORED &nbsp;|&nbsp; UNEDITED</div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="log.html" class="active">[ LOG ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink">● ONLINE</span>
+  </nav>
+
+  <div class="best-viewed">
+    ⚠ Ship's Log updated irregularly, like any good spacefarer's journal ⚠
+  </div>
+
+  <!-- FILTER CONTROLS -->
+  <div class="log-controls" id="log-controls">
+    <span class="log-controls-label">// FILTER //</span>
+    <button class="tag-btn active" data-filter="all">ALL</button>
+    <button class="tag-btn" data-filter="research">RESEARCH</button>
+    <button class="tag-btn" data-filter="astrophoto">ASTROPHOTO</button>
+    <button class="tag-btn" data-filter="dnd">D&amp;D</button>
+    <button class="tag-btn" data-filter="devlog">DEVLOG</button>
+    <button class="tag-btn" data-filter="personal">PERSONAL</button>
+    <a href="feed.xml" class="tag-btn tag-rss" title="RSS 2.0 feed">[ RSS ]</a>
+  </div>
+
+  <!-- ==========================================================
+       TO ADD A NEW ENTRY:
+       1. Copy the TEMPLATE block below (between the template
+          comment markers) and paste it ABOVE the topmost entry.
+       2. Update the date, id, title, tags (both in class and
+          data-tags), and body.
+       3. Mirror the entry into feed.xml (add an <item> at top).
+       Available tags: research astrophoto dnd devlog personal
+       Use the class "tag-X" for the dominant tag — this picks
+       the left border colour.
+       =========================================================== -->
+  <!-- TEMPLATE:
+  <article class="log-entry tag-devlog" id="entry-YYYY-MM-DD-slug" data-tags="devlog">
+    <div class="log-entry-head">
+      <span class="log-date">YYYY.MM.DD</span>
+      <span class="log-title">Your Title Here</span>
+      <span class="log-tags">
+        <span class="log-tag t-devlog">[DEVLOG]</span>
+      </span>
+    </div>
+    <div class="log-body">
+      <p>Body paragraph(s) here.</p>
+    </div>
+    <a href="#entry-YYYY-MM-DD-slug" class="log-anchor">// permalink //</a>
+  </article>
+  -->
+
+  <!-- LOG ENTRIES (newest at top) -->
+  <div id="log-entries">
+
+    <article class="log-entry tag-personal" id="entry-2026-04-11-chess-broadway" data-tags="personal">
+      <div class="log-entry-head">
+        <span class="log-date">2026.04.11</span>
+        <span class="log-title">CHESS on Broadway</span>
+        <span class="log-tags">
+          <span class="log-tag t-personal">[PERSONAL]</span>
+        </span>
+      </div>
+      <div class="log-body">
+        <p>Caught the Broadway revival of <b>CHESS</b> tonight — my first Broadway show, ever. A close friend invited me and I figured what the heck, why not. By the end of the opening act I understood the allure. <i>Difficult and Dangerous Times</i> in particular was wonderful.</p>
+        <p>The trip up was worth every mile and every train transfer. Left the theatre with "One Night in Bangkok" on permanent loop in my head.</p>
+        <p>More thoughts once I've slept on it.</p>
+      </div>
+      <a href="#entry-2026-04-11-chess-broadway" class="log-anchor">// permalink //</a>
+    </article>
+
+  </div><!-- /log-entries -->
+
+  <div class="log-empty" id="log-empty">
+    :: NO ENTRIES MATCH THIS FILTER :: TRY ANOTHER TAG ::
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth<br>
+    <span style="color:#333366;">Ship's Log :: Unedited Transmissions Since 2026</span>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <span class="statusbar-inner">
+    ⚡ Document: Done &nbsp;&nbsp;&nbsp; 🛸 thane-goetz.neocities.org &nbsp;&nbsp;&nbsp;
+    ★ Subscribe via RSS: /feed.xml &nbsp;&nbsp;&nbsp; ⚡ SpaceHey: spacehey.com/dr_pope &nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<script>
+// ===== TAG FILTERING =====
+(function(){
+  var buttons = document.querySelectorAll('.tag-btn[data-filter]');
+  var entries = document.querySelectorAll('#log-entries .log-entry');
+  var emptyMsg = document.getElementById('log-empty');
+
+  function applyFilter(filter) {
+    var shown = 0;
+    entries.forEach(function(e){
+      var tags = (e.getAttribute('data-tags') || '').split(/\s+/);
+      var show = (filter === 'all') || tags.indexOf(filter) !== -1;
+      e.style.display = show ? '' : 'none';
+      if (show) shown++;
+    });
+    emptyMsg.classList.toggle('show', shown === 0);
+  }
+
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var filter = btn.getAttribute('data-filter');
+      buttons.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      applyFilter(filter);
+      // update URL hash for shareable filter state
+      if (filter !== 'all') {
+        history.replaceState(null, '', '?tag=' + filter);
+      } else {
+        history.replaceState(null, '', location.pathname);
+      }
+    });
+  });
+
+  // read ?tag=foo on load
+  var params = new URLSearchParams(location.search);
+  var initial = params.get('tag');
+  if (initial) {
+    var btn = document.querySelector('.tag-btn[data-filter="' + initial + '"]');
+    if (btn) btn.click();
+  }
+})();
+</script>
+
+<script>
+// starfield (shared with index.html)
+(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();
+</script>
+
+</body>
+</html>
