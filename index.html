@@ -125,6 +125,31 @@
         <div class="star-row">☆ ★ ☆ ★ ☆ ★ ☆ ★ ☆ ★ ☆</div>
       </div>
 
+      <!-- NASA APOD :: DEEP SPACE TRANSMISSION -->
+      <div class="panel panel-blue" id="apod-panel">
+        <div class="section-title blue">// DEEP SPACE TRANSMISSION //</div>
+        <div id="apod-loading" class="body-text" style="text-align:center; color:#6699ff; font-size:12px; padding:18px 0;">
+          ▸ ESTABLISHING UPLINK TO NASA <span class="blink">_</span>
+        </div>
+        <div id="apod-content" style="display:none;">
+          <div id="apod-media" style="text-align:center; margin-bottom:8px;"></div>
+          <div class="body-text" style="font-size:12px;">
+            <div style="font-family:'VT323',monospace; font-size:22px; color:#ffff00; letter-spacing:1px; line-height:1.1;" id="apod-title">—</div>
+            <div class="muted" style="margin:2px 0 8px; letter-spacing:2px; font-size:11px;" id="apod-date">—</div>
+            <div id="apod-explanation" style="color:#ccffcc;">—</div>
+            <div style="margin-top:8px; font-size:11px; color:#9999cc;">
+              <span style="color:#6699ff;">CREDIT:</span> <span id="apod-credit" style="color:#ff99ff;">—</span>
+            </div>
+            <div style="margin-top:10px; text-align:right;">
+              <a id="apod-link" class="btn" target="_blank" rel="noopener" href="https://apod.nasa.gov/">VIEW ON NASA &gt;&gt;</a>
+            </div>
+          </div>
+        </div>
+        <div id="apod-error" class="body-text" style="display:none; color:#ff6666; font-size:12px; text-align:center; padding:12px;">
+          ⚠ UPLINK FAILED. Try the <a href="https://apod.nasa.gov/" target="_blank" rel="noopener" style="color:#66ccff;">direct feed &gt;&gt;</a>
+        </div>
+      </div>
+
       <div class="panel panel-pink">
         <div class="section-title pink">// CREW MANIFEST //</div>
         <table class="data-table">
@@ -166,8 +191,44 @@
         <div class="side-box-title">SECTOR MAP</div>
         <div class="planet-wrap"><div class="planet"></div></div>
         <div style="font-size:10px; color:#6699ff; margin-top:4px; letter-spacing:1px; line-height:1.6;">
-          PLANET: Thane-7<br>CLASS: M-MODIFIED<br>POPULATION: 1 CREW
+          STATION: HELIX-IX<br>ORBITING: PROXIMA B<br>SYSTEM: ALPHA CENTAURI
         </div>
+      </div>
+
+      <!-- TONIGHT'S SKY :: client-side astronomy -->
+      <div class="side-box" style="text-align:center;">
+        <div class="side-box-title">TONIGHT'S SKY</div>
+        <div id="sky-date" style="font-size:10px; color:#6699ff; letter-spacing:2px; margin-bottom:4px;">—</div>
+
+        <!-- MOON -->
+        <div style="margin: 4px 0 6px;">
+          <div id="moon-disc" aria-label="Moon phase"
+               style="width:54px; height:54px; border-radius:50%; margin:0 auto;
+                      background:#222233; position:relative; overflow:hidden;
+                      box-shadow:0 0 10px #99ccff, inset 0 0 6px rgba(0,0,0,0.6);">
+            <div id="moon-lit"
+                 style="position:absolute; inset:0; background:#f0e6c8; border-radius:50%;"></div>
+            <div id="moon-shadow"
+                 style="position:absolute; inset:0; background:#1a1a2a; border-radius:50%;"></div>
+          </div>
+          <div id="moon-name" style="font-family:'VT323',monospace; font-size:16px; color:#ffff00; letter-spacing:1px; margin-top:3px;">—</div>
+          <div id="moon-stats" style="font-size:10px; color:#aaaaff; line-height:1.5;">—</div>
+        </div>
+
+        <!-- SUN -->
+        <div style="border-top:1px dashed #6666ff; margin:6px 0; padding-top:4px;">
+          <div style="font-family:'VT323',monospace; font-size:14px; color:#ffaa00; letter-spacing:2px;">SOLAR</div>
+          <div style="font-size:10px; color:#aaaaff; line-height:1.6;">
+            <span style="color:#ff66ff;">↑</span> <span id="sun-rise">—</span> &nbsp;
+            <span style="color:#ff66ff;">↓</span> <span id="sun-set">—</span>
+          </div>
+          <div style="font-size:10px; color:#8899cc; line-height:1.5;">
+            DUSK: <span id="dusk-civ">—</span>
+          </div>
+        </div>
+
+        <!-- OBSERVER LINE -->
+        <div style="font-size:9px; color:#556699; margin-top:4px; letter-spacing:1px;" id="sky-obs">—</div>
       </div>
 
       <div class="side-box" style="text-align:center;">
@@ -190,6 +251,8 @@
       <div class="side-box">
         <div class="side-box-title">LATEST NEWS</div>
         <div style="font-size:11px; color:#aaaaff; line-height:1.9;">
+          <span style="color:#ffff00;">04/24</span> — NASA APOD uplink + TONIGHT'S SKY live on home page!!<br>
+          <span style="color:#ffff00;">04/24</span> — Rogue sector? 404 rescue beacon deployed <a href="404.html" style="color:#ff9999;">[ VIEW ]</a><br>
           <span style="color:#ffff00;">04/17</span> — NEW <a href="log.html" style="color:#66ccff;">[ SHIP'S LOG ]</a> page live!! <a href="feed.xml" style="color:#ff9999;">[RSS]</a><br>
           <span style="color:#ffff00;">04/16</span> — NEW [ CAMPAIGN ] page — interactive Corporate Hegemony dossier live!!<br>
           <span style="color:#ffff00;">04/16</span> — Blank dossier PDF uploaded for download!<br>
@@ -259,6 +322,229 @@
   };
   xhttp.open("GET", "https://weirdscifi.ratiosemper.com/neocities.php?sitename=thane-goetz", true);
   xhttp.send();
+})();
+</script>
+
+<!-- =========================================================
+     NASA APOD :: DEEP SPACE TRANSMISSION
+     Uses DEMO_KEY (30 req/hr per visitor IP). To avoid any
+     chance of hitting the cap, get a free key at
+       https://api.nasa.gov/
+     and replace DEMO_KEY below.
+     Result is cached in localStorage for the day.
+     ========================================================= -->
+<script>
+(function() {
+  var NASA_KEY = 'DEMO_KEY'; // <-- replace with your own free key
+  var LS_KEY = 'sb451_apod_cache_v1';
+
+  var loading = document.getElementById('apod-loading');
+  var content = document.getElementById('apod-content');
+  var errBox  = document.getElementById('apod-error');
+  if (!loading || !content) return;
+
+  // Try cache first
+  try {
+    var cached = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
+    if (cached && cached.date === todayISO()) {
+      render(cached.data);
+      return;
+    }
+  } catch (e) { /* ignore bad cache */ }
+
+  var url = 'https://api.nasa.gov/planetary/apod?api_key=' + encodeURIComponent(NASA_KEY) + '&thumbs=true';
+  fetch(url).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function(data) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ date: todayISO(), data: data })); } catch (e) {}
+    render(data);
+  }).catch(function(err) {
+    loading.style.display = 'none';
+    if (errBox) errBox.style.display = 'block';
+    console.warn('[APOD] fetch failed:', err);
+  });
+
+  function render(data) {
+    loading.style.display = 'none';
+    content.style.display = 'block';
+
+    var media = document.getElementById('apod-media');
+    if (data.media_type === 'video') {
+      var thumb = data.thumbnail_url || '';
+      media.innerHTML =
+        '<a href="' + attr(data.url) + '" target="_blank" rel="noopener" style="display:inline-block;">' +
+          (thumb ? '<img src="' + attr(thumb) + '" alt="APOD video thumbnail — ' + attr(data.title||'') + '" style="max-width:100%; border:2px solid #6699ff; box-shadow:0 0 12px rgba(102,153,255,0.4);">' : '') +
+          '<div style="color:#00ccff; margin-top:6px; letter-spacing:2px;">▸ PLAY VIDEO TRANSMISSION</div>' +
+        '</a>';
+    } else {
+      media.innerHTML =
+        '<a href="' + attr(data.hdurl || data.url) + '" target="_blank" rel="noopener" style="display:inline-block;">' +
+          '<img src="' + attr(data.url) + '" alt="' + attr(data.title || 'APOD') + '" style="max-width:100%; border:2px solid #6699ff; box-shadow:0 0 12px rgba(102,153,255,0.4);">' +
+        '</a>';
+    }
+
+    document.getElementById('apod-title').textContent = data.title || '(untitled)';
+    document.getElementById('apod-date').textContent  = '★ STARDATE ' + (data.date || '');
+
+    var exp = (data.explanation || '').trim();
+    if (exp.length > 420) exp = exp.slice(0, 420).replace(/\s+\S*$/, '') + '…';
+    document.getElementById('apod-explanation').textContent = exp;
+    document.getElementById('apod-credit').textContent = data.copyright ? data.copyright.replace(/\s+/g,' ').trim() : 'NASA / Public Domain';
+
+    // Link to the canonical APOD page for that date
+    var ymd = (data.date || '').replace(/-/g, '');
+    if (ymd.length === 8) {
+      document.getElementById('apod-link').href = 'https://apod.nasa.gov/apod/ap' + ymd.slice(2) + '.html';
+    }
+  }
+
+  function attr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  }
+  function pad(n){ return (n<10?'0':'') + n; }
+})();
+</script>
+
+<!-- =========================================================
+     TONIGHT'S SKY :: client-side astronomy
+     Moon phase via synodic approximation.
+     Sun rise/set + civil dusk via NOAA/USNO algorithm.
+     Observer defaults to central PA — change OBS below.
+     ========================================================= -->
+<script>
+(function() {
+  // --- OBSERVER (change to taste) ---
+  var OBS = { lat: 40.7934, lon: -77.8600, label: 'PENNSYLVANIA SECTOR · 40.8°N 77.9°W' };
+
+  var now = new Date();
+
+  // ---- MOON ----
+  var moon = moonInfo(now);
+  var moonDisc = document.getElementById('moon-disc');
+  if (moonDisc) {
+    moonDisc.innerHTML = moonSvg(moon.phase);
+  }
+  var moonName = document.getElementById('moon-name');
+  if (moonName) moonName.textContent = moon.name;
+  var moonStats = document.getElementById('moon-stats');
+  if (moonStats) moonStats.innerHTML =
+    Math.round(moon.illum * 100) + '% LIT · AGE ' + moon.age.toFixed(1) + 'd';
+
+  // ---- SUN ----
+  var rise = sunUT(now, OBS.lat, OBS.lon, 90.833, true);
+  var set  = sunUT(now, OBS.lat, OBS.lon, 90.833, false);
+  var dusk = sunUT(now, OBS.lat, OBS.lon, 96,     false);
+
+  setText('sun-rise', rise == null ? '--:--' : utToLocal(now, rise));
+  setText('sun-set',  set  == null ? '--:--' : utToLocal(now, set));
+  setText('dusk-civ', dusk == null ? '--:--' : utToLocal(now, dusk));
+
+  // ---- DATE + OBSERVER ----
+  var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  setText('sky-date', pad2(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + now.getFullYear());
+  setText('sky-obs', OBS.label);
+
+  // ========== MOON MATH ==========
+  function moonInfo(d) {
+    var jd = (d.getTime() / 86400000) + 2440587.5;
+    var ref = 2451550.26;       // JD of known new moon (2000-01-06 18:14 UT)
+    var syn = 29.53058867;      // synodic month in days
+    var phase = (((jd - ref) % syn) + syn) % syn / syn; // 0..1
+    var age = phase * syn;
+    var illum = (1 - Math.cos(2 * Math.PI * phase)) / 2;
+    var name;
+    if      (age <  1.84) name = 'NEW MOON';
+    else if (age <  5.53) name = 'WAXING CRESCENT';
+    else if (age <  9.22) name = 'FIRST QUARTER';
+    else if (age < 12.91) name = 'WAXING GIBBOUS';
+    else if (age < 16.61) name = 'FULL MOON';
+    else if (age < 20.30) name = 'WANING GIBBOUS';
+    else if (age < 23.99) name = 'LAST QUARTER';
+    else if (age < 27.68) name = 'WANING CRESCENT';
+    else                   name = 'NEW MOON';
+    return { phase: phase, age: age, illum: illum, name: name };
+  }
+
+  function moonSvg(phase) {
+    // Phase in [0,1). Returns full <svg> string with a lit-region path.
+    var k = Math.cos(2 * Math.PI * phase); // +1 new, 0 quarter, -1 full
+    var rx = Math.abs(k) * 48;
+    var waxing = phase < 0.5;
+    var d;
+    if (waxing) {
+      var sweepT = (k >= 0) ? 1 : 0;
+      d = 'M 50 2 A 48 48 0 0 1 50 98 A ' + rx + ' 48 0 0 ' + sweepT + ' 50 2 Z';
+    } else {
+      var sweepT2 = (k >= 0) ? 0 : 1;
+      d = 'M 50 2 A 48 48 0 0 0 50 98 A ' + rx + ' 48 0 0 ' + sweepT2 + ' 50 2 Z';
+    }
+    return '' +
+      '<svg viewBox="0 0 100 100" width="54" height="54" style="display:block; margin:0 auto; filter: drop-shadow(0 0 8px #99ccff);" aria-hidden="true">' +
+        '<circle cx="50" cy="50" r="48" fill="#1a1a2a"/>' +
+        '<path d="' + d + '" fill="#f0e6c8"/>' +
+        '<circle cx="50" cy="50" r="48" fill="none" stroke="#6699ff" stroke-width="1.5"/>' +
+      '</svg>';
+  }
+
+  // ========== SUN MATH (NOAA / USNO) ==========
+  function sunUT(date, lat, lon, zenith, rising) {
+    var N = dayOfYear(date);
+    var lonHour = lon / 15;
+    var t = rising ? N + ((6 - lonHour) / 24) : N + ((18 - lonHour) / 24);
+    var M = (0.9856 * t) - 3.289;
+    var L = M + (1.916 * sinD(M)) + (0.020 * sinD(2*M)) + 282.634;
+    L = norm360(L);
+    var RA = Math.atan(0.91764 * Math.tan(L * Math.PI / 180)) * 180 / Math.PI;
+    RA = norm360(RA);
+    // Right quadrant
+    var Lq = Math.floor(L / 90) * 90;
+    var RAq = Math.floor(RA / 90) * 90;
+    RA = (RA + (Lq - RAq)) / 15;
+    var sinDec = 0.39782 * sinD(L);
+    var cosDec = Math.cos(Math.asin(sinDec));
+    var cosH = (Math.cos(zenith * Math.PI / 180) - (sinDec * Math.sin(lat * Math.PI / 180))) / (cosDec * Math.cos(lat * Math.PI / 180));
+    if (cosH > 1)  return null; // never rises
+    if (cosH < -1) return null; // never sets
+    var H = rising ? 360 - Math.acos(cosH) * 180 / Math.PI : Math.acos(cosH) * 180 / Math.PI;
+    H = H / 15;
+    var T = H + RA - (0.06571 * t) - 6.622;
+    var UT = ((T - lonHour) % 24 + 24) % 24;
+    return UT;
+  }
+
+  function utToLocal(dateLocal, ut) {
+    var Y = dateLocal.getFullYear(), M = dateLocal.getMonth(), D = dateLocal.getDate();
+    var h = Math.floor(ut);
+    var m = Math.round((ut - h) * 60);
+    if (m === 60) { h++; m = 0; }
+    // Try 3 candidate UTC dates: yesterday / today / tomorrow
+    var cands = [
+      new Date(Date.UTC(Y, M, D - 1, h, m)),
+      new Date(Date.UTC(Y, M, D,     h, m)),
+      new Date(Date.UTC(Y, M, D + 1, h, m))
+    ];
+    for (var i = 0; i < cands.length; i++) {
+      var c = cands[i];
+      if (c.getFullYear() === Y && c.getMonth() === M && c.getDate() === D) {
+        return pad2(c.getHours()) + ':' + pad2(c.getMinutes());
+      }
+    }
+    return pad2(cands[1].getHours()) + ':' + pad2(cands[1].getMinutes());
+  }
+
+  // ========== HELPERS ==========
+  function dayOfYear(d) {
+    var start = Date.UTC(d.getFullYear(), 0, 0);
+    var diff = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - start;
+    return Math.floor(diff / 86400000);
+  }
+  function sinD(deg) { return Math.sin(deg * Math.PI / 180); }
+  function norm360(x) { return ((x % 360) + 360) % 360; }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function setText(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
 })();
 </script>
 

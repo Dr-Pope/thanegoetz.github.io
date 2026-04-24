@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SECTOR UNCHARTED — 404: The coordinates you requested are not in the Federation database. Lost in the void of Starbase 451.">
+  <meta name="robots" content="noindex">
+  <title>STARBASE 451 :: 404 — SECTOR UNCHARTED</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="visitor.js"></script>
+  <style>
+    /* ---------- 404 PAGE ---------- */
+    .void-header {
+      text-align: center;
+      padding: 30px 12px 18px;
+      background: linear-gradient(180deg, #1a0000 0%, #000010 100%);
+      border: 3px ridge #ff3366;
+      margin-bottom: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .void-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: repeating-linear-gradient(90deg, #ff3366 0 8px, transparent 8px 16px);
+      animation: scan 1.6s linear infinite;
+    }
+    .void-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: repeating-linear-gradient(90deg, #ff3366 0 8px, transparent 8px 16px);
+      animation: scan 2.1s linear infinite reverse;
+    }
+    @keyframes scan { from { transform: translateX(-50%); } to { transform: translateX(50%); } }
+
+    .big-404 {
+      font-family: 'VT323', monospace;
+      font-size: 140px;
+      line-height: 1;
+      color: #ff3366;
+      text-shadow: 0 0 8px #ff3366, 0 0 24px #ff0044, 0 0 48px #660000;
+      letter-spacing: 12px;
+      animation: glitch 4s steps(1) infinite;
+    }
+    @keyframes glitch {
+      0%, 92%, 100% { transform: translate(0, 0); filter: none; }
+      93%           { transform: translate(-2px, 1px); filter: hue-rotate(30deg); }
+      94%           { transform: translate(2px, -1px); filter: hue-rotate(-40deg); }
+      95%           { transform: translate(-1px, 0);   filter: none; }
+      96%           { transform: translate(3px, 2px);  filter: hue-rotate(120deg); }
+    }
+
+    .void-subtitle {
+      font-family: 'VT323', monospace;
+      font-size: 32px;
+      color: #ffaa00;
+      letter-spacing: 6px;
+      margin-top: 2px;
+      text-shadow: 0 0 6px #ff6600;
+    }
+    .void-meta {
+      color: #ff99cc;
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-top: 8px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    /* ---------- DRIFTING ASTRONAUT ---------- */
+    .drift-wrap {
+      background: rgba(0,0,30,0.85);
+      border: 2px dashed #6699ff;
+      padding: 12px;
+      margin-bottom: 6px;
+      text-align: center;
+      position: relative;
+      min-height: 240px;
+      overflow: hidden;
+    }
+    .astronaut {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      line-height: 1.2;
+      color: #ffffff;
+      white-space: pre;
+      display: inline-block;
+      text-align: left;
+      text-shadow: 0 0 6px #66ccff;
+      animation: drift 14s ease-in-out infinite, tumble 9s ease-in-out infinite;
+    }
+    @keyframes drift {
+      0%   { transform: translate(-80px, 10px); }
+      25%  { transform: translate(40px, -20px); }
+      50%  { transform: translate(100px, 30px); }
+      75%  { transform: translate(-20px, 40px); }
+      100% { transform: translate(-80px, 10px); }
+    }
+    @keyframes tumble {
+      0%, 100% { filter: drop-shadow(0 0 4px #66ccff); }
+      50%      { filter: drop-shadow(0 0 12px #ff66ff); }
+    }
+    .tether {
+      color: #888899;
+      font-size: 12px;
+      margin-top: 10px;
+      letter-spacing: 2px;
+      font-family: 'VT323', monospace;
+    }
+
+    /* ---------- SIGNAL BOX ---------- */
+    .signal-box {
+      background: #001100;
+      border: 2px solid #00aa00;
+      color: #33ff33;
+      padding: 10px 14px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      line-height: 1.9;
+      margin-bottom: 6px;
+    }
+    .signal-box .prompt { color: #00ff99; }
+    .signal-box .err    { color: #ff6666; }
+    .signal-box .ok     { color: #ffff00; }
+    .signal-box .cursor { animation: blink 1s step-start infinite; color: #33ff33; }
+
+    /* ---------- COORDINATES ---------- */
+    .coord-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .coord-grid a {
+      background: #000080;
+      color: #ffff00;
+      border: 2px outset #8888ff;
+      padding: 8px 4px;
+      text-decoration: none;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    .coord-grid a:hover { background: #0000cc; border-style: inset; color: #ffffff; }
+    .coord-grid a small {
+      display: block;
+      color: #99ccff;
+      font-size: 9px;
+      margin-top: 2px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 540px) {
+      .big-404 { font-size: 92px; letter-spacing: 6px; }
+      .void-subtitle { font-size: 22px; letter-spacing: 3px; }
+      .coord-grid { grid-template-columns: repeat(2, 1fr); }
+      .astronaut { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="page-wrap">
+
+  <!-- TOP MARQUEE -->
+  <div class="marquee-wrap">
+    <span class="marquee-inner">
+      ⚠ SIGNAL LOST ⚠ &nbsp;&nbsp;&nbsp;
+      ERROR 404: SECTOR UNCHARTED &nbsp;&nbsp;&nbsp;
+      ⚠ COORDINATES INVALID ⚠ &nbsp;&nbsp;&nbsp;
+      THE PAGE YOU SEEK HAS DRIFTED INTO THE VOID &nbsp;&nbsp;&nbsp;
+      ★ RETURN TO KNOWN SPACE ★
+    </span>
+  </div>
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <div class="site-title">STARBASE 451</div>
+    <div class="site-subtitle">:: Science Officer Thane's Deep Space Terminal ::</div>
+    <div class="site-meta">EST. 2025 &nbsp;|&nbsp; SECTOR 7-GAMMA &nbsp;|&nbsp; QUADRANT OMEGA</div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <a href="index.html">[ HOME ]</a>
+    <a href="about.html">[ ABOUT ME ]</a>
+    <a href="research.html">[ RESEARCH ]</a>
+    <a href="projects.html">[ PROJECTS ]</a>
+    <a href="campaign.html">[ CAMPAIGN ]</a>
+    <a href="media.html">[ MEDIA ]</a>
+    <a href="log.html">[ LOG ]</a>
+    <a href="links.html">[ LINKS ]</a>
+    <a href="guestbook.html">[ GUESTBOOK ]</a>
+    <span class="online blink" style="color:#ff3366;">● OFFLINE</span>
+  </nav>
+
+  <div class="best-viewed" style="color:#ff9999;">
+    ⚠ <b style="color:#ff3366;">CAUTION:</b> You have drifted outside charted space. Rescue beacons active below. ⚠
+  </div>
+
+  <!-- 404 HERO -->
+  <div class="void-header">
+    <div class="big-404">404</div>
+    <div class="void-subtitle">SECTOR UNCHARTED</div>
+    <div class="void-meta">UNABLE TO ESTABLISH LINK &nbsp;|&nbsp; ORIGIN UNKNOWN &nbsp;|&nbsp; TRANSMISSION LOST</div>
+  </div>
+
+  <!-- DRIFTING ASTRONAUT -->
+  <div class="drift-wrap">
+    <div class="astronaut">      ___
+     /   \
+    | o o |
+    |  ^  |
+    |_____|
+   /|# | #|\
+  / |# | #| \
+ /  |##|##|  \
+    |  |  |
+    /__||__\
+    |_|  |_|</div>
+    <div class="tether">⸻⸻ TETHER SEVERED ⸻⸻</div>
+  </div>
+
+  <!-- TERMINAL READOUT -->
+  <div class="signal-box">
+    <span class="prompt">xenobase:/~&gt;</span> LOCATE <span class="ok">"<span id="bad-path">requested_resource</span>"</span><br>
+    <span class="err">SCAN FAILED.</span> No matching record in Federation database.<br>
+    <span class="prompt">xenobase:/~&gt;</span> DIAGNOSTIC<br>
+    &nbsp;&nbsp;→ Coordinates may have been mistyped<br>
+    &nbsp;&nbsp;→ The page may have drifted off-grid<br>
+    &nbsp;&nbsp;→ The link you followed is older than the current stardate<br>
+    &nbsp;&nbsp;→ Cosmic rays may have flipped a bit (it happens)<br>
+    <span class="prompt">xenobase:/~&gt;</span> RECOMMEND <span class="ok">return_to_known_space()</span><span class="cursor">_</span>
+  </div>
+
+  <!-- COORDINATE JUMP PAD -->
+  <div class="panel panel-cyan">
+    <div class="section-title cyan">// KNOWN COORDINATES //</div>
+    <div class="body-text" style="font-size:12px;">
+      Select a destination to re-establish comms. If you believe this sector <i>should</i> exist,
+      please <a href="guestbook.html">report the anomaly in the guestbook</a> so Engineering can investigate.
+    </div>
+    <div class="coord-grid">
+      <a href="index.html">[ HOME ]<small>sector 7-gamma</small></a>
+      <a href="about.html">[ ABOUT ]<small>crew dossier</small></a>
+      <a href="research.html">[ RESEARCH ]<small>science log</small></a>
+      <a href="projects.html">[ PROJECTS ]<small>engineering bay</small></a>
+      <a href="campaign.html">[ CAMPAIGN ]<small>holodeck</small></a>
+      <a href="media.html">[ MEDIA ]<small>optical archive</small></a>
+      <a href="log.html">[ SHIP'S LOG ]<small>daily transmissions</small></a>
+      <a href="links.html">[ LINKS ]<small>subspace relays</small></a>
+      <a href="guestbook.html">[ GUESTBOOK ]<small>hail the bridge</small></a>
+    </div>
+  </div>
+
+  <!-- EASTER EGG LORE -->
+  <div class="panel panel-pink">
+    <div class="section-title pink">// TRANSMISSION FRAGMENT //</div>
+    <div class="body-text" style="font-size:12px; font-style: italic;">
+      &ldquo;...static... <b>kzzzt</b> ...this is Starbase 451 requesting all vessels in the area...
+      we are reading an unregistered signal at these coordinates... <b>kzzzt</b> ...if anyone copies,
+      please advise... <b>kzzzt</b> ...tell my wife I said hello... <b>kzzzt</b>&rdquo;
+      <br><br>
+      <span style="color:#ff66ff;">— recovered from debris field, stardate unknown</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div style="color:#333366; margin-bottom:4px;">◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆</div>
+    © 2025–2026 STARBASE 451 &nbsp;|&nbsp; <span>Science Officer Thane</span> &nbsp;|&nbsp; Pennsylvania Sector, Earth<br>
+    <span style="color:#333366;">Made with ♥ and Visual Studio Code &nbsp;|&nbsp; No frames! &nbsp;|&nbsp; Pure HTML &nbsp;|&nbsp; 640×480 friendly</span>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// Show the path the visitor tried to hit, if any
+(function(){
+  try {
+    var p = window.location.pathname;
+    if (p && p !== '/' && p !== '/404.html') {
+      var el = document.getElementById('bad-path');
+      if (el) el.textContent = p;
+    }
+  } catch(e) { /* no-op */ }
+})();
+</script>
+
+<!-- Starfield background (shared snippet) -->
+<script>
+(function(){var c=document.getElementById('stars');if(!c)return;var x=c.getContext('2d'),s=[];function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<200;i++)s.push({x:Math.random(),y:Math.random(),r:Math.random()*1.5+0.3,b:Math.random(),bs:Math.random()*0.04+0.01});function d(){x.clearRect(0,0,c.width,c.height);s.forEach(function(s){s.b+=s.bs;var a=0.4+0.6*Math.abs(Math.sin(s.b)),r=s.r*(0.8+0.4*Math.abs(Math.sin(s.b*0.7)));x.beginPath();x.arc(s.x*c.width,s.y*c.height,r,0,Math.PI*2);x.fillStyle='rgba(180,210,255,'+a+')';x.fill();});requestAnimationFrame(d);}requestAnimationFrame(d);})();
+</script>
+
+</body>
+</html>
