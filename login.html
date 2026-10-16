@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Starbase 451 secure terminal — authorized personnel only.">
-  <title>STATION 451 :: AUTHORIZATION REQUIRED</title>
+  <meta name="description" content="Explore the optional STARBASE 451 terminal: choose a callsign, try commands, and discover station secrets. No account required.">
+  <title>STARBASE 451 :: Station Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
@@ -188,6 +188,10 @@
     <span class="tb-title">STATION 451 · DEEP SPACE TERMINAL · v2.1</span>
     <span class="tb-conn"><span class="tb-dot-blink">●</span> CONNECTED</span>
   </div>
+  <div style="padding:12px 16px;border-bottom:1px solid #1a3a1a;color:#99ccaa;font-size:12px;line-height:1.6;">
+    OPTIONAL STATION TERMINAL — no account or password needed.<br>
+    <a href="index.html" style="color:#00ff99;">[ RETURN TO COMMAND DECK / HOME ]</a>
+  </div>
   <div id="term-body">
     <div id="boot-log"></div>
     <div id="input-line">
@@ -206,10 +210,7 @@ var RANKS = [
   'MEDICAL OFFICER', 'TACTICAL OFFICER', 'COMMS SPECIALIST'
 ];
 
-// Already logged in — skip to station
-if (localStorage.getItem('xb_username')) {
-  window.location.replace('index.html');
-}
+// The terminal is optional and remains available to returning visitors.
 
 var LINES = [
   { t: 'STATION 451  ·  DEEP SPACE TERMINAL  ·  v2.1', c: 'title', d: 50 },
@@ -227,11 +228,11 @@ var LINES = [
   { t: '   EST. 2025  ·  SECTOR 7-GAMMA  ·  QUADRANT OMEGA', c: 'dim', d: 80 },
   { t: '', c: '', d: 40 },
   { t: '─────────────────────────────────────────────────────', c: 'dim', d: 60 },
-  { t: '!! VISITOR DETECTED — AUTHORIZATION REQUIRED !!', c: 'alert', d: 260 },
+  { t: 'WELCOME ABOARD — EXPLORE AT YOUR OWN PACE', c: 'alert', d: 260 },
   { t: '', c: '', d: 40 },
-  { t: '  This terminal is restricted to authorized personnel.', c: 'normal', d: 90 },
-  { t: '  Identify yourself to receive station clearance.', c: 'normal', d: 90 },
-  { t: '  Your designation will be logged in the starlog.', c: 'normal', d: 90 },
+  { t: '  A little station roleplay. All visitors are welcome.', c: 'normal', d: 90 },
+  { t: '  Try help, fortune, or ls — or choose a callsign.', c: 'normal', d: 90 },
+  { t: '  Callsigns stay in this browser only, when storage is available.', c: 'normal', d: 90 },
 
   { t: '  PS: Use the help command for assistance.', c: 'normal', d: 90 },
 
@@ -244,7 +245,7 @@ var il   = document.getElementById('input-line');
 var ti   = document.getElementById('ti');
 var li   = 0;
 
-var loginState     = 'booting'; // 'booting' | 'username' | 'password' | 'done'
+var loginState     = 'booting'; // 'booting' | 'username' | 'done'
 var enteredUsername = '';
 
 // ── Scroll helper ────────────────────────────────────────────
@@ -281,7 +282,7 @@ function seqLines(arr, baseDelay) {
 function nextLine() {
   if (li >= LINES.length) {
     loginState = 'username';
-    showPrompt('station451 login: ');
+    showPrompt('station451 callsign or command: ');
     return;
   }
   var l = LINES[li++];
@@ -310,9 +311,6 @@ ti.addEventListener('input', function () {
   if (loginState === 'username') {
     document.getElementById('typed-display').textContent = this.value;
     checkUsernameEaster(this.value.toLowerCase().trim());
-  } else if (loginState === 'password') {
-    document.getElementById('typed-display').textContent = '';
-    checkPasswordEaster(this.value.toLowerCase());
   }
   scrollBottom();
 });
@@ -331,14 +329,14 @@ ti.addEventListener('keydown', function (e) {
 
 // Keep focus on ti whenever the terminal is clicked
 document.getElementById('term-wrap').addEventListener('click', function () {
-  if (loginState === 'username' || loginState === 'password') ti.focus();
+  if (loginState === 'username') ti.focus();
 });
 
 // ── State machine: Enter ─────────────────────────────────────
 function handleEnter(val) {
   if (loginState === 'username') {
     // Echo the line
-    addLine('station451 login: ' + val, 'normal');
+    addLine('station451 callsign or command: ' + val, 'normal');
     ti.value = '';
     document.getElementById('typed-display').textContent = '';
 
@@ -347,19 +345,12 @@ function handleEnter(val) {
     // Check for terminal commands
     if (handleCommand(val)) { ti.focus(); return; }
 
-    // Valid username — move to password
+    // Callsigns are playful personalization, never authentication.
     enteredUsername = val;
-    loginState = 'password';
-    setTimeout(function () { showPrompt('Password: '); }, 80);
-
-  } else if (loginState === 'password') {
-    var pw = ti.value;
-    addLine('Password: ', 'normal'); // never echo the password
-    ti.value = '';
-    document.getElementById('typed-display').textContent = '';
     il.style.display = 'none';
     loginState = 'done';
     doAuth(enteredUsername);
+
   }
 }
 
@@ -370,11 +361,11 @@ function doAuth(uname) {
   var glines = [
     { t: '', d: 10 },
     { t: '─────────────────────────────────────────────────────', c: 'g-dim', d: 60 },
-    { t: '> VERIFYING CREDENTIALS...', c: 'g-ok', d: 220 },
-    { t: '> CHECKING SECTOR CLEARANCE...', c: 'g-ok', d: 300 },
+    { t: '> PREPARING VISITOR BADGE...', c: 'g-ok', d: 220 },
+    { t: '> FINDING A SPARE UNIFORM...', c: 'g-ok', d: 300 },
     { t: '> SCANNING FOR HOSTILES...  NONE DETECTED.', c: 'g-ok', d: 360 },
     { t: '', d: 40 },
-    { t: '  ✦  ACCESS GRANTED  ✦', c: 'g-yellow', d: 260 },
+    { t: '  ✦  WELCOME ABOARD  ✦', c: 'g-yellow', d: 260 },
     { t: '', d: 30 },
     { t: '  WELCOME, ' + rank + ' ' + uname.toUpperCase(), c: 'g-bright', d: 140 },
     { t: '  RANK ASSIGNED : ' + rank, c: 'g-ok', d: 100 },
@@ -395,8 +386,10 @@ function doAuth(uname) {
       scrollBottom();
       setTimeout(function () { pf.style.width = '100%'; }, 50);
       setTimeout(function () {
-        localStorage.setItem('xb_username', uname);
-        localStorage.setItem('xb_rank', rank);
+        try {
+          localStorage.setItem('xb_username', uname);
+          localStorage.setItem('xb_rank', rank);
+        } catch (e) { /* Continue to the public station without a saved badge. */ }
         window.location.replace('index.html');
       }, 1400);
       return;
@@ -600,7 +593,7 @@ function handleCommand(raw) {
     }, 700);
 
   } else if (cmd === 'exit' || cmd === 'logout' || cmd === 'quit') {
-    addLine('> logout: you cannot leave. you have not even logged IN yet.', 'warn');
+    window.location.href = 'index.html';
 
   } else if (cmd === 'status' || cmd === 'systemctl status') {
     seqLines([
@@ -638,14 +631,14 @@ function handleCommand(raw) {
     seqLines([
       { t: '> Python 3.11.0 (Station 451 build) — Type "help" for more info.', c: 'ok', d: 200 },
       { t: '> >>>', c: 'dim', d: 300 },
-      { t: '> just kidding. there is no python here. this is a login screen.', c: 'dim', d: 400 },
+      { t: '> just kidding. there is no python here. this is a station terminal.', c: 'dim', d: 400 },
     ]);
 
   } else if (first === 'git') {
     addLine('> fatal: not a git repository (or any of the parent directories)', 'alert');
 
   } else if (first === 'wget' || first === 'curl') {
-    addLine('> ' + first + ': what would you even download from a login screen', 'dim');
+    addLine('> ' + first + ': what would you even download from a station terminal', 'dim');
 
   } else if (first === 'npm') {
     addLine('> npm: this terminal does not have node_modules. you are safe here.', 'ok');
@@ -682,27 +675,6 @@ function checkUsernameEaster(v) {
   } else if (v === 'hal' && !unUsed.hal) {
     unUsed.hal = true;
     tmpLine("> i'm sorry, i can't do that.  ( just kidding. or am i. )", 'warn', 3000);
-  }
-}
-
-// ── PASSWORD EASTER EGGS ─────────────────────────────────────
-var pwUsed = {};
-function checkPasswordEaster(v) {
-  if (v === 'hunter2' && !pwUsed.h2) {
-    pwUsed.h2 = true;
-    tmpLine('> PASSWORD STRENGTH: ▓▓▓▓▓▓▓▓▓▓ LEGENDARY  ( still letting you in though )', 'warn', 3000);
-  } else if ((v === 'password' || v === '1234' || v === '12345') && !pwUsed.weak) {
-    pwUsed.weak = true;
-    tmpLine('> CLEARANCE CODE ACCEPTED  ( we will literally let anyone in here )', 'ok', 2500);
-  } else if (v === 'pizza' && !pwUsed.pizza) {
-    pwUsed.pizza = true;
-    tmpLine('> !! MASTER PIZZA CLEARANCE CODE DETECTED — Science Officer Thane protocol engaged !!', 'alert', 3500);
-  } else if ((v === 'root' || v === 'god') && !pwUsed.root) {
-    pwUsed.root = true;
-    tmpLine('> root access denied. root access has always been denied. there is no root.', 'alert', 3000);
-  } else if (v === 'correct horse battery staple' && !pwUsed.xkcd) {
-    pwUsed.xkcd = true;
-    tmpLine('> xkcd reference detected. clearance: granted. taste: impeccable.', 'ok', 3000);
   }
 }
 
